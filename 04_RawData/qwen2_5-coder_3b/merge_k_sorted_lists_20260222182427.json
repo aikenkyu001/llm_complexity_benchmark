@@ -1,0 +1,30 @@
+{
+  "task_name": "merge_k_sorted_lists",
+  "model": "qwen2.5-coder:3b",
+  "timestamp": "2026-02-22T18:24:27.150090",
+  "nl_problem": "# Task: merge_k_sorted_lists\n# Interface:\nClass: Solution\nMethod: mergeKLists(self, arg1)\n\nYou are given an array of k linked-lists, each linked-list is sorted in ascending order. Merge all the linked-lists into one sorted linked-list and return it.\nThe linked list node is:\n```python\nclass ListNode:\n    def __init__(self, val=0, next=None):\n        self.val = val\n        self.next = next\n```\n\nConstraints:\n- k == lists.length\n- 0 <= k <= 10^4\n- 0 <= lists[i].length <= 500\n- -10^4 <= lists[i].val <= 10^4\n- lists[i] is sorted in ascending order.\n- The total sum of lists[i].length will not exceed 10^4.",
+  "lisp_spec": "(task\n  (name \"mergeKLists\")\n  (signature ( (lists list) ) list)\n  (constraints\n    (constraint \"k == lists.length\")\n    (constraint \"0 <= k <= 10^4\")\n    (constraint \"0 <= lists[i].length <= 500\")\n    (constraint \"-10^4 <= lists[i].val <= 10^4\")\n    (constraint \"lists[i] is sorted in ascending order.\")\n    (constraint \"The total sum of lists[i].length will not exceed 10^4.\")\n  )\n  (goal\n    (description \"Merge all the linked-lists into one sorted linked-list and return it.\")\n    (rule \"Each linked list node is defined as follows: class ListNode { int val; ListNode next; ListNode() {} ListNode(int val) { this.val = val; } ListNode(int val, ListNode next) { this.val = val; this.next = next; } }\")\n    (return \"The function should return a sorted linked-list.\")\n  )\n)",
+  "generated_code": "# solution.py\n\nclass ListNode:\n    def __init__(self, val=0, next=None):\n        self.val = val\n        self.next = next\n\nclass Solution:\n    def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:\n        # Use a min-heap to efficiently merge the linked lists\n        heap = []\n        \n        # Initialize the heap with the first node of each list\n        for head in lists:\n            if head:\n                heapq.heappush(heap, (head.val, head))\n        \n        # Dummy node to simplify the result construction\n        dummy = ListNode()\n        current = dummy\n        \n        # Merge the linked lists using the heap\n        while heap:\n            val, node = heapq.heappop(heap)\n            current.next = node\n            current = current.next\n            \n            # If there's a next node in the list, push it onto the heap\n            if node.next:\n                heapq.heappush(heap, (node.next.val, node.next))\n        \n        return dummy.next",
+  "test_passed": false,
+  "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-8.3.5, pluggy-1.6.0\nrootdir: /media/developer/USB480G/Project/llm_complexity_benchmark\nplugins: cov-7.0.0, langsmith-0.4.41, anyio-4.11.0\ncollected 0 items / 1 error\n\n==================================== ERRORS ====================================\n__ ERROR collecting 01_TestDefinitions/merge_k_sorted_lists/test_solution.py ___\n01_TestDefinitions/merge_k_sorted_lists/test_solution.py:2: in <module>\n    from solution import Solution\n01_TestDefinitions/merge_k_sorted_lists/solution.py:8: in <module>\n    class Solution:\n01_TestDefinitions/merge_k_sorted_lists/solution.py:9: in Solution\n    def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:\nE   NameError: name 'List' is not defined\n=========================== short test summary info ============================\nERROR 01_TestDefinitions/merge_k_sorted_lists/test_solution.py - NameError: n...\n!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!\n=============================== 1 error in 0.15s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.3447,
+    "python": {
+      "cyclomatic_avg": 3.0,
+      "cyclomatic_max": 5,
+      "wmc": 6,
+      "maintainability_index": 100.0,
+      "max_nesting_depth": 4,
+      "halstead_volume": 0,
+      "lloc": 19,
+      "loc": 32
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 7,
+      "lisp_rules": 1,
+      "lisp_token_count": 111
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "task_name": "regex_matcher",
+  "model": "qwen2.5-coder:7b",
+  "timestamp": "2026-02-23T10:17:12.390606",
+  "nl_problem": "# Task: regex_matcher\n# Interface:\nClass: Solution\nMethod: isMatch(self, arg1, arg2)\n\nGiven an input string s and a pattern p, implement regular expression matching with support for '.' and '*' where:\n- '.' Matches any single character.\u200b\u200b\u200b\u200b\n- '*' Matches zero or more of the preceding element.\nThe matching should cover the entire input string (not partial).\n\nConstraints:\n- 1 <= s.length <= 20\n- 1 <= p.length <= 20\n- s contains only lowercase English letters.\n- p contains only lowercase English letters, '.', and '*'.\n- It is guaranteed for each appearance of the character '*', there will be a previous valid character to match.",
+  "lisp_spec": "(task\n  (name \"isMatch\")\n  (signature ( (s string) (p string) ) boolean)\n  (constraints\n    (constraint \"1 <= s.length <= 20\")\n    (constraint \"1 <= p.length <= 20\")\n    (constraint \"s contains only lowercase English letters.\")\n    (constraint \"p contains only lowercase English letters, '.', and '*'.\")\n    (constraint \"It is guaranteed for each appearance of the character '*', there will be a previous valid character to match.\")\n  )\n  (goal\n    (description \"Implement regular expression matching with support for '.' and '*' where '.' matches any single character and '*' matches zero or more of the preceding element. The matching should cover the entire input string (not partial).\")\n    (rule \"The function should return true if the entire input string s matches the pattern p, otherwise false.\")\n  )\n)",
+  "generated_code": "class Solution:\n    def isMatch(self, s: str, p: str) -> bool:\n        m, n = len(s), len(p)\n        dp = [[False] * (n + 1) for _ in range(m + 1)]\n        dp[m][n] = True\n        \n        for i in range(m, -1, -1):\n            for j in range(n - 1, -1, -1):\n                match = i < m and (s[i] == p[j] or p[j] == '.')\n                \n                if j + 1 < n and p[j + 1] == '*':\n                    dp[i][j] = dp[i][j + 2] or (match and dp[i + 1][j])\n                else:\n                    dp[i][j] = match and dp[i + 1][j + 1]\n        \n        return dp[0][0]",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-8.3.5, pluggy-1.6.0\nrootdir: /media/developer/USB480G/Project/llm_complexity_benchmark\nplugins: cov-7.0.0, langsmith-0.4.41, anyio-4.11.0\ncollected 2 items\n\n01_TestDefinitions/regex_matcher/test_solution.py ..                     [100%]\n\n============================== 2 passed in 2.71s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.4265,
+    "python": {
+      "cyclomatic_avg": 11.0,
+      "cyclomatic_max": 11,
+      "wmc": 11,
+      "maintainability_index": 56.17697834215882,
+      "max_nesting_depth": 5,
+      "halstead_volume": 0,
+      "lloc": 13,
+      "loc": 16
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 6,
+      "lisp_rules": 1,
+      "lisp_token_count": 120
+    }
+  }
+}

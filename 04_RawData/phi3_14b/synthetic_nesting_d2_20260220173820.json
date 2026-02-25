@@ -1,0 +1,30 @@
+{
+  "task_name": "synthetic_nesting_d2",
+  "model": "phi3:14b",
+  "timestamp": "2026-02-20T17:38:20.807824",
+  "nl_problem": "# Task: Nested Logic Test (Depth 2)\n# Interface:\nClass: Solution\nMethod: checkNested(self, x0: int, x1: int) -> bool\n\n# Objective:\nThis is a test of structural nesting. Return True ONLY if all the following conditions are met:\n1. x0 is greater than 0\n2. x1 is greater than 0\n\nEach condition must be checked inside the previous one (nested if statements).",
+  "lisp_spec": "(task\n  (name \"checkNested\")\n  (signature ((x0 int) (x1 int)) bool)\n  (constraints\n    (constraint \"Both x0 and x1 must be integers.\")\n    (constraint \"The values of x0 and x1 should not be negative.\")\n  )\n  (goal\n    (description \"Check if both x0 and x1 are greater than 0, with nested conditions. Return True only if all conditions are met.\")\n    (rule \"First check if x0 is greater than 0\")\n    (rule \"Then, inside that condition, check if x1 is also greater than 0\")\n    (return \"Returns a boolean value indicating whether both x0 and x1 are greater than 0. True only if all conditions are met.\")\n  )\n)",
+  "generated_code": "class Solution:\n    def checkNested(self, x0: int, x1: int) -> bool:\n        \"\"\"\n        Checks if both x0 and x1 are greater than 0. Returns True only if all conditions are met.\n        \n        :param x0: The first integer to be checked.\n        :type x0: int\n        :param x1: The second integer to be checked.\n        :type x1: int\n        :return: A boolean value indicating whether both x0 and x1 are greater than 0. True only if all conditions are met.\n        \"\"\"\n        # Both x0 and x1 must be integers.\n        if not isinstance(x0, int) or not isinstance(x1, int):\n            raise ValueError(\"Both x0 and xe1 should be integers.\")\n        \n        # The values of x0 and x1 should not be negative.\n        if x0 < 0 or x1 < 0:\n            return False\n        \n        # First check if x0 is greater than 0\n        if x0 > 0:\n            # Then, inside that condition, check if x1 is also greater than 0\n            if x1 > 0:\n                return True\n            \n        return False",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/synthetic_nesting_d2/test_solution.py ..              [100%]\n\n============================== 2 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.3073,
+    "python": {
+      "cyclomatic_avg": 7.0,
+      "cyclomatic_max": 7,
+      "wmc": 7,
+      "maintainability_index": 85.21014712678897,
+      "max_nesting_depth": 4,
+      "halstead_volume": 0,
+      "lloc": 11,
+      "loc": 26
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 3,
+      "lisp_rules": 2,
+      "lisp_token_count": 99
+    }
+  }
+}

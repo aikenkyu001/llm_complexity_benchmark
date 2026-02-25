@@ -1,0 +1,30 @@
+{
+  "task_name": "binary_tree_maximum_path_sum",
+  "model": "qwen2.5-coder:14b",
+  "timestamp": "2026-02-25T11:24:10.851058",
+  "nl_problem": "# Task: binary_tree_maximum_path_sum\n# Interface:\nClass: Solution\nMethod: maxPathSum(self, arg1)\n\nA path in a binary tree is a sequence of nodes where each pair of adjacent nodes in the sequence has an edge connecting them. A node can only appear in the sequence at most once. Note that the path does not need to pass through the root.\nThe path sum of a path is the sum of the node's values in the path.\nGiven the root of a binary tree, return the maximum path sum of any non-empty path.\n\nConstraints:\n- The number of nodes in the tree is in the range [1, 3 * 10^4].\n- -1000 <= Node.val <= 1000",
+  "lisp_spec": "(task\n  (name \"maxPathSum\")\n  (signature ( (root (ptr TreeNode)) ) int)\n  (constraints\n    (constraint \"The number of nodes in the tree is in the range [1, 3 * 10^4].\")\n    (constraint \"-1000 <= Node.val <= 1000\")\n  )\n  (goal\n    (description \"Find the maximum path sum of any non-empty path in a binary tree.\")\n    (rule \"A path in a binary tree is a sequence of nodes where each pair of adjacent nodes in the sequence has an edge connecting them.\")\n    (rule \"A node can only appear in the sequence at most once.\")\n    (rule \"The path does not need to pass through the root.\")\n    (return \"Return the maximum path sum of any non-empty path.\")\n  )\n)",
+  "generated_code": "# solution.py\nfrom typing import Optional\n\n# Definition for a binary tree node.\nclass TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\nclass Solution:\n    def maxPathSum(self, root: Optional[TreeNode]) -> int:\n        # Initialize the maximum sum to negative infinity\n        self.max_sum = float('-inf')\n        \n        def helper(node: Optional[TreeNode]) -> int:\n            if not node:\n                return 0\n            \n            # Recursively get the maximum gain from the left and right subtrees\n            left_gain = max(helper(node.left), 0)\n            right_gain = max(helper(node.right), 0)\n            \n            # Price of the new path\n            price_newpath = node.val + left_gain + right_gain\n            \n            # Update the maximum sum if the new path is better\n            self.max_sum = max(self.max_sum, price_newpath)\n            \n            # Return the maximum gain the current node can contribute to its parent\n            return node.val + max(left_gain, right_gain)\n        \n        helper(root)\n        return self.max_sum",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/binary_tree_maximum_path_sum/test_solution.py ..      [100%]\n\n============================== 2 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.2545,
+    "python": {
+      "cyclomatic_avg": 1.0,
+      "cyclomatic_max": 1,
+      "wmc": 2,
+      "maintainability_index": 88.88744662442089,
+      "max_nesting_depth": 4,
+      "halstead_volume": 0,
+      "lloc": 19,
+      "loc": 34
+    },
+    "lisp": {
+      "lisp_max_depth": 5,
+      "lisp_constraints": 3,
+      "lisp_rules": 3,
+      "lisp_token_count": 110
+    }
+  }
+}

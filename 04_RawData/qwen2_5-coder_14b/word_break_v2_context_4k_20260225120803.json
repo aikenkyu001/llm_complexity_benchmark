@@ -1,0 +1,30 @@
+{
+  "task_name": "word_break_v2_context_4k",
+  "model": "qwen2.5-coder:14b",
+  "timestamp": "2026-02-25T12:08:03.539907",
+  "nl_problem": "# Task: word_break_v2_context_4k\n# Interface:\nClass: Solution\nMethod: wordBreak(self, arg1, arg2, arg3)\n\n[SYSTEM SPECIFICATION - CONTEXT SCALING TEST v1.4]\n... (This problem description is intentionally elongated with redundant but necessary technical specifications to test context handling up to 4000 tokens) ...\nThe task is Word Break: Given string s and dictionary wordDict, return true if s can be segmented.\nADDITIONAL SPECIFICATIONS:\n- You must use a Trie-based DP approach.\n- You must log each successful split point (assume a logger `self.log_split(index)`).\n- Handle the case where the dictionary contains empty strings by ignoring them.\n- If multiple segmentations exist, the one with the fewest words is preferred (though the return is still boolean).\n... (imagine 3000 more tokens of detailed architectural constraints here) ...\nFinal Goal: Implement `wordBreak(s, wordDict)`.",
+  "lisp_spec": "(task\n  (name \"wordBreak\")\n  (signature ((self Solution) (s string) (wordDict (list string))) bool)\n  (constraints\n    (constraint \"The dictionary may contain empty strings which should be ignored.\")\n    (constraint \"Use a Trie-based Dynamic Programming approach.\")\n    (constraint \"Log each successful split point using `self.log_split(index)`.\")\n    (constraint \"If multiple segmentations exist, prefer the one with the fewest words.\")\n  )\n  (goal\n    (description \"Determine if the string `s` can be segmented into a sequence of one or more dictionary words.\")\n    (rule \"Return true if the string can be segmented according to the above rules.\")\n    (rule \"Return false otherwise.\")\n    (return \"A boolean value indicating whether the string can be segmented.\")\n  )\n)",
+  "generated_code": "from typing import List, Optional, Dict, Set\n\nclass TrieNode:\n    def __init__(self):\n        self.children: Dict[str, TrieNode] = {}\n        self.is_end_of_word: bool = False\n\nclass Trie:\n    def __init__(self):\n        self.root = TrieNode()\n    \n    def insert(self, word: str) -> None:\n        node = self.root\n        for char in word:\n            if char not in node.children:\n                node.children[char] = TrieNode()\n            node = node.children[char]\n        node.is_end_of_word = True\n    \n    def search(self, word: str) -> bool:\n        node = self.root\n        for char in word:\n            if char not in node.children:\n                return False\n            node = node.children[char]\n        return node.is_end_of_word\n\nclass Solution:\n    def __init__(self):\n        self.trie = Trie()\n    \n    def log_split(self, index: int) -> None:\n        # This method should be implemented to log the split points\n        print(f\"Split at index {index}\")\n    \n    def wordBreak(self, s: str, wordDict: List[str]) -> bool:\n        if not wordDict or not s:\n            return False\n        \n        # Build the Trie from the dictionary\n        for word in wordDict:\n            self.trie.insert(word)\n        \n        n = len(s)\n        dp = [False] * (n + 1)\n        dp[0] = True  # Base case: empty string can be segmented\n        \n        # Dynamic Programming with memoization\n        for i in range(1, n + 1):\n            for j in range(i):\n                if dp[j] and self.trie.search(s[j:i]):\n                    dp[i] = True\n                    self.log_split(j)\n                    break\n        \n        return dp[n]\n\n# Example usage:\n# solution = Solution()\n# result = solution.wordBreak(\"leetcode\", [\"leet\", \"code\"])\n# print(result)  # Output: True",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/word_break_v2_context_4k/test_solution.py ..          [100%]\n\n============================== 2 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.38539999999999996,
+    "python": {
+      "cyclomatic_avg": 2.5714285714285716,
+      "cyclomatic_max": 8,
+      "wmc": 18,
+      "maintainability_index": 70.33757834706498,
+      "max_nesting_depth": 5,
+      "halstead_volume": 0,
+      "lloc": 44,
+      "loc": 61
+    },
+    "lisp": {
+      "lisp_max_depth": 5,
+      "lisp_constraints": 5,
+      "lisp_rules": 2,
+      "lisp_token_count": 102
+    }
+  }
+}

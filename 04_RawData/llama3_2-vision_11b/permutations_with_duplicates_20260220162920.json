@@ -1,0 +1,30 @@
+{
+  "task_name": "permutations_with_duplicates",
+  "model": "llama3.2-vision:11b",
+  "timestamp": "2026-02-20T16:29:20.389541",
+  "nl_problem": "# Task: permutations_with_duplicates\n# Interface:\nClass: Solution\nMethod: permuteUnique(self, arg1)\n\nGiven a collection of numbers, nums, that might contain duplicates, return all possible unique permutations in any order.\n\nConstraints:\n- 1 <= nums.length <= 8\n- -10 <= nums[i] <= 10",
+  "lisp_spec": "(task\n  (name \"permuteUnique\")\n  (signature ( (self Solution) (nums list int) ) (list list int))\n  (constraints\n    (constraint \"1 <= nums.length <= 8\")\n    (constraint \"-10 <= nums[i] <= 10\")\n  )\n  (goal\n    (description \"Return all possible unique permutations in any order.\")\n    (rule \"The permutations should be unique, even if the input contains duplicates.\")\n    (return \"A list of lists, where each sublist is a unique permutation of the input numbers.\")\n  )\n)",
+  "generated_code": "from typing import List\n\nclass Solution:\n    def permuteUnique(self, nums: List[int]) -> List[List[int]]:\n        def backtrack(start: int, end: int) -> None:\n            if start == end:\n                res.add(tuple(nums))\n            for i in range(start, end):\n                nums[start], nums[i] = nums[i], nums[start]\n                backtrack(start + 1, end)\n                nums[start], nums[i] = nums[i], nums[start]\n\n        res: Set[tuple] = set()\n        backtrack(0, len(nums))\n        return [list(x) for x in res]",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/permutations_with_duplicates/test_solution.py ..      [100%]\n\n============================== 2 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.21860000000000002,
+    "python": {
+      "cyclomatic_avg": 2.0,
+      "cyclomatic_max": 2,
+      "wmc": 2,
+      "maintainability_index": 66.58459231433994,
+      "max_nesting_depth": 4,
+      "halstead_volume": 0,
+      "lloc": 14,
+      "loc": 15
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 3,
+      "lisp_rules": 1,
+      "lisp_token_count": 68
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "task_name": "merge_sort_in_place",
+  "model": "qwen2.5-coder:7b",
+  "timestamp": "2026-02-23T10:15:12.975733",
+  "nl_problem": "# Task: merge_sort_in_place\n# Interface:\nClass: Solution\nMethod: sortList(self, arg1)\n\nGiven the head of a linked list, return the list after sorting it in ascending order using merge sort.\nThe sorting must be done in-place (i.e., modifying the links, not creating new nodes where possible) and achieve O(n log n) time complexity.\nThe linked list node is:\n```python\nclass ListNode:\n    def __init__(self, val=0, next=None):\n        self.val = val\n        self.next = next\n```\n\nConstraints:\n- The number of nodes in the list is in the range [0, 5 * 10^4].\n- -10^5 <= Node.val <= 10^5",
+  "lisp_spec": "(task\n  (name \"sortList\")\n  (signature ( (head ListNode) ) ListNode)\n  (constraints\n    (constraint \"The number of nodes in the list is in the range [0, 5 * 10^4].\")\n    (constraint \"-10^5 <= Node.val <= 10^5\")\n  )\n  (goal\n    (description \"Sort a linked list in ascending order using merge sort.\")\n    (rule \"The sorting must be done in-place (i.e., modifying the links, not creating new nodes where possible).\")\n    (rule \"Achieve O(n log n) time complexity.\")\n    (return \"Return the head of the sorted linked list.\")\n  )\n)",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\nclass ListNode:\n    def __init__(self, val=0, next=None):\n        self.val = val\n        self.next = next\n\nclass Solution:\n    def sortList(self, head: Optional[ListNode]) -> Optional[ListNode]:\n        if not head or not head.next:\n            return head\n        \n        # Helper function to split the list into two halves\n        def split(head):\n            slow, fast = head, head.next\n            while fast and fast.next:\n                slow = slow.next\n                fast = fast.next.next\n            mid = slow.next\n            slow.next = None\n            return head, mid\n        \n        # Helper function to merge two sorted lists\n        def merge(l1, l2):\n            dummy = ListNode()\n            current = dummy\n            while l1 and l2:\n                if l1.val < l2.val:\n                    current.next = l1\n                    l1 = l1.next\n                else:\n                    current.next = l2\n                    l2 = l2.next\n                current = current.next\n            if l1:\n                current.next = l1\n            elif l2:\n                current.next = l2\n            return dummy.next\n        \n        # Recursively split and merge the list\n        left, right = split(head)\n        sorted_left = self.sortList(left)\n        sorted_right = self.sortList(right)\n        \n        return merge(sorted_left, sorted_right)",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-8.3.5, pluggy-1.6.0\nrootdir: /media/developer/USB480G/Project/llm_complexity_benchmark\nplugins: cov-7.0.0, langsmith-0.4.41, anyio-4.11.0\ncollected 2 items\n\n01_TestDefinitions/merge_sort_in_place/test_solution.py ..               [100%]\n\n============================== 2 passed in 0.04s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.27849999999999997,
+    "python": {
+      "cyclomatic_avg": 2.0,
+      "cyclomatic_max": 3,
+      "wmc": 4,
+      "maintainability_index": 70.22022589825224,
+      "max_nesting_depth": 5,
+      "halstead_volume": 0,
+      "lloc": 39,
+      "loc": 49
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 3,
+      "lisp_rules": 2,
+      "lisp_token_count": 80
+    }
+  }
+}

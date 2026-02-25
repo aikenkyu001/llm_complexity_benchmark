@@ -1,0 +1,30 @@
+{
+  "task_name": "BitmaskGrouper",
+  "model": "phi3:14b",
+  "timestamp": "2026-02-20T16:58:17.498529",
+  "nl_problem": "# Task: BitmaskGrouper\n# Interface:\nClass: Solution\nMethod: groupNums(self, arg1)\n\nGiven an array of integers `nums`, group the elements into the smallest number of groups such that each group contains elements whose bitwise AND is non-zero.\nReturn the groups as a list of lists. (If multiple groupings exist with the same minimum number, any one is acceptable).\n\nConstraints:\n- 1 <= nums.length <= 1000\n- 0 <= nums[i] <= 10^9",
+  "lisp_spec": "(task\n  (name \"groupNums\")\n  (signature ( (nums list) ) list)\n  (constraints\n    (constraint \"The length of nums is between 1 and 1000.\")\n    (constraint \"Each element in nums is an integer between 0 and 10^9.\")\n  )\n  (goal\n    (description \"Group the elements into the smallest number of groups such that each group contains elements whose bitwise AND is non-zero. Return the groups as a list of lists.\")\n    (rule \"Each element in nums can be part of only one group.\")\n    (return \"A list of lists, where each inner list represents a group with elements whose bitwise AND is non-zero.\"))\n  )\n)",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\nclass GroupNode:\n    def __init__(self, value):\n        self.value = value\n        self.children = []\n    \n    def add_child(self, child):\n        self.children.append(child)\n        \ndef groupNums(nums: List[int]) -> List[List[int]]:\n    if not nums or len(nums) == 0:\n        return []\n    \n    root = GroupNode(1 << (len(bin(max(nums))) - 2))\n    groups = collections.defaultdict(list)\n    \n    for num in nums:\n        node = root\n        while True:\n            if node.value & num == 0:\n                break\n            \n            bit_pos = len(bin(node.value)) - 2\n            child_val = (node.value << 1) | 1\n            found = False\n            for child in node.children:\n                if child.value & num == 0 and not found:\n                    child.add_child(GroupNode(child_val))\n                    groups[num].append(child_val)\n                    found = True\n                    \n            if not found:\n                node.add_child(GroupNode(child_val))\n                groups[num].append(child_val)\n            \n        root.children.sort()\n        \n    return [groups[num] for num in sorted(groups)]\n\nclass Solution:\n    def groupNums(self, nums: List[int]) -> List[List[int]]:\n        return groupNums(nums)",
+  "test_passed": false,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/BitmaskGrouper/test_solution.py FF                    [100%]\n\n=================================== FAILURES ===================================\n__________________________ test_bitmask_grouper_basic __________________________\n\n    def test_bitmask_grouper_basic():\n        solution = Solution()\n        nums = [1, 2, 4, 8]\n        # Bitwise AND of any two is 0. So 4 groups.\n        result = solution.groupNums(nums)\n>       assert len(result) == 4\nE       assert 0 == 4\nE        +  where 0 = len([])\n\n01_TestDefinitions/BitmaskGrouper/test_solution.py:9: AssertionError\n__________________________ test_bitmask_grouper_merge __________________________\n\n    def test_bitmask_grouper_merge():\n        solution = Solution()\n        nums = [3, 1, 6, 2]\n        # 3 & 1 = 1 (!= 0), 6 & 2 = 2 (!= 0)\n        # Possible groups: [[3, 1], [6, 2]]\n        result = solution.groupNums(nums)\n>       assert len(result) == 2\nE       assert 0 == 2\nE        +  where 0 = len([])\n\n01_TestDefinitions/BitmaskGrouper/test_solution.py:17: AssertionError\n=========================== short test summary info ============================\nFAILED 01_TestDefinitions/BitmaskGrouper/test_solution.py::test_bitmask_grouper_basic\nFAILED 01_TestDefinitions/BitmaskGrouper/test_solution.py::test_bitmask_grouper_merge\n============================== 2 failed in 0.03s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.3617,
+    "python": {
+      "cyclomatic_avg": 3.5,
+      "cyclomatic_max": 11,
+      "wmc": 14,
+      "maintainability_index": 58.39536567778594,
+      "max_nesting_depth": 5,
+      "halstead_volume": 0,
+      "lloc": 35,
+      "loc": 46
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 3,
+      "lisp_rules": 1,
+      "lisp_token_count": 96
+    }
+  }
+}

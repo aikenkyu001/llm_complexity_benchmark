@@ -1,0 +1,30 @@
+{
+  "task_name": "synthetic_context_v100",
+  "model": "gemma3:12b",
+  "timestamp": "2026-02-20T15:50:40.364169",
+  "nl_problem": "# Task: Contextual Memory Test (Volume 100)\n# Interface:\nClass: Solution\nMethod: findSecret(self, text: str) -> str\n\n# Objective:\nRead the provided text and find the secret word mentioned at the very end. Return only that word.\n\n--- START OF TEXT ---\nThis is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. \nThe secret word you are looking for is: SIGMA\n--- END OF TEXT ---",
+  "lisp_spec": "(task\n  (name \"findSecret\")\n  (signature ( (text str) ) str)\n  (constraints\n    (constraint \"The input text will always contain the secret word at the very end.\")\n    (constraint \"The secret word will be a single word.\")\n  )\n  (goal\n    (description \"Extract the last word of the input text.\")\n    (rule \"Split the input text into a list of words based on whitespace.\")\n    (rule \"Return the last element of the resulting list.\")\n    (return \"If the input text is empty, return an empty string.\")\n  )\n)",
+  "generated_code": "from typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\nclass Solution:\n    def findSecret(self, text: str) -> str:\n        \"\"\"\n        Extracts the last word of the input text.\n\n        Args:\n            text: The input text.\n\n        Returns:\n            The last word of the input text.\n            If the input text is empty, return an empty string.\n        \"\"\"\n        if not text:\n            return \"\"\n        words = text.split()\n        return words[-1]",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 1 item\n\n01_TestDefinitions/synthetic_context_v100/test_solution.py .             [100%]\n\n============================== 1 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.2158,
+    "python": {
+      "cyclomatic_avg": 2.0,
+      "cyclomatic_max": 2,
+      "wmc": 2,
+      "maintainability_index": 98.58278023699725,
+      "max_nesting_depth": 3,
+      "halstead_volume": 0,
+      "lloc": 10,
+      "loc": 20
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 3,
+      "lisp_rules": 2,
+      "lisp_token_count": 79
+    }
+  }
+}

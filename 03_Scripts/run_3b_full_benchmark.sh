@@ -1,0 +1,69 @@
+#!/bin/bash
+
+# --- Configuration ---
+MODEL_PATH="Qwen/Qwen2.5-Coder-3B-Instruct"
+# As per PROJECT_STATUS.md, the curriculum adapter is here:
+ADAPTER_PATH="./07_Finetune/qwen_curriculum_finetune_results/final_lora_adapter"
+OUTPUT_DIR="04_RawData/qwen2_5-3b-expert"
+REPORT_FILE="05_Reports/3B_BENCHMARK_RESULTS.md"
+
+echo "=========================================================="
+echo " Starting Full Benchmark for Qwen 2.5-Coder-3B-Expert"
+echo "=========================================================="
+
+# 1. Run Inference & Testing
+echo "[1/2] Generating code and running tests for 5 tasks..."
+python3 03_Scripts/run_local_expert_experiment.py 
+    --model_path "$MODEL_PATH" 
+    --adapter_path "$ADAPTER_PATH" 
+    --output_dir "$OUTPUT_DIR" 
+    --tasks lru_cache dijkstra_shortest_path valid_parentheses_complex activity_selection spiral_matrix_ii
+
+# 2. Collect Results and Generate Summary
+echo "[2/2] Generating summary report..."
+echo "# Benchmark Results: Qwen 2.5-Coder-3B-Expert" > $REPORT_FILE
+echo "Date: $(date)" >> $REPORT_FILE
+echo "| Task | Status |" >> $REPORT_FILE
+echo "| :--- | :--- |" >> $REPORT_FILE
+
+SUCCESS_COUNT=0
+TOTAL_COUNT=0
+
+for task_name in lru_cache dijkstra_shortest_path valid_parentheses_complex activity_selection spiral_matrix_ii; do
+    task_result_dir="$OUTPUT_DIR/$task_name"
+    if [ -d "$task_result_dir" ]; then
+        TOTAL_COUNT=$((TOTAL_COUNT + 1))
+        latest_json=$(ls -t "$task_result_dir"/result_*.json 2>/dev/null | head -n 1)
+        
+        if [ -f "$latest_json" ]; then
+            test_passed=$(grep ""test_passed":" "$latest_json" | cut -d: -f2 | tr -d ' ,')
+            if [ "$test_passed" == "true" ]; then
+                echo "| $task_name | ✅ PASSED |" >> $REPORT_FILE
+                SUCCESS_COUNT=$((SUCCESS_COUNT + 1))
+            else
+                echo "| $task_name | ❌ FAILED |" >> $REPORT_FILE
+            fi
+        else
+            echo "| $task_name | ⚠️ NO RESULT |" >> $REPORT_FILE
+        fi
+    fi
+done
+
+# 3. Final Summary
+echo "[3/3] Generating summary..."
+if [ $TOTAL_COUNT -gt 0 ]; then
+    SUCCESS_RATE=$(echo "scale=2; $SUCCESS_COUNT * 100 / $TOTAL_COUNT" | bc)
+else
+    SUCCESS_RATE=0
+fi
+
+echo "" >> $REPORT_FILE
+echo "## Summary" >> $REPORT_FILE
+echo "- **Total Tasks:** $TOTAL_COUNT" >> $REPORT_FILE
+echo "- **Successes:** $SUCCESS_COUNT" >> $REPORT_FILE
+echo "- **Success Rate:** $SUCCESS_RATE%" >> $REPORT_FILE
+
+echo "=========================================================="
+echo " 3B Benchmark Complete!"
+echo " Results saved to: $REPORT_FILE"
+echo "=========================================================="

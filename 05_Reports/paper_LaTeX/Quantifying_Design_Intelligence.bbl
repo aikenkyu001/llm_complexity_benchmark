@@ -1,0 +1,55 @@
+\begin{thebibliography}{10}
+
+\bibitem{mbpp2021}
+Jacob Austin et~al.
+\newblock Program synthesis with large language models.
+\newblock {\em arXiv preprint arXiv:2108.07732}, 2021.
+
+\bibitem{humaneval2021}
+Mark Chen et~al.
+\newblock Measuring coding challenge competence with humaneval.
+\newblock {\em arXiv preprint arXiv:2107.03374}, 2021.
+
+\bibitem{gemma2025}
+Google DeepMind.
+\newblock Gemma 3: Hybrid modality and scalable intelligence.
+\newblock {\em arXiv preprint arXiv:2503.19786}, 2025.
+
+\bibitem{phi22024}
+Suriya Gunasekar et~al.
+\newblock Phi-2: The surprising power of small language models.
+\newblock {\em arXiv preprint arXiv:2402.14020}, 2024.
+
+\bibitem{lora2021}
+Edward~J. Hu et~al.
+\newblock Lora: Low-rank adaptation of large language models.
+\newblock In {\em Proceedings of the 2022 International Conference on Learning
+  Representations (ICLR)}, 2022.
+
+\bibitem{selfcorrect2023}
+Jie Huang et~al.
+\newblock Large language models cannot self-correct.
+\newblock {\em arXiv preprint arXiv:2309.06275}, 2023.
+
+\bibitem{gemma2024}
+Google Team.
+\newblock Gemma: Open models based on gemini research.
+\newblock {\em arXiv preprint arXiv:2403.08295}, 2024.
+
+\bibitem{qwen2024}
+Qwen Team.
+\newblock Qwen2.5-coder technical report.
+\newblock {\em arXiv preprint arXiv:2409.12186}, 2024.
+
+\bibitem{cot2022}
+Jason Wei et~al.
+\newblock Chain-of-thought prompting elicits reasoning in large language
+  models.
+\newblock {\em arXiv preprint arXiv:2201.11903}, 2022.
+
+\bibitem{modelmerge2024}
+Prateek Yadav et~al.
+\newblock Model merging: A survey.
+\newblock {\em arXiv preprint arXiv:2403.13257}, 2024.
+
+\end{thebibliography}

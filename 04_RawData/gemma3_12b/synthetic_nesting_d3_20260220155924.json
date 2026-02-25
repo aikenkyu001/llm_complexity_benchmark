@@ -1,0 +1,30 @@
+{
+  "task_name": "synthetic_nesting_d3",
+  "model": "gemma3:12b",
+  "timestamp": "2026-02-20T15:59:24.492557",
+  "nl_problem": "# Task: Nested Logic Test (Depth 3)\n# Interface:\nClass: Solution\nMethod: checkNested(self, x0: int, x1: int, x2: int) -> bool\n\n# Objective:\nThis is a test of structural nesting. Return True ONLY if all the following conditions are met:\n1. x0 is greater than 0\n2. x1 is greater than 0\n3. x2 is greater than 0\n\nEach condition must be checked inside the previous one (nested if statements).",
+  "lisp_spec": "(task\n  (name \"checkNested\")\n  (signature ( (x0 int) (x1 int) (x2 int) ) bool)\n  (constraints\n    (constraint \"x0 must be an integer.\")\n    (constraint \"x1 must be an integer.\")\n    (constraint \"x2 must be an integer.\")\n  )\n  (goal\n    (description \"Determine if all three input integers are greater than zero, using nested if statements.\")\n    (rule \"The function must return True only if x0 > 0, x1 > 0, and x2 > 0.\")\n    (return \"Return True if all conditions are met, False otherwise.\")\n  )\n)",
+  "generated_code": "from typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\nclass Solution:\n    def checkNested(self, x0: int, x1: int, x2: int) -> bool:\n        \"\"\"\n        Determine if all three input integers are greater than zero, using nested if statements.\n\n        Args:\n            x0: The first integer.\n            x1: The second integer.\n            x2: The third integer.\n\n        Returns:\n            True if all three integers are greater than zero, False otherwise.\n        \"\"\"\n        if x0 > 0:\n            if x1 > 0:\n                if x2 > 0:\n                    return True\n                else:\n                    return False\n            else:\n                return False\n        else:\n            return False",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/synthetic_nesting_d3/test_solution.py ..              [100%]\n\n============================== 2 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.2908,
+    "python": {
+      "cyclomatic_avg": 4.0,
+      "cyclomatic_max": 4,
+      "wmc": 4,
+      "maintainability_index": 93.04019775208036,
+      "max_nesting_depth": 5,
+      "halstead_volume": 0,
+      "lloc": 16,
+      "loc": 27
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 4,
+      "lisp_rules": 1,
+      "lisp_token_count": 79
+    }
+  }
+}

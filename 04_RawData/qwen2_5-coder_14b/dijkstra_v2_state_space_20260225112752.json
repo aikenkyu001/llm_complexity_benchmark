@@ -1,0 +1,30 @@
+{
+  "task_name": "dijkstra_v2_state_space",
+  "model": "qwen2.5-coder:14b",
+  "timestamp": "2026-02-25T11:27:52.399063",
+  "nl_problem": "# Task: Dijkstra V2 (State Space)\n# Interface:\nClass: Solution\nMethod: find_min_cost(self, start: Tuple[int, int], target: Tuple[int, int]) -> int\n\nFind the minimum cost to travel from a start coordinate to a target coordinate in a 2D grid where moving from (x, y) to (x+1, y) or (x, y+1) has a cost that depends on the coordinates.\nCost formula: `cost = (x + y) % 5 + 1`.\n\n# Implementation Hint:\nUse Dijkstra's algorithm where the priority queue stores the tuple `(total_cost, x, y)`.\nThe state space is a 2D grid, but logically it could be an infinite plane. Use a dictionary or a set to track visited states and their minimum costs.\n\nConstraints:\n- 0 <= x, y <= 100\n- Cost is always positive.",
+  "lisp_spec": "(task\n  (name \"find_min_cost\")\n  (signature ((start tuple) (target tuple)) int)\n  (constraints\n    (constraint \"0 <= x, y <= 100 for both start and target coordinates.\")\n    (constraint \"Cost is always positive.\")\n  )\n  (goal\n    (description \"Find the minimum cost to travel from a start coordinate to a target coordinate in a 2D grid using Dijkstra's algorithm.\")\n    (rule \"Moving from (x, y) to (x+1, y) or (x, y+1) has a cost calculated by the formula: `cost = (x + y) % 5 + 1`.\")\n    (rule \"Use a priority queue that stores tuples of `(total_cost, x, y)`.\")\n    (rule \"Track visited states and their minimum costs using a dictionary or set.\")\n    (return \"Return the minimum cost to travel from the start coordinate to the target coordinate. If no path exists, return an appropriate value (e.g., -1).\")\n  )\n)",
+  "generated_code": "from typing import Tuple\nimport heapq\n\nclass Solution:\n    def find_min_cost(self, start: Tuple[int, int], target: Tuple[int, int]) -> int:\n        # Directions for moving right or down\n        directions = [(1, 0), (0, 1)]\n        \n        # Priority queue to store (total_cost, x, y)\n        pq = []\n        heapq.heappush(pq, (0, start[0], start[1]))\n        \n        # Dictionary to track the minimum cost to reach each cell\n        min_cost: Dict[Tuple[int, int], int] = {}\n        min_cost[start] = 0\n        \n        while pq:\n            total_cost, x, y = heapq.heappop(pq)\n            \n            # If we reached the target, return the total cost\n            if (x, y) == target:\n                return total_cost\n            \n            # Explore neighbors\n            for dx, dy in directions:\n                nx, ny = x + dx, y + dy\n                \n                # Check bounds\n                if 0 <= nx <= 100 and 0 <= ny <= 100:\n                    # Calculate the cost to move to the neighbor\n                    move_cost = (nx + ny) % 5 + 1\n                    new_total_cost = total_cost + move_cost\n                    \n                    # If we find a cheaper path to this neighbor, update it\n                    if (nx, ny) not in min_cost or new_total_cost < min_cost[(nx, ny)]:\n                        min_cost[(nx, ny)] = new_total_cost\n                        heapq.heappush(pq, (new_total_cost, nx, ny))\n        \n        # If no path exists to the target, return -1\n        return -1",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 1 item\n\n01_TestDefinitions/dijkstra_v2_state_space/test_solution.py .            [100%]\n\n============================== 1 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.3962,
+    "python": {
+      "cyclomatic_avg": 8.0,
+      "cyclomatic_max": 8,
+      "wmc": 8,
+      "maintainability_index": 80.95100517547486,
+      "max_nesting_depth": 6,
+      "halstead_volume": 0,
+      "lloc": 23,
+      "loc": 40
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 3,
+      "lisp_rules": 3,
+      "lisp_token_count": 131
+    }
+  }
+}

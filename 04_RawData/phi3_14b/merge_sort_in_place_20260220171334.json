@@ -1,0 +1,30 @@
+{
+  "task_name": "merge_sort_in_place",
+  "model": "phi3:14b",
+  "timestamp": "2026-02-20T17:13:34.388283",
+  "nl_problem": "# Task: merge_sort_in_place\n# Interface:\nClass: Solution\nMethod: sortList(self, arg1)\n\nGiven the head of a linked list, return the list after sorting it in ascending order using merge sort.\nThe sorting must be done in-place (i.e., modifying the links, not creating new nodes where possible) and achieve O(n log n) time complexity.\nThe linked list node is:\n```python\nclass ListNode:\n    def __init__(self, val=0, next=None):\n        self.val = val\n        self.next = next\n```\n\nConstraints:\n- The number of nodes in the list is in the range [0, 5 * 10^4].\n- -10^5 <= Node.val <= 10^5",
+  "lisp_spec": "(task\n  (name \"sortList\")\n  (signature ( (head ListNode) ) ListNode)\n  (constraints\n    (constraint \"The number of nodes in the list is in the range [0, 5 * 10^4].\")\n    (constraint \"-10^5 <= Node.val <= 10^5\")\n  )\n  (goal\n    (description \"Given the head of a linked list, return the list after sorting it in ascending order using merge sort.\")\n    (rule \"The sorting must be done in-place and achieve O(n log n) time complexity.\")\n    (return \"A sorted linked list with nodes in ascending order. If the input is an empty list or a single node, return as is.\")\n  )\n)",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\nclass ListNode:\n    def __init__(self, val=0, next=None):\n        self.val = val\n        self.next = next\n\ndef sortList(head: Optional[ListNode]) -> Optional[ListNode]:\n    if not head or not head.next:\n        return head\n    \n    nodes_values = []\n    current = head\n    while current:\n        nodes_values.append((current.val, id(current)))\n        current = current.next\n        \n    heapq.heapify(nodes_values)\n    \n    dummy = ListNode()\n    prev = dummy\n    while nodes_values:\n        val, _id = heapq.heappop(nodes_values)\n        node = next((n for n in nodes_values if id(n[1]) == _id), None)\n        \n        if not node:\n            break\n            \n        prev.next = ListNode(val)\n        prev = prev.next\n        current = node.next\n    \n    return dummy.next\n\nclass Solution:\n    def sortList(self, head: Optional[ListNode]) -> Optional[ListNode]:\n        return sortList(head)",
+  "test_passed": false,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/merge_sort_in_place/test_solution.py F.               [100%]\n\n=================================== FAILURES ===================================\n____________________________ test_merge_sort_basic _____________________________\n\n    def test_merge_sort_basic():\n        solution = Solution()\n        head = from_list([4, 2, 1, 3])\n        result = solution.sortList(head)\n>       assert to_list(result) == [1, 2, 3, 4]\nE       assert [] == [1, 2, 3, 4]\nE         \nE         Right contains 4 more items, first extra item: 1\nE         Use -v to get more diff\n\n01_TestDefinitions/merge_sort_in_place/test_solution.py:29: AssertionError\n=========================== short test summary info ============================\nFAILED 01_TestDefinitions/merge_sort_in_place/test_solution.py::test_merge_sort_basic\n========================= 1 failed, 1 passed in 0.03s ==========================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.2738,
+    "python": {
+      "cyclomatic_avg": 3.3333333333333335,
+      "cyclomatic_max": 8,
+      "wmc": 10,
+      "maintainability_index": 66.02554812582886,
+      "max_nesting_depth": 3,
+      "halstead_volume": 0,
+      "lloc": 30,
+      "loc": 40
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 3,
+      "lisp_rules": 1,
+      "lisp_token_count": 94
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "task_name": "lru_cache_v2_concurrency",
+  "model": "llama3.2-vision:11b",
+  "timestamp": "2026-02-20T16:24:21.528246",
+  "nl_problem": "# Task: lru_cache_v2_concurrency\n# Interface:\nClass: Solution\nMethod: LRUCache(self)\n\nImplement an LRU Cache that is thread-safe. While the main benchmark is single-threaded, the implementation must use synchronization primitives (like threading.Lock) to ensure internal consistency as if it were in a concurrent environment.\n- LRUCache(capacity)\n- get(key)\n- put(key, value)\nConstraints:\n- O(1) average time complexity for both get and put.\n- Use a Lock for every state-modifying operation.\n- Do not use OrderedDict.",
+  "lisp_spec": "",
+  "generated_code": "from typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\nclass Solution:\n    def topKFrequent(self, words: List[str], k: int) -> List[str]:\n        # Create a dictionary to store the frequency of each word\n        word_freq: Dict[str, int] = collections.Counter(words)\n        \n        # Create a list of tuples where each tuple contains a word and its frequency\n        word_freq_list: List[tuple[str, int]] = [(word, freq) for word, freq in word_freq.items()]\n        \n        # Sort the list in descending order based on frequency and then by word\n        word_freq_list.sort(key=lambda x: (-x[1], x[0]))\n        \n        # Return the top k words\n        return [word for word, freq in word_freq_list[:k]]",
+  "test_passed": false,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/lru_cache_v2_concurrency/test_solution.py FF          [100%]\n\n=================================== FAILURES ===================================\n______________________________ test_lru_v2_basic _______________________________\n\n    def test_lru_v2_basic():\n>       lru = Solution().LRUCache(2)\n              ^^^^^^^^^^^^^^^^^^^\nE       AttributeError: 'Solution' object has no attribute 'LRUCache'\n\n01_TestDefinitions/lru_cache_v2_concurrency/test_solution.py:5: AttributeError\n________________________ test_lru_v2_concurrency_logic _________________________\n\n    def test_lru_v2_concurrency_logic():\n        # Test if basic logic still holds with locks added\n>       lru = Solution().LRUCache(1)\n              ^^^^^^^^^^^^^^^^^^^\nE       AttributeError: 'Solution' object has no attribute 'LRUCache'\n\n01_TestDefinitions/lru_cache_v2_concurrency/test_solution.py:14: AttributeError\n=========================== short test summary info ============================\nFAILED 01_TestDefinitions/lru_cache_v2_concurrency/test_solution.py::test_lru_v2_basic\nFAILED 01_TestDefinitions/lru_cache_v2_concurrency/test_solution.py::test_lru_v2_concurrency_logic\n============================== 2 failed in 0.03s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.0875,
+    "python": {
+      "cyclomatic_avg": 3.0,
+      "cyclomatic_max": 3,
+      "wmc": 3,
+      "maintainability_index": 100.0,
+      "max_nesting_depth": 2,
+      "halstead_volume": 0,
+      "lloc": 13,
+      "loc": 17
+    },
+    "lisp": {}
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "task_name": "synthetic_constraints_n5",
+  "model": "qwen2.5-coder:7b",
+  "timestamp": "2026-02-23T10:21:50.350112",
+  "nl_problem": "# Task: Multi-Constraint Check (Density 5)\n# Interface:\nClass: Solution\nMethod: isValid(self, n: int) -> bool\n\n# Objective:\nReturn True if the integer `n` satisfies ALL of the following 5 independent constraints:\n1. n is greater than 2\n2. n is not equal to 104\n3. n is a multiple of 1\n4. n is greater than 8\n5. n is not equal to 110",
+  "lisp_spec": "(task\n  (name \"isValid\")\n  (signature ( (n int) ) bool)\n  (constraints\n    (constraint \"n is greater than 2.\")\n    (constraint \"n is not equal to 104.\")\n    (constraint \"n is a multiple of 1.\")\n    (constraint \"n is greater than 8.\")\n    (constraint \"n is not equal to 110.\")\n  )\n  (goal\n    (description \"Return True if the integer `n` satisfies ALL of the following 5 independent constraints:\")\n    (rule \"1. n is greater than 2\")\n    (rule \"2. n is not equal to 104\")\n    (rule \"3. n is a multiple of 1\")\n    (rule \"4. n is greater than 8\")\n    (rule \"5. n is not equal to 110\")\n    (return \"Return True if all constraints are satisfied, otherwise return False.\")\n  )\n)",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\n\nclass Solution:\n    def isValid(self, n: int) -> bool:\n        \"\"\"\n        Check if the integer `n` satisfies all of the following constraints:\n        \n        1. n is greater than 2\n        2. n is not equal to 104\n        3. n is a multiple of 1 (which is always true for any integer)\n        4. n is greater than 8\n        5. n is not equal to 110\n        \n        :param n: The integer to check.\n        :return: True if all constraints are satisfied, otherwise False.\n        \"\"\"\n        return n > 2 and n != 104 and n > 8 and n != 110",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-8.3.5, pluggy-1.6.0\nrootdir: /media/developer/USB480G/Project/llm_complexity_benchmark\nplugins: cov-7.0.0, langsmith-0.4.41, anyio-4.11.0\ncollected 2 items\n\n01_TestDefinitions/synthetic_constraints_n5/test_solution.py ..          [100%]\n\n============================== 2 passed in 0.03s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.34219999999999995,
+    "python": {
+      "cyclomatic_avg": 4.0,
+      "cyclomatic_max": 4,
+      "wmc": 4,
+      "maintainability_index": 63.09316623660721,
+      "max_nesting_depth": 2,
+      "halstead_volume": 0,
+      "lloc": 5,
+      "loc": 18
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 6,
+      "lisp_rules": 5,
+      "lisp_token_count": 111
+    }
+  }
+}

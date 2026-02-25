@@ -1,0 +1,29 @@
+{
+  "task_name": "sparse_matrix_multiplication",
+  "model": "qwen_merged_final_model",
+  "timestamp": "2026-02-24T17:52:37.494773",
+  "nl_problem": "# Task: sparse_matrix_multiplication\n# Interface:\nClass: Solution\nMethod: multiply(self, arg1, arg2)\n\nGiven two sparse matrices mat1 of size m x k and mat2 of size k x n, return the result of mat1 x mat2.\nA matrix is sparse if most of its elements are 0. You should optimize the multiplication for sparse matrices.\n\nConstraints:\n- m == mat1.length\n- k == mat1[i].length == mat2.length\n- n == mat2[i].length\n- 1 <= m, n, k <= 100\n- -100 <= mat1[i][j], mat2[i][j] <= 100",
+  "lisp_spec": "(task\n  (name \"multiply\")\n  (signature ( (arg1 list) (arg2 list) ) list)\n  (constraints\n    (constraint \"m == mat1.length\")\n    (constraint \"k == mat1[i].length == mat2.length\")\n    (constraint \"n == mat2[i].length\")\n    (constraint \"1 <= m, n, k <= 100\")\n    (constraint \"-100 <= mat1[i][j], mat2[i][j] <= 100\")\n  )\n  (goal\n    (description \"Return the result of multiplying two sparse matrices.\")\n    (rule \"The result should be a list of lists representing the product matrix.\")\n    (return \"The returned list should have dimensions m x n.\")\n  ))",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\n# Define any helper classes here if needed\n\nclass Solution:\n    def multiply(self, mat1: List[List[int]], mat2: List[List[int]]) -> List[List[int]]:\n        \"\"\"\n        Multiply two sparse matrices.\n\n        Args:\n            mat1 (List[List[int]]): The first matrix.\n            mat2 (List[List[int]]): The second matrix.\n\n        Returns:\n            List[List[int]]: The product of the two matrices.\n        \"\"\"\n        m, n, k = len(mat1), len(mat1[0]), len(mat2[0])\n        result = [[0] * k for _ in range(m)]\n\n        # Helper function to convert a row or column to a dictionary of non-zero elements\n        def to_dict(matrix, i):\n            return {j: val for j, val in enumerate(matrix[i]) if val != 0}\n\n        # Convert both matrices to dictionaries of non-zero elements\n        mat1_dict = [to_dict(mat1, i) for i in range(m)]\n        mat2_dict = [to_dict(mat2, j) for j in range(k)]\n\n        # Perform matrix multiplication using the dictionaries\n        for i in range(m):\n            for j in range(k):\n                for col in mat1_dict[i]:\n                    if col in mat2_dict[j]:\n                        result[i][j] += mat1_dict[i][col] * mat2_dict[j][col]\n\n        return result",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /home/miyata/projects/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/sparse_matrix_multiplication/test_solution.py ..      [100%]\n\n============================== 2 passed in 0.03s ===============================\n",
+  "complexity_metrics": {
+    "total_complexity_score": 0.4052,
+    "python": {
+      "cyclomatic_avg": 8.0,
+      "cyclomatic_max": 8,
+      "wmc": 8,
+      "maintainability_index": 86.98769649756403,
+      "max_nesting_depth": 6,
+      "halstead_volume": 0,
+      "lloc": 19,
+      "loc": 38
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 6,
+      "lisp_rules": 1,
+      "lisp_token_count": 76
+    }
+  }
+}

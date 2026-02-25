@@ -1,0 +1,30 @@
+{
+  "task_name": "autocomplete_trie",
+  "model": "qwen2.5-coder:14b",
+  "timestamp": "2026-02-25T11:23:20.323897",
+  "nl_problem": "# Task: Autocomplete System\n# Interface:\nClass: Solution\nMethod: initAutocomplete(self, sentences: List[str], times: List[int]) -> None\nMethod: query(self, prefix: str) -> List[str]\n\nDesign an autocomplete system that returns the top 3 historical sentences that start with the same prefix.\nThe system is initialized with a list of sentences and their respective search counts (times).\n- `initAutocomplete(sentences, times)`: Initializes the system.\n- `query(prefix)`: Returns the top 3 hot sentences starting with the prefix. If multiple sentences have the same frequency, return them in lexicographical order.\n\n# Implementation Hint:\nUse a Trie to store sentences. Each node in the Trie can store the historical sentences and their frequencies passing through that node.\nFor the `query` method, navigate to the node representing the prefix and retrieve the top results.\n\nConstraints:\n- Sentences contain only lowercase English letters and spaces.\n- Up to 100 historical sentences.",
+  "lisp_spec": "(task\n  (name \"initAutocomplete\")\n  (signature ((sentences (list string)) (times (list int))) none)\n  (constraints\n    (constraint \"Sentences contain only lowercase English letters and spaces.\")\n    (constraint \"Up to 100 historical sentences.\")\n  )\n  (goal\n    (description \"Initialize the autocomplete system with a list of sentences and their respective search counts.\")\n    (rule \"Store sentences in a Trie structure where each node keeps track of the sentences passing through it and their frequencies.\")\n  )\n)\n\n(task\n  (name \"query\")\n  (signature ((prefix string)) (list string))\n  (constraints\n    (constraint \"Sentences contain only lowercase English letters and spaces.\")\n  )\n  (goal\n    (description \"Return the top 3 historical sentences that start with the given prefix.\")\n    (rule \"Navigate to the Trie node representing the prefix and retrieve the top 3 sentences based on their frequencies.\")\n    (rule \"If multiple sentences have the same frequency, return them in lexicographical order.\")\n    (return \"A list of up to 3 sentences. If fewer than 3 sentences match the prefix, return all matching sentences.\")\n  )\n)",
+  "generated_code": "from typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\nclass TrieNode:\n    def __init__(self):\n        self.children: Dict[str, TrieNode] = {}\n        self.sentences: Dict[str, int] = {}\n\nclass Solution:\n    def __init__(self):\n        self.root = TrieNode()\n\n    def initAutocomplete(self, sentences: List[str], times: List[int]) -> None:\n        for sentence, time in zip(sentences, times):\n            node = self.root\n            for char in sentence:\n                if char not in node.children:\n                    node.children[char] = TrieNode()\n                node = node.children[char]\n                node.sentences[sentence] = node.sentences.get(sentence, 0) + time\n\n    def query(self, prefix: str) -> List[str]:\n        node = self.root\n        for char in prefix:\n            if char not in node.children:\n                return []\n            node = node.children[char]\n\n        # Retrieve the top 3 sentences based on frequency and lexicographical order\n        top_sentences = heapq.nsmallest(3, node.sentences.items(), key=lambda x: (-x[1], x[0]))\n        return [sentence for sentence, _ in top_sentences]",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 1 item\n\n01_TestDefinitions/autocomplete_trie/test_solution.py .                  [100%]\n\n============================== 1 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.3658,
+    "python": {
+      "cyclomatic_avg": 2.5,
+      "cyclomatic_max": 4,
+      "wmc": 10,
+      "maintainability_index": 67.23491523962574,
+      "max_nesting_depth": 5,
+      "halstead_volume": 0,
+      "lloc": 29,
+      "loc": 32
+    },
+    "lisp": {
+      "lisp_max_depth": 5,
+      "lisp_constraints": 5,
+      "lisp_rules": 3,
+      "lisp_token_count": 154
+    }
+  }
+}

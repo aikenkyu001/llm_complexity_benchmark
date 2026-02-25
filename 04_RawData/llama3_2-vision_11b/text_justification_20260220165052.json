@@ -1,0 +1,30 @@
+{
+  "task_name": "text_justification",
+  "model": "llama3.2-vision:11b",
+  "timestamp": "2026-02-20T16:50:52.072851",
+  "nl_problem": "# Task: text_justification\n# Interface:\nClass: Solution\nMethod: fullJustify(self, arg1, arg2)\n\nGiven an array of strings words and a width maxWidth, format the text such that each line has exactly maxWidth characters and is fully (left and right) justified.\nYou should pack your words in a greedy approach; that is, pack as many words as you can in each line. Pad extra spaces ' ' when necessary so that each line has exactly maxWidth characters.\nExtra spaces between words should be distributed as evenly as possible. If the number of spaces on a line does not divide evenly between words, the empty slots on the left will be assigned more spaces than the slots on the right.\nFor the last line of text, it should be left-justified, and no extra space is inserted between words.\n\nConstraints:\n- 1 <= words.length <= 300\n- 1 <= words[i].length <= 20\n- words[i] consists of only English letters and symbols.\n- 1 <= maxWidth <= 100\n- words[i].length <= maxWidth",
+  "lisp_spec": "(task\n  (name \"fullJustify\")\n  (signature\n    ( (self Solution) (arg1 (list str)) (arg2 int) ) (list str))\n  (constraints\n    (constraint \"1 <= words.length <= 300\")\n    (constraint \"1 <= words[i].length <= 20\")\n    (constraint \"words[i].length <= maxWidth\")\n    (constraint \"1 <= maxWidth <= 100\")\n  )\n  (goal\n    (description \"Format the text such that each line has exactly maxWidth characters and is fully (left and right) justified.\")\n    (rule \"Pack as many words as possible in each line, and pad extra spaces ' ' when necessary.\")\n    (rule \"Extra spaces between words should be distributed as evenly as possible.\")\n    (rule \"For the last line of text, it should be left-justified, and no extra space is inserted between words.\")\n    (return \"A list of strings, where each string represents a line of the formatted text.\")\n  ))\n)",
+  "generated_code": "# solution.py\nfrom typing import List\n\nclass Solution:\n    def fullJustify(self, words: List[str], maxWidth: int) -> List[str]:\n        result = []\n        current_line = []\n        current_width = 0\n\n        for word in words:\n            if current_width + len(word) + len(current_line) > maxWidth:\n                # Distribute spaces evenly\n                if len(current_line) == 1:\n                    result.append(current_line[0] + ' ' * (maxWidth - current_width))\n                else:\n                    total_spaces = maxWidth - current_width\n                    space_between_words = total_spaces // (len(current_line) - 1)\n                    extra_spaces = total_spaces % (len(current_line) - 1)\n\n                    justified_line = ''\n                    for i, w in enumerate(current_line):\n                        justified_line += w\n                        if i < len(current_line) - 1:\n                            justified_line += ' ' * space_between_words\n                            if i < extra_spaces:\n                                justified_line += ' '\n                    result.append(justified_line)\n\n                # Reset current line\n                current_line = [word]\n                current_width = len(word)\n            else:\n                current_line.append(word)\n                current_width += len(word)\n\n        # Handle last line\n        last_line = ' '.join(current_line)\n        if len(last_line) < maxWidth:\n            last_line += ' ' * (maxWidth - len(last_line))\n        result.append(last_line)\n\n        return result",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/text_justification/test_solution.py ..                [100%]\n\n============================== 2 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.4850000000000001,
+    "python": {
+      "cyclomatic_avg": 8.0,
+      "cyclomatic_max": 8,
+      "wmc": 8,
+      "maintainability_index": 67.44360657914845,
+      "max_nesting_depth": 8,
+      "halstead_volume": 0,
+      "lloc": 32,
+      "loc": 42
+    },
+    "lisp": {
+      "lisp_max_depth": 5,
+      "lisp_constraints": 5,
+      "lisp_rules": 3,
+      "lisp_token_count": 125
+    }
+  }
+}

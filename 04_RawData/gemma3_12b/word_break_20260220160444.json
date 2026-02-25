@@ -1,0 +1,30 @@
+{
+  "task_name": "word_break",
+  "model": "gemma3:12b",
+  "timestamp": "2026-02-20T16:04:44.591433",
+  "nl_problem": "# Task: word_break\n# Interface:\nClass: Solution\nMethod: wordBreak(self, arg1, arg2, arg3)\n\nGiven a string s and a dictionary of strings wordDict, return true if s can be segmented into a space-separated sequence of one or more dictionary words.\nNote that the same word in the dictionary may be reused multiple times in the segmentation.\n\nConstraints:\n- 1 <= s.length <= 300\n- 1 <= wordDict.length <= 1000\n- 1 <= wordDict[i].length <= 20\n- s and wordDict[i] consist of only lowercase English letters.\n- All strings in wordDict are unique.",
+  "lisp_spec": "(task\n  (name \"wordBreak\")\n  (signature ( (s string) (wordDict list string) ) bool)\n  (constraints\n    (constraint \"The length of s is between 1 and 300.\")\n    (constraint \"The number of words in wordDict is between 1 and 1000.\")\n    (constraint \"The length of each word in wordDict is between 1 and 20.\")\n    (constraint \"s and all words in wordDict consist only of lowercase English letters.\")\n    (constraint \"All words in wordDict are unique.\")\n  )\n  (goal\n    (description \"Determine if the input string 's' can be segmented into a space-separated sequence of words from the provided dictionary 'wordDict'.\")\n    (rule \"The same word in 'wordDict' can be reused multiple times.\")\n    (return \"Return 'true' if 's' can be segmented as described; otherwise, return 'false'.\")\n  )\n)",
+  "generated_code": "from typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\nclass Solution:\n    def wordBreak(self, s: str, wordDict: List[str]) -> bool:\n        \"\"\"\n        Determine if the input string 's' can be segmented into a space-separated sequence of words from the provided dictionary 'wordDict'.\n\n        Args:\n            s (str): The input string to be segmented.\n            wordDict (List[str]): The dictionary of words to use for segmentation.\n\n        Returns:\n            bool: True if 's' can be segmented, False otherwise.\n        \"\"\"\n        n = len(s)\n        dp = [False] * (n + 1)\n        dp[0] = True\n\n        for i in range(1, n + 1):\n            for j in range(i):\n                if dp[j] and s[j:i] in wordDict:\n                    dp[i] = True\n                    break\n\n        return dp[n]",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 4 items\n\n01_TestDefinitions/word_break/test_solution.py ....                      [100%]\n\n============================== 4 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.3509,
+    "python": {
+      "cyclomatic_avg": 5.0,
+      "cyclomatic_max": 5,
+      "wmc": 5,
+      "maintainability_index": 90.65973128461604,
+      "max_nesting_depth": 5,
+      "halstead_volume": 0,
+      "lloc": 15,
+      "loc": 27
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 6,
+      "lisp_rules": 1,
+      "lisp_token_count": 117
+    }
+  }
+}

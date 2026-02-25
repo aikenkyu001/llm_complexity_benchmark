@@ -1,0 +1,30 @@
+{
+  "task_name": "word_search_ii",
+  "model": "gemma3:12b",
+  "timestamp": "2026-02-20T16:08:52.669321",
+  "nl_problem": "# Task: word_search_ii\n# Interface:\nClass: Solution\nMethod: findWords(self, arg1, arg2)\n\nGiven an m x n board of characters and a list of strings words, return all words on the board.\nEach word must be constructed from letters of sequentially adjacent cells, where adjacent cells are horizontally or vertically neighboring. The same letter cell may not be used more than once in a word.\nYou should use a Trie data structure to optimize the search.\n\nConstraints:\n- m == board.length\n- n == board[i].length\n- 1 <= m, n <= 12\n- board and words consist of lowercase English letters.\n- 1 <= words.length <= 3 * 10^4\n- All strings in words are unique.",
+  "lisp_spec": "(task\n  (name \"findWords\")\n  (signature ( (board (list (list char))) (words (list string)) ) (list string))\n  (constraints\n    (constraint \"m == board.length\")\n    (constraint \"n == board[i].length\")\n    (constraint \"1 <= m, n <= 12\")\n    (constraint \"board and words consist of lowercase English letters.\")\n    (constraint \"1 <= words.length <= 3 * 10^4\")\n    (constraint \"All strings in words are unique.\")\n  )\n  (goal\n    (description \"Find all words from the given list that can be formed by traversing adjacent cells (horizontally or vertically) on the board. Each cell can be used only once per word.\")\n    (rule \"Use a Trie data structure to optimize the search.\")\n    (return \"Return a list of strings representing the words found on the board. The order of the words in the returned list does not matter.\")\n  )\n)",
+  "generated_code": "from typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\nclass TrieNode:\n    def __init__(self):\n        self.children: Dict[str, TrieNode] = {}\n        self.word: Optional[str] = None\n\nclass Solution:\n    def findWords(self, board: List[List[str]], words: List[str]) -> List[str]:\n        \"\"\"\n        Finds all words from the given list that can be formed by traversing adjacent cells\n        (horizontally or vertically) on the board. Each cell can be used only once per word.\n\n        Args:\n            board: A 2D list of characters representing the board.\n            words: A list of strings representing the words to search for.\n\n        Returns:\n            A list of strings representing the words found on the board.\n        \"\"\"\n\n        trie = TrieNode()\n        for word in words:\n            self._add_word_to_trie(trie, word)\n\n        m, n = len(board), len(board[0])\n        result: Set[str] = set()\n\n        def dfs(row: int, col: int, node: TrieNode, current_word: str) -> None:\n            if row < 0 or row >= m or col < 0 or col >= n or board[row][col] not in node.children:\n                return\n\n            char = board[row][col]\n            node = node.children[char]\n\n            if node.word:\n                result.add(node.word)\n\n            temp = board[row][col]\n            board[row][col] = '#'  # Mark as visited\n\n            dfs(row + 1, col, node, current_word + char)\n            dfs(row - 1, col, node, current_word + char)\n            dfs(row, col + 1, node, current_word + char)\n            dfs(row, col - 1, node, current_word + char)\n\n            board[row][col] = temp  # Backtrack\n\n        for i in range(m):\n            for j in range(n):\n                dfs(i, j, trie, \"\")\n\n        return list(result)\n\n    def _add_word_to_trie(self, node: TrieNode, word: str) -> None:\n        curr = node\n        for char in word:\n            if char not in curr.children:\n                curr.children[char] = TrieNode()\n            curr = curr.children[char]\n        curr.word = word",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/word_search_ii/test_solution.py ..                    [100%]\n\n============================== 2 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.335,
+    "python": {
+      "cyclomatic_avg": 2.6666666666666665,
+      "cyclomatic_max": 4,
+      "wmc": 8,
+      "maintainability_index": 72.85995408871598,
+      "max_nesting_depth": 4,
+      "halstead_volume": 0,
+      "lloc": 43,
+      "loc": 63
+    },
+    "lisp": {
+      "lisp_max_depth": 6,
+      "lisp_constraints": 7,
+      "lisp_rules": 1,
+      "lisp_token_count": 125
+    }
+  }
+}

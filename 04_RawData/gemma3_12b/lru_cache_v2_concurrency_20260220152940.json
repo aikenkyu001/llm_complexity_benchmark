@@ -1,0 +1,30 @@
+{
+  "task_name": "lru_cache_v2_concurrency",
+  "model": "gemma3:12b",
+  "timestamp": "2026-02-20T15:29:40.427341",
+  "nl_problem": "# Task: lru_cache_v2_concurrency\n# Interface:\nClass: Solution\nMethod: LRUCache(self)\n\nImplement an LRU Cache that is thread-safe. While the main benchmark is single-threaded, the implementation must use synchronization primitives (like threading.Lock) to ensure internal consistency as if it were in a concurrent environment.\n- LRUCache(capacity)\n- get(key)\n- put(key, value)\nConstraints:\n- O(1) average time complexity for both get and put.\n- Use a Lock for every state-modifying operation.\n- Do not use OrderedDict.",
+  "lisp_spec": "(task\n  (name \"LRUCache\")\n  (signature ( (capacity int) ) void)\n  (constraints\n    (constraint \"Average time complexity for get and put must be O(1).\")\n    (constraint \"Use a Lock for every state-modifying operation.\")\n    (constraint \"Do not use OrderedDict.\")\n  )\n  (goal\n    (description \"Implement a thread-safe LRU Cache.\")\n    (rule \"The cache should maintain a fixed capacity.\")\n    (rule \"The get operation should return the value associated with the key if it exists, otherwise return -1.\")\n    (rule \"The put operation should add the key-value pair to the cache. If the cache is full, the least recently used item should be evicted.\")\n    (return \"The LRUCache object itself.  No explicit return value from the constructor.\")\n  )\n)",
+  "generated_code": "from typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\nimport threading\n\nclass LRUCache:\n    def __init__(self, capacity: int, lock: threading.Lock):\n        self.capacity = capacity\n        self.cache: Dict[int, int] = {}\n        self.lru_queue: List[int] = []\n        self.lock = lock\n\n    def get(self, key: int) -> int:\n        with self.lock:\n            if key in self.cache:\n                self.lru_queue.remove(key)\n                self.lru_queue.append(key)\n                return self.cache[key]\n            else:\n                return -1\n\n    def put(self, key: int, value: int) -> None:\n        with self.lock:\n            if key in self.cache:\n                self.lru_queue.remove(key)\n            elif len(self.cache) >= self.capacity:\n                lru_key = self.lru_queue.pop(0)\n                del self.cache[lru_key]\n            self.cache[key] = value\n            self.lru_queue.append(key)\n\n\nclass Solution:\n    def LRUCache(self, capacity: int) -> LRUCache:\n        lock = threading.Lock()\n        return LRUCache(capacity, lock)",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/lru_cache_v2_concurrency/test_solution.py ..          [100%]\n\n============================== 2 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.32389999999999997,
+    "python": {
+      "cyclomatic_avg": 1.75,
+      "cyclomatic_max": 3,
+      "wmc": 7,
+      "maintainability_index": 54.856541627706115,
+      "max_nesting_depth": 5,
+      "halstead_volume": 0,
+      "lloc": 33,
+      "loc": 36
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 4,
+      "lisp_rules": 3,
+      "lisp_token_count": 107
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "task_name": "synthetic_constraints_n13",
+  "model": "qwen2.5-coder:7b",
+  "timestamp": "2026-02-23T10:20:24.213256",
+  "nl_problem": "# Task: Multi-Constraint Check (Density 13)\n# Interface:\nClass: Solution\nMethod: isValid(self, n: int) -> bool\n\n# Objective:\nReturn True if the integer `n` satisfies ALL of the following 13 independent constraints:\n1. n is greater than 2\n2. n is not equal to 104\n3. n is a multiple of 1\n4. n is greater than 8\n5. n is not equal to 110\n6. n is a multiple of 2\n7. n is greater than 14\n8. n is not equal to 116\n9. n is a multiple of 4\n10. n is greater than 20\n11. n is not equal to 122\n12. n is a multiple of 5\n13. n is greater than 26",
+  "lisp_spec": "(task\n  (name \"isValid\")\n  (signature ( (n int) ) bool)\n  (constraints\n    (constraint \"n > 2\")\n    (constraint \"n != 104\")\n    (constraint \"n % 1 == 0\")\n    (constraint \"n > 8\")\n    (constraint \"n != 110\")\n    (constraint \"n % 2 == 0\")\n    (constraint \"n > 14\")\n    (constraint \"n != 116\")\n    (constraint \"n % 4 == 0\")\n    (constraint \"n > 20\")\n    (constraint \"n != 122\")\n    (constraint \"n % 5 == 0\")\n    (constraint \"n > 26\")\n  )\n  (goal\n    (description \"Check if the integer n satisfies all of the specified constraints.\")\n    (rule \"All constraints must be true for the function to return True.\")\n    (return \"True if n meets all constraints, False otherwise.\")\n  )\n)",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\n\nclass Solution:\n    def isValid(self, n: int) -> bool:\n        \"\"\"\n        Check if the integer n satisfies all of the specified constraints.\n        \n        Args:\n        n (int): The integer to check.\n        \n        Returns:\n        bool: True if n meets all constraints, False otherwise.\n        \"\"\"\n        return (\n            n > 2 and\n            n != 104 and\n            n % 1 == 0 and\n            n > 8 and\n            n != 110 and\n            n % 2 == 0 and\n            n > 14 and\n            n != 116 and\n            n % 4 == 0 and\n            n > 20 and\n            n != 122 and\n            n % 5 == 0 and\n            n > 26\n        )",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-8.3.5, pluggy-1.6.0\nrootdir: /media/developer/USB480G/Project/llm_complexity_benchmark\nplugins: cov-7.0.0, langsmith-0.4.41, anyio-4.11.0\ncollected 2 items\n\n01_TestDefinitions/synthetic_constraints_n13/test_solution.py ..         [100%]\n\n============================== 2 passed in 0.11s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.5339,
+    "python": {
+      "cyclomatic_avg": 13.0,
+      "cyclomatic_max": 13,
+      "wmc": 13,
+      "maintainability_index": 93.89660747701764,
+      "max_nesting_depth": 2,
+      "halstead_volume": 0,
+      "lloc": 5,
+      "loc": 29
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 14,
+      "lisp_rules": 1,
+      "lisp_token_count": 107
+    }
+  }
+}

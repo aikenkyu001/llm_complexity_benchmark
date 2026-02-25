@@ -1,0 +1,30 @@
+{
+  "task_name": "activity_selection",
+  "model": "falcon3:10b",
+  "timestamp": "2026-02-20T14:53:36.728419",
+  "nl_problem": "# Task: activity_selection\n# Interface:\nClass: Solution\nMethod: maxActivities(self, arg1)\n\nYou are given n activities with their start and finish times. Select the maximum number of activities that can be performed by a single person, assuming that a person can only work on a single activity at a time.\nInput is a list of pairs `(start, finish)`.\n\nConstraints:\n- 1 <= n <= 10^5\n- 0 <= start < finish <= 10^9",
+  "lisp_spec": "(task\n (name \"maxActivities\")\n (signature ( (self) (arg1 (list (tuple int int))) ) (list int))\n (constraints\n   (constraint \"1 <= n <= 10^5\")\n   (constraint \"0 <= start < finish <= 10^9\")\n )\n (goal\n   (description \"Select the maximum number of activities that can be performed by a single person, assuming that a person can only work on a single activity at a time.\")\n   (rule \"Sort activities by finish time and select non-overlapping activities.\")\n   (return \"A list of integers representing the indices of selected activities.\")\n )\n)",
+  "generated_code": "class Solution:\n    def maxActivities(self) -> List[int]:\n        def activityComparator(activity1, activity2):\n            return activity1[1] < activity2[1]\n\n        activities = [(0, 0)]  # Start with a dummy activity to simplify logic\n        for i in range(len(arg1)):\n            start, finish = arg1[i]\n            while activities and activityComparator((activities[-1][0], activities[-1][1]), (start, finish)):\n                activities.pop()\n            activities.append((start, finish))\n\n        return [activity[0] for activity in activities[1:]]  # Exclude the dummy activity",
+  "test_passed": false,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/activity_selection/test_solution.py FF                [100%]\n\n=================================== FAILURES ===================================\n________________________ test_activity_selection_basic _________________________\n\n    def test_activity_selection_basic():\n        solution = Solution()\n        activities = [(1, 4), (3, 5), (0, 6), (5, 7), (3, 8), (5, 9), (6, 10), (8, 11), (8, 12), (2, 13), (12, 14)]\n        # Max activities: (1,4), (5,7), (8,11), (12,14) -> 4\n>       assert solution.maxActivities(activities) == 4\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       TypeError: Solution.maxActivities() takes 1 positional argument but 2 were given\n\n01_TestDefinitions/activity_selection/test_solution.py:8: TypeError\n________________________ test_activity_selection_sorted ________________________\n\n    def test_activity_selection_sorted():\n        solution = Solution()\n        activities = [(1, 2), (2, 3), (3, 4)]\n>       assert solution.maxActivities(activities) == 3\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       TypeError: Solution.maxActivities() takes 1 positional argument but 2 were given\n\n01_TestDefinitions/activity_selection/test_solution.py:13: TypeError\n=========================== short test summary info ============================\nFAILED 01_TestDefinitions/activity_selection/test_solution.py::test_activity_selection_basic\nFAILED 01_TestDefinitions/activity_selection/test_solution.py::test_activity_selection_sorted\n============================== 2 failed in 0.03s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.2591,
+    "python": {
+      "cyclomatic_avg": 5.0,
+      "cyclomatic_max": 5,
+      "wmc": 5,
+      "maintainability_index": 87.91092309444396,
+      "max_nesting_depth": 4,
+      "halstead_volume": 0,
+      "lloc": 12,
+      "loc": 13
+    },
+    "lisp": {
+      "lisp_max_depth": 6,
+      "lisp_constraints": 3,
+      "lisp_rules": 1,
+      "lisp_token_count": 83
+    }
+  }
+}

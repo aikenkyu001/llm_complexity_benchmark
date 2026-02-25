@@ -1,0 +1,30 @@
+{
+  "task_name": "fractional_knapsack",
+  "model": "qwen2.5-coder:14b",
+  "timestamp": "2026-02-25T11:28:35.879681",
+  "nl_problem": "# Task: fractional_knapsack\n# Interface:\nClass: Solution\nMethod: fractionalKnapsack(self, arg1, arg2)\n\nGiven a set of items, each with a weight and a value, and a knapsack of a given capacity, find the maximum total value you can carry. In the fractional knapsack problem, you can break items for maximizing the total value.\nItems are given as a list of pairs: `(value, weight)`.\n\nConstraints:\n- 1 <= n <= 10^5\n- 1 <= capacity <= 10^7\n- 1 <= value, weight <= 1000",
+  "lisp_spec": "(task\n  (name \"fractionalKnapsack\")\n  (signature ((arg1 (list (tuple int int))) (arg2 int)) float)\n  (constraints\n    (constraint \"The number of items n must be between 1 and 10^5.\")\n    (constraint \"The capacity of the knapsack must be between 1 and 10^7.\")\n    (constraint \"Each item's value and weight must be between 1 and 1000.\")\n  )\n  (goal\n    (description \"Find the maximum total value that can be carried in a knapsack with a given capacity, where items can be broken into fractions to maximize the total value.\")\n    (rule \"Items are represented as a list of pairs: (value, weight).\")\n    (return \"The function should return the maximum total value as a float. If no items can be taken, return 0.0.\")\n  )\n)",
+  "generated_code": "from typing import List, Tuple\n\nclass Solution:\n    def fractionalKnapsack(self, items: List[Tuple[int, int]], capacity: int) -> float:\n        # Calculate the value-to-weight ratio for each item\n        items = sorted(items, key=lambda x: x[0] / x[1], reverse=True)\n        \n        total_value = 0.0\n        \n        for value, weight in items:\n            if capacity == 0:\n                break\n            if weight <= capacity:\n                # If the item can be taken completely\n                total_value += value\n                capacity -= weight\n            else:\n                # If the item cannot be taken completely, take a fraction of it\n                fraction = capacity / weight\n                total_value += value * fraction\n                break\n        \n        return total_value",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/fractional_knapsack/test_solution.py ..               [100%]\n\n============================== 2 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.2726,
+    "python": {
+      "cyclomatic_avg": 4.0,
+      "cyclomatic_max": 4,
+      "wmc": 4,
+      "maintainability_index": 81.53222674973698,
+      "max_nesting_depth": 4,
+      "halstead_volume": 0,
+      "lloc": 17,
+      "loc": 23
+    },
+    "lisp": {
+      "lisp_max_depth": 6,
+      "lisp_constraints": 4,
+      "lisp_rules": 1,
+      "lisp_token_count": 113
+    }
+  }
+}

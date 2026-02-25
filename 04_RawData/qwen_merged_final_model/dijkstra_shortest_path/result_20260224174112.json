@@ -1,0 +1,29 @@
+{
+  "task_name": "dijkstra_shortest_path",
+  "model": "qwen_merged_final_model",
+  "timestamp": "2026-02-24T17:41:12.467400",
+  "nl_problem": "# Task: Dijkstra Shortest Path\n# Interface:\nClass: Solution\nMethod: dijkstra(self, graph: Dict[int, List[Tuple[int, int]]], start_node: int, n: int) -> List[float]\n\nGiven a weighted, undirected graph and a starting node, return the shortest distance to all other nodes from the source.\nThe graph is represented as an adjacency list: `graph[u] = [(v, weight), ...]`.\nIf a node is unreachable, the distance should be infinity (represented as a very large integer or float('inf')).\n\nConstraints:\n- The number of nodes is between 1 and 1000.\n- Weights are non-negative.",
+  "lisp_spec": "(task\n  (name \"dijkstra\")\n  (signature ( (graph dict int (list tuple)) (start_node int) (n int) ) (list float))\n  (constraints\n    (constraint \"The number of nodes is between 1 and 1000.\")\n    (constraint \"Weights are non-negative.\")\n  )\n  (goal\n    (description \"Return the shortest distance to all other nodes from the source.\")\n    (rule \"The graph is represented as an adjacency list: `graph[u] = [(v, weight), ...]`.\")\n    (rule \"If a node is unreachable, the distance should be infinity (represented as a very large integer or float('inf')).\")\n    (return \"The return value is a list of floats representing the shortest distances to all nodes from the start node. Unreachable nodes should have infinity as their distance.\")\n  ))",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\n# Define any helper classes here if needed\n\nclass Solution:\n    def dijkstra(self, graph: Dict[int, List[tuple]], start_node: int, n: int) -> List[float]:\n        # Initialize the priority queue with the start node and its distance\n        pq = [(0, start_node)]\n        # Dictionary to store the shortest distance to each node\n        dist = {node: float('inf') for node in range(1, n + 1)}\n        dist[start_node] = 0\n        \n        while pq:\n            current_dist, current_node = heapq.heappop(pq)\n            \n            # If the current distance is greater than the stored distance, skip this node\n            if current_dist > dist[current_node]:\n                continue\n            \n            # Explore neighbors\n            for neighbor, weight in graph[current_node]:\n                new_dist = current_dist + weight\n                \n                # If a shorter path is found, update the distance and push it into the priority queue\n                if new_dist < dist[neighbor]:\n                    dist[neighbor] = new_dist\n                    heapq.heappush(pq, (new_dist, neighbor))\n        \n        # Return the list of shortest distances\n        return [dist[node] for node in range(1, n + 1)]",
+  "test_passed": false,
+  "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /home/miyata/projects/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/dijkstra_shortest_path/test_solution.py FF            [100%]\n\n=================================== FAILURES ===================================\n_____________________________ test_dijkstra_basic ______________________________\n\n    def test_dijkstra_basic():\n        solution = Solution()\n        # graph[u] = [(v, weight), ...]\n        graph = {\n            0: [(1, 4), (2, 1)],\n            1: [(3, 1)],\n            2: [(1, 2), (3, 5)],\n            3: []\n        }\n        result = solution.dijkstra(graph, 0, 4)\n>       assert result == [0, 3, 1, 4] # distances to 0, 1, 2, 3\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       assert [3, 1, 4, inf] == [0, 3, 1, 4]\nE         \nE         At index 0 diff: 3 != 0\nE         Use -v to get more diff\n\n01_TestDefinitions/dijkstra_shortest_path/test_solution.py:14: AssertionError\n__________________________ test_dijkstra_unreachable ___________________________\n\n    def test_dijkstra_unreachable():\n        solution = Solution()\n        graph = {0: [(1, 2)], 1: [], 2: []}\n        result = solution.dijkstra(graph, 0, 3)\n>       assert result[0] == 0\nE       assert 2 == 0\n\n01_TestDefinitions/dijkstra_shortest_path/test_solution.py:20: AssertionError\n=========================== short test summary info ============================\nFAILED 01_TestDefinitions/dijkstra_shortest_path/test_solution.py::test_dijkstra_basic\nFAILED 01_TestDefinitions/dijkstra_shortest_path/test_solution.py::test_dijkstra_unreachable\n============================== 2 failed in 0.04s ===============================\n",
+  "complexity_metrics": {
+    "total_complexity_score": 0.3341,
+    "python": {
+      "cyclomatic_avg": 7.0,
+      "cyclomatic_max": 7,
+      "wmc": 7,
+      "maintainability_index": 87.86032801523638,
+      "max_nesting_depth": 5,
+      "halstead_volume": 0,
+      "lloc": 19,
+      "loc": 33
+    },
+    "lisp": {
+      "lisp_max_depth": 5,
+      "lisp_constraints": 3,
+      "lisp_rules": 2,
+      "lisp_token_count": 108
+    }
+  }
+}

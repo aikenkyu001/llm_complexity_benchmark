@@ -1,0 +1,30 @@
+{
+  "task_name": "fractional_knapsack",
+  "model": "llama3.2-vision:11b",
+  "timestamp": "2026-02-20T16:18:12.688342",
+  "nl_problem": "# Task: fractional_knapsack\n# Interface:\nClass: Solution\nMethod: fractionalKnapsack(self, arg1, arg2)\n\nGiven a set of items, each with a weight and a value, and a knapsack of a given capacity, find the maximum total value you can carry. In the fractional knapsack problem, you can break items for maximizing the total value.\nItems are given as a list of pairs: `(value, weight)`.\n\nConstraints:\n- 1 <= n <= 10^5\n- 1 <= capacity <= 10^7\n- 1 <= value, weight <= 1000",
+  "lisp_spec": "Here is the LISP specification for the given natural language problem:\n\n(task\n  (name \"fractional_knapsack\")\n  (signature ( (arg1 (list (tuple int int))) (arg2 int) ) float)\n  (constraints\n    (constraint \"1 <= n <= 10^5\")\n    (constraint \"1 <= capacity <= 10^7\")\n    (constraint \"1 <= value, weight <= 1000\")\n  )\n  (goal\n    (description \"Find the maximum total value that can be carried in the knapsack.\")\n    (rule \"Break items to maximize total value.\")\n    (return \"The maximum total value as a float.\")\n  )\n)",
+  "generated_code": "from typing import List, Tuple\n\nclass Solution:\n    def fractional_knapsack(self, items: List[Tuple[int, int]], capacity: int) -> float:\n        # Sort items by value-to-weight ratio in descending order\n        items.sort(key=lambda x: x[1] / x[0], reverse=True)\n\n        total_value = 0.0\n        for item in items:\n            weight, value = item\n            if capacity >= weight:\n                capacity -= weight\n                total_value += value\n            else:\n                fraction = capacity / weight\n                total_value += value * fraction\n                break\n\n        return total_value",
+  "test_passed": false,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/fractional_knapsack/test_solution.py FF               [100%]\n\n=================================== FAILURES ===================================\n________________________ test_fractional_knapsack_basic ________________________\n\n    def test_fractional_knapsack_basic():\n        solution = Solution()\n        items = [(60, 10), (100, 20), (120, 30)]\n        capacity = 50\n        # Items (val/weight): (6,10), (5,20), (4,30)\n        # Take all of item1 (60) and item2 (100) and 2/3 of item3 (80) -> 240\n>       assert solution.fractionalKnapsack(items, capacity) == 240.0\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       AttributeError: 'Solution' object has no attribute 'fractionalKnapsack'. Did you mean: 'fractional_knapsack'?\n\n01_TestDefinitions/fractional_knapsack/test_solution.py:10: AttributeError\n________________________ test_fractional_knapsack_empty ________________________\n\n    def test_fractional_knapsack_empty():\n        solution = Solution()\n>       assert solution.fractionalKnapsack([], 10) == 0.0\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       AttributeError: 'Solution' object has no attribute 'fractionalKnapsack'. Did you mean: 'fractional_knapsack'?\n\n01_TestDefinitions/fractional_knapsack/test_solution.py:14: AttributeError\n=========================== short test summary info ============================\nFAILED 01_TestDefinitions/fractional_knapsack/test_solution.py::test_fractional_knapsack_basic\nFAILED 01_TestDefinitions/fractional_knapsack/test_solution.py::test_fractional_knapsack_empty\n============================== 2 failed in 0.03s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.2529,
+    "python": {
+      "cyclomatic_avg": 3.0,
+      "cyclomatic_max": 3,
+      "wmc": 3,
+      "maintainability_index": 74.86608834578814,
+      "max_nesting_depth": 4,
+      "halstead_volume": 0,
+      "lloc": 16,
+      "loc": 19
+    },
+    "lisp": {
+      "lisp_max_depth": 6,
+      "lisp_constraints": 4,
+      "lisp_rules": 1,
+      "lisp_token_count": 77
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "task_name": "synthetic_nesting_d7",
+  "model": "qwen_merged_final_model",
+  "timestamp": "2026-02-24T18:04:05.091495",
+  "nl_problem": "# Task: Nested Logic Test (Depth 7)\n# Interface:\nClass: Solution\nMethod: checkNested(self, x0: int, x1: int, x2: int, x3: int, x4: int, x5: int, x6: int) -> bool\n\n# Objective:\nThis is a test of structural nesting. Return True ONLY if all the following conditions are met:\n1. x0 is greater than 0\n2. x1 is greater than 0\n3. x2 is greater than 0\n4. x3 is greater than 0\n5. x4 is greater than 0\n6. x5 is greater than 0\n7. x6 is greater than 0\n\nEach condition must be checked inside the previous one (nested if statements).",
+  "lisp_spec": "(task\n  (name \"checkNested\")\n  (signature ( (x0 int) (x1 int) (x2 int) (x3 int) (x4 int) (x5 int) (x6 int) ) bool)\n  (constraints\n    (constraint \"All input parameters must be greater than 0.\")\n  )\n  (goal\n    (description \"Return True only if all conditions are met.\")\n    (rule \"Check each condition inside the previous one.\")\n    (return \"True if all conditions are met, False otherwise.\")\n  ))",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\n# Define any helper classes here if needed\n\nclass Solution:\n    def checkNested(self, x0: int, x1: int, x2: int, x3: int, x4: int, x5: int, x6: int) -> bool:\n        # Check if all input parameters are greater than 0\n        if x0 <= 0 or x1 <= 0 or x2 <= 0 or x3 <= 0 or x4 <= 0 or x5 <= 0 or x6 <= 0:\n            return False\n        \n        # Additional checks can be added here if needed\n        \n        # Return True if all conditions are met\n        return True",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /home/miyata/projects/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/synthetic_nesting_d7/test_solution.py ..              [100%]\n\n============================== 2 passed in 0.03s ===============================\n",
+  "complexity_metrics": {
+    "total_complexity_score": 0.247,
+    "python": {
+      "cyclomatic_avg": 8.0,
+      "cyclomatic_max": 8,
+      "wmc": 8,
+      "maintainability_index": 93.74188637098051,
+      "max_nesting_depth": 3,
+      "halstead_volume": 0,
+      "lloc": 8,
+      "loc": 17
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 2,
+      "lisp_rules": 1,
+      "lisp_token_count": 60
+    }
+  }
+}

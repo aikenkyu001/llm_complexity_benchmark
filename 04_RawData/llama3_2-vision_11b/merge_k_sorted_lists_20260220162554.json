@@ -1,0 +1,30 @@
+{
+  "task_name": "merge_k_sorted_lists",
+  "model": "llama3.2-vision:11b",
+  "timestamp": "2026-02-20T16:25:54.151436",
+  "nl_problem": "# Task: merge_k_sorted_lists\n# Interface:\nClass: Solution\nMethod: mergeKLists(self, arg1)\n\nYou are given an array of k linked-lists, each linked-list is sorted in ascending order. Merge all the linked-lists into one sorted linked-list and return it.\nThe linked list node is:\n```python\nclass ListNode:\n    def __init__(self, val=0, next=None):\n        self.val = val\n        self.next = next\n```\n\nConstraints:\n- k == lists.length\n- 0 <= k <= 10^4\n- 0 <= lists[i].length <= 500\n- -10^4 <= lists[i].val <= 10^4\n- lists[i] is sorted in ascending order.\n- The total sum of lists[i].length will not exceed 10^4.",
+  "lisp_spec": "(task\n  (name \"merge_k_sorted_lists\")\n  (signature\n    ( (self Solution) (arg1 (list (list int))) ) (list (list int)))\n  (constraints\n    (constraint \"k == lists.length\")\n    (constraint \"0 <= k <= 10^4\")\n    (constraint \"0 <= lists[i].length <= 500\")\n    (constraint \"-10^4 <= lists[i].val <= 10^4\")\n    (constraint \"lists[i] is sorted in ascending order.\")\n    (constraint \"The total sum of lists[i].length will not exceed 10^4.\")\n  )\n  (goal\n    (description \"Merge all the linked-lists into one sorted linked-list.\")\n    (rule \"The linked-lists are sorted in ascending order.\")\n    (return \"The merged linked-list in ascending order.\")\n  ))\n)",
+  "generated_code": "# solution.py\nfrom typing import List\n\nclass ListNode:\n    def __init__(self, val=0, next=None):\n        self.val = val\n        self.next = next\n\nclass Solution:\n    def merge_k_sorted_lists(self, lists: List[List[ListNode]]) -> List[ListNode]:\n        # Create a min heap to store the nodes\n        min_heap = []\n        for i, lst in enumerate(lists):\n            if lst:\n                # Push the node, list index, and node index into the heap\n                heapq.heappush(min_heap, (lst[0].val, i, 0))\n\n        # Initialize the dummy node\n        dummy = ListNode()\n        current = dummy\n\n        # Merge the lists\n        while min_heap:\n            # Pop the smallest node from the heap\n            val, list_index, node_index = heapq.heappop(min_heap)\n            # Add the node to the result\n            current.next = ListNode(val)\n            current = current.next\n\n            # Push the next node from the same list into the heap\n            if node_index + 1 < len(lists[list_index]):\n                heapq.heappush(min_heap, (lists[list_index][node_index + 1].val, list_index, node_index + 1))\n\n        # Return the merged list\n        return dummy.next",
+  "test_passed": false,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/merge_k_sorted_lists/test_solution.py FF              [100%]\n\n=================================== FAILURES ===================================\n______________________________ test_merge_k_basic ______________________________\n\n    def test_merge_k_basic():\n        solution = Solution()\n        lists = [\n            from_list([1, 4, 5]),\n            from_list([1, 3, 4]),\n            from_list([2, 6])\n        ]\n>       result = solution.mergeKLists(lists)\n                 ^^^^^^^^^^^^^^^^^^^^\nE       AttributeError: 'Solution' object has no attribute 'mergeKLists'\n\n01_TestDefinitions/merge_k_sorted_lists/test_solution.py:32: AttributeError\n______________________________ test_merge_k_empty ______________________________\n\n    def test_merge_k_empty():\n        solution = Solution()\n>       assert solution.mergeKLists([]) is None\n               ^^^^^^^^^^^^^^^^^^^^\nE       AttributeError: 'Solution' object has no attribute 'mergeKLists'\n\n01_TestDefinitions/merge_k_sorted_lists/test_solution.py:37: AttributeError\n=========================== short test summary info ============================\nFAILED 01_TestDefinitions/merge_k_sorted_lists/test_solution.py::test_merge_k_basic\nFAILED 01_TestDefinitions/merge_k_sorted_lists/test_solution.py::test_merge_k_empty\n============================== 2 failed in 0.03s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.3391,
+    "python": {
+      "cyclomatic_avg": 3.0,
+      "cyclomatic_max": 5,
+      "wmc": 6,
+      "maintainability_index": 88.99654957028147,
+      "max_nesting_depth": 4,
+      "halstead_volume": 0,
+      "lloc": 20,
+      "loc": 35
+    },
+    "lisp": {
+      "lisp_max_depth": 6,
+      "lisp_constraints": 7,
+      "lisp_rules": 1,
+      "lisp_token_count": 83
+    }
+  }
+}

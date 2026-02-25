@@ -1,0 +1,30 @@
+{
+  "task_name": "permutations_with_duplicates",
+  "model": "gemma3:12b",
+  "timestamp": "2026-02-20T15:35:03.518061",
+  "nl_problem": "# Task: permutations_with_duplicates\n# Interface:\nClass: Solution\nMethod: permuteUnique(self, arg1)\n\nGiven a collection of numbers, nums, that might contain duplicates, return all possible unique permutations in any order.\n\nConstraints:\n- 1 <= nums.length <= 8\n- -10 <= nums[i] <= 10",
+  "lisp_spec": "(task\n  (name \"permuteUnique\")\n  (signature ( (nums (list int)) ) (list (list int))))\n  (constraints\n    (constraint \"The length of nums is between 1 and 8.\")\n    (constraint \"Each element in nums is between -10 and 10.\")\n  )\n  (goal\n    (description \"Generate all unique permutations of the input list of numbers.\")\n    (rule \"The permutations must be unique, meaning no duplicate permutation sequences are allowed in the result.\")\n    (rule \"The order of the permutations in the result does not matter.\")\n    (return \"Return a list of lists, where each inner list represents a unique permutation of the input numbers. If the input list is empty, return an empty list.\")\n  )\n)",
+  "generated_code": "from typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\nclass Solution:\n    def permuteUnique(self, nums: List[int]) -> List[List[int]]:\n        \"\"\"\n        Generates all unique permutations of the input list of numbers.\n\n        Args:\n            nums: A list of integers.\n\n        Returns:\n            A list of lists, where each inner list represents a unique permutation of the input numbers.\n        \"\"\"\n        result: List[List[int]] = []\n        nums.sort()\n        used: List[bool] = [False] * len(nums)\n\n        def backtrack(permutation: List[int]) -> None:\n            if len(permutation) == len(nums):\n                result.append(permutation.copy())\n                return\n\n            for i in range(len(nums)):\n                if used[i]:\n                    continue\n                if i > 0 and nums[i] == nums[i - 1] and not used[i - 1]:\n                    continue\n\n                used[i] = True\n                permutation.append(nums[i])\n                backtrack(permutation)\n                permutation.pop()\n                used[i] = False\n\n        backtrack([])\n        return result",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/permutations_with_duplicates/test_solution.py ..      [100%]\n\n============================== 2 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.2583,
+    "python": {
+      "cyclomatic_avg": 1.0,
+      "cyclomatic_max": 1,
+      "wmc": 1,
+      "maintainability_index": 80.75113189866866,
+      "max_nesting_depth": 5,
+      "halstead_volume": 0,
+      "lloc": 27,
+      "loc": 38
+    },
+    "lisp": {
+      "lisp_max_depth": 5,
+      "lisp_constraints": 3,
+      "lisp_rules": 2,
+      "lisp_token_count": 104
+    }
+  }
+}

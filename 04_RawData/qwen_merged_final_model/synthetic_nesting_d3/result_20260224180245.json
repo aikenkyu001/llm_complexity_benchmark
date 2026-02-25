@@ -1,0 +1,29 @@
+{
+  "task_name": "synthetic_nesting_d3",
+  "model": "qwen_merged_final_model",
+  "timestamp": "2026-02-24T18:02:45.850438",
+  "nl_problem": "# Task: Nested Logic Test (Depth 3)\n# Interface:\nClass: Solution\nMethod: checkNested(self, x0: int, x1: int, x2: int) -> bool\n\n# Objective:\nThis is a test of structural nesting. Return True ONLY if all the following conditions are met:\n1. x0 is greater than 0\n2. x1 is greater than 0\n3. x2 is greater than 0\n\nEach condition must be checked inside the previous one (nested if statements).",
+  "lisp_spec": "(task\n  (name \"checkNested\")\n  (signature ( (x0 int) (x1 int) (x2 int) ) bool)\n  (constraints\n    (constraint \"Return True only if all conditions are met.\")\n    (constraint \"All conditions must be checked inside the previous one.\")\n  )\n  (goal\n    (description \"Return True only if all the following conditions are met:\")\n    (rule \"1. x0 is greater than 0\")\n    (rule \"2. x1 is greater than 0\")\n    (rule \"3. x2 is greater than 0\")\n    (return \"True if all conditions are met, False otherwise.\")\n  ))",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\n# Define any helper classes here if needed\n\nclass Solution:\n    def checkNested(self, x0: int, x1: int, x2: int) -> bool:\n        # Check if all conditions are met\n        if x0 > 0 and x1 > 0 and x2 > 0:\n            return True\n        else:\n            return False",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /home/miyata/projects/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/synthetic_nesting_d3/test_solution.py ..              [100%]\n\n============================== 2 passed in 0.02s ===============================\n",
+  "complexity_metrics": {
+    "total_complexity_score": 0.26039999999999996,
+    "python": {
+      "cyclomatic_avg": 4.0,
+      "cyclomatic_max": 4,
+      "wmc": 4,
+      "maintainability_index": 94.41685420902914,
+      "max_nesting_depth": 3,
+      "halstead_volume": 0,
+      "lloc": 9,
+      "loc": 14
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 3,
+      "lisp_rules": 3,
+      "lisp_token_count": 77
+    }
+  }
+}

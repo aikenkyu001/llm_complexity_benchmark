@@ -1,0 +1,30 @@
+{
+  "task_name": "kth_largest_element",
+  "model": "falcon3:10b",
+  "timestamp": "2026-02-20T14:55:34.929841",
+  "nl_problem": "# Task: kth_largest_element\n# Interface:\nClass: Solution\nMethod: findKthLargest(self, arg1, arg2, arg3, arg4, arg5, arg6, arg7)\n\nGiven an integer array nums and an integer k, return the kth largest element in the array.\nNote that it is the kth largest element in the sorted order, not the kth distinct element.\nCan you solve it without sorting the entire array? (e.g., using a heap or quickselect).\n\nConstraints:\n- 1 <= k <= nums.length <= 10^5\n- -10^4 <= nums[i] <= 10^4",
+  "lisp_spec": "(task\n (name \"findKthLargest\")\n (signature ( (self) (nums (list int)) (k int) (arg3 int) (arg4 int) (arg5 int) (arg6 int) (arg7 int) ) int)\n (constraints\n   (constraint \"1 <= k <= nums.length <= 10^5\")\n   (constraint \"-10^4 <= nums[i] <= 10^4\")\n )\n (goal\n   (description \"Return the kth largest element in the array nums.\")\n   (rule \"The kth largest element is determined in the sorted order of the array, not distinct elements.\")\n   (return \"The kth largest integer from the array nums.\")\n )\n)",
+  "generated_code": "class Solution:\n    def findKthLargest(self, nums: List[int], k: int) -> int:\n        # Using a min-heap to efficiently find the kth largest element\n        min_heap = []\n        for num in nums:\n            if len(min_heap) < k:\n                heapq.heappush(min_heap, num)\n            else:\n                if num > min_heap[0]:\n                    heapq.heapreplace(min_heap, num)\n        return min_heap[0]",
+  "test_passed": false,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/kth_largest_element/test_solution.py FF               [100%]\n\n=================================== FAILURES ===================================\n____________________________ test_kth_largest_basic ____________________________\n\n    def test_kth_largest_basic():\n        solution = Solution()\n>       assert solution.findKthLargest([3,2,1,5,6,4], 2) == 5\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\n01_TestDefinitions/kth_largest_element/test_solution.py:6: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <solution.Solution object at 0x102bfb0e0>, nums = [3, 2, 1, 5, 6, 4]\nk = 2\n\n    def findKthLargest(self, nums: List[int], k: int) -> int:\n        # Using a min-heap to efficiently find the kth largest element\n        min_heap = []\n        for num in nums:\n            if len(min_heap) < k:\n>               heapq.heappush(min_heap, num)\n                ^^^^^\nE               NameError: name 'heapq' is not defined. Did you forget to import 'heapq'?\n\n01_TestDefinitions/kth_largest_element/solution.py:7: NameError\n___________________________ test_kth_largest_complex ___________________________\n\n    def test_kth_largest_complex():\n        solution = Solution()\n>       assert solution.findKthLargest([3,2,3,1,2,4,5,5,6], 4) == 4\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\n01_TestDefinitions/kth_largest_element/test_solution.py:10: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <solution.Solution object at 0x102c65310>, nums = [3, 2, 3, 1, 2, 4, ...]\nk = 4\n\n    def findKthLargest(self, nums: List[int], k: int) -> int:\n        # Using a min-heap to efficiently find the kth largest element\n        min_heap = []\n        for num in nums:\n            if len(min_heap) < k:\n>               heapq.heappush(min_heap, num)\n                ^^^^^\nE               NameError: name 'heapq' is not defined. Did you forget to import 'heapq'?\n\n01_TestDefinitions/kth_largest_element/solution.py:7: NameError\n=========================== short test summary info ============================\nFAILED 01_TestDefinitions/kth_largest_element/test_solution.py::test_kth_largest_basic\nFAILED 01_TestDefinitions/kth_largest_element/test_solution.py::test_kth_largest_complex\n============================== 2 failed in 0.03s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.2706,
+    "python": {
+      "cyclomatic_avg": 4.0,
+      "cyclomatic_max": 4,
+      "wmc": 4,
+      "maintainability_index": 86.99432863773248,
+      "max_nesting_depth": 5,
+      "halstead_volume": 0,
+      "lloc": 10,
+      "loc": 11
+    },
+    "lisp": {
+      "lisp_max_depth": 5,
+      "lisp_constraints": 3,
+      "lisp_rules": 1,
+      "lisp_token_count": 78
+    }
+  }
+}

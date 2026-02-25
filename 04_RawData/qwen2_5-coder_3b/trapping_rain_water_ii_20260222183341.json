@@ -1,0 +1,30 @@
+{
+  "task_name": "trapping_rain_water_ii",
+  "model": "qwen2.5-coder:3b",
+  "timestamp": "2026-02-22T18:33:41.451179",
+  "nl_problem": "# Task: trapping_rain_water_ii\n# Interface:\nClass: Solution\nMethod: trapRainWater(self, arg1)\n\nGiven an m x n integer matrix heightMap representing the height of each unit cell in a 2D elevation map, return the volume of water it can trap after raining.\n\nConstraints:\n- m == heightMap.length\n- n == heightMap[i].length\n- 1 <= m, n <= 200\n- 0 <= heightMap[i][j] <= 2 * 10^4",
+  "lisp_spec": "(task\n  (name \"trapping_rain_water_ii\")\n  (signature ( (heightMap list) ) int)\n  (constraints\n    (constraint \"m == heightMap.length\")\n    (constraint \"n == heightMap[i].length\")\n    (constraint \"1 <= m, n <= 200\")\n    (constraint \"0 <= heightMap[i][j] <= 2 * 10^4\")\n  )\n  (goal\n    (description \"Calculate the volume of water that can be trapped after raining.\")\n    (rule \"Trapping rainwater involves finding the maximum height of water at each cell, which is determined by the minimum of the heights of its adjacent cells. The difference between this maximum height and the current cell's height represents the amount of water that can be trapped.\")\n    (return \"The total volume of trapped water as an integer.\")\n  )\n)",
+  "generated_code": "from typing import List, Optional, Dict, Set, Any\nimport heapq\n\nclass Solution:\n    def trapRainWater(self, heightMap: List[List[int]]) -> int:\n        if not heightMap or not heightMap[0]:\n            return 0\n        \n        rows, cols = len(heightMap), len(heightMap[0])\n        visited = set()\n        pq = []\n        \n        # Add all boundary cells to the priority queue\n        for i in range(rows):\n            heapq.heappush(pq, (heightMap[i][0], i, 0))\n            heapq.heappush(pq, (heightMap[i][cols - 1], i, cols - 1))\n            visited.add((i, 0))\n            visited.add((i, cols - 1))\n        for j in range(cols):\n            heapq.heappush(pq, (heightMap[0][j], 0, j))\n            heapq.heappush(pq, (heightMap[rows - 1][j], rows - 1, j))\n            visited.add((0, j))\n            visited.add((rows - 1, j))\n        \n        water_trapped = 0\n        directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]\n        \n        while pq:\n            height, x, y = heapq.heappop(pq)\n            \n            for dx, dy in directions:\n                nx, ny = x + dx, y + dy\n                if 0 <= nx < rows and 0 <= ny < cols and (nx, ny) not in visited:\n                    visited.add((nx, ny))\n                    new_height = min(height, heightMap[nx][ny])\n                    water_trapped += max(0, new_height - heightMap[nx][ny])\n                    heapq.heappush(pq, (new_height, nx, ny))\n        \n        return water_trapped",
+  "test_passed": false,
+  "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-8.3.5, pluggy-1.6.0\nrootdir: /media/developer/USB480G/Project/llm_complexity_benchmark\nplugins: cov-7.0.0, langsmith-0.4.41, anyio-4.11.0\ncollected 2 items\n\n01_TestDefinitions/trapping_rain_water_ii/test_solution.py F.            [100%]\n\n=================================== FAILURES ===================================\n____________________________ test_trapping_ii_basic ____________________________\n\n    def test_trapping_ii_basic():\n        solution = Solution()\n        heightMap = [[1,4,3,1,3,2],[3,2,1,3,2,4],[2,3,3,2,3,1]]\n>       assert solution.trapRainWater(heightMap) == 4\nE       assert 0 == 4\nE        +  where 0 = trapRainWater([[1, 4, 3, 1, 3, 2], [3, 2, 1, 3, 2, 4], [2, 3, 3, 2, 3, 1]])\nE        +    where trapRainWater = <solution.Solution object at 0x7f6835680740>.trapRainWater\n\n01_TestDefinitions/trapping_rain_water_ii/test_solution.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED 01_TestDefinitions/trapping_rain_water_ii/test_solution.py::test_trapping_ii_basic\n========================= 1 failed, 1 passed in 0.06s ==========================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.391,
+    "python": {
+      "cyclomatic_avg": 10.0,
+      "cyclomatic_max": 10,
+      "wmc": 10,
+      "maintainability_index": 59.37852365548533,
+      "max_nesting_depth": 5,
+      "halstead_volume": 0,
+      "lloc": 31,
+      "loc": 39
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 5,
+      "lisp_rules": 1,
+      "lisp_token_count": 105
+    }
+  }
+}

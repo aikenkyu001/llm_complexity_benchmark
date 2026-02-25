@@ -1,0 +1,30 @@
+{
+  "task_name": "word_ladder_v2_branching",
+  "model": "llama3.2-vision:11b",
+  "timestamp": "2026-02-20T16:56:06.284156",
+  "nl_problem": "# Task: word_ladder_v2_branching\n# Interface:\nClass: Solution\nMethod: ladderLength(self, arg1, arg2, arg3)\n\nGiven two words, beginWord and endWord, and a dictionary's word list, find the length of the shortest transformation sequence from beginWord to endWord.\nThis is a complex version with multiple additional rules:\n1. You MUST use a Bidirectional BFS to minimize the search space.\n2. For each word transformation, you must check a 'forbidden_combinations' list (not provided, assume a helper `is_forbidden(word1, word2)` exists or handle it as a potential constraint).\n3. The wordList can be very large; prioritize memory efficiency.\n4. Return 0 if no path exists.\n\nConstraints:\n- Word length up to 20.\n- wordList size up to 10^5.\n- beginWord and endWord are different.",
+  "lisp_spec": "(task\n  (name \"ladderLength\")\n  (signature\n    ( (self Solution) (arg1 str) (arg2 str) (arg3 (list str)) ) int)\n  (constraints\n    (constraint \"Word length up to 20.\")\n    (constraint \"wordList size up to 10^5.\")\n    (constraint \"beginWord and endWord are different.\")\n  )\n  (goal\n    (description \"Find the length of the shortest transformation sequence from beginWord to endWord.\")\n    (rule \"Use a Bidirectional BFS to minimize the search space.\")\n    (rule \"For each word transformation, check the 'forbidden_combinations' list.\")\n    (return \"Return 0 if no path exists.\")\n  ))",
+  "generated_code": "from typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\nclass Solution:\n    def ladderLength(self, beginWord: str, endWord: str, wordList: List[str]) -> int:\n        # Create a set of words for faster lookups\n        word_set = set(wordList)\n        \n        # Check if endWord is in the wordList\n        if endWord not in word_set:\n            return 0\n        \n        # Create a queue for BFS, with the first word being the beginWord\n        queue = [(beginWord, 1)]\n        \n        # Create a set to store visited words\n        visited = set([beginWord])\n        \n        # Define the possible transformations (one character at a time)\n        transformations = {\n            'a': 'b', 'b': 'a', 'c': 'd', 'd': 'c', 'e': 'f', 'f': 'e', 'g': 'h', 'h': 'g', \n            'i': 'j', 'j': 'i', 'k': 'l', 'l': 'k', 'm': 'n', 'n': 'm', 'o': 'p', 'p': 'o', \n            'q': 'r', 'r': 'q', 's': 't', 't': 's', 'u': 'v', 'v': 'u', 'w': 'x', 'x': 'w', \n            'y': 'z', 'z': 'y'\n        }\n        \n        while queue:\n            # Dequeue the next word and its length\n            word, length = queue.pop(0)\n            \n            # If this is the endWord, return the length\n            if word == endWord:\n                return length\n            \n            # Generate all possible transformations of the current word\n            for i in range(len(word)):\n                for char in transformations.values():\n                    next_word = word[:i] + char + word[i+1:]\n                    \n                    # If the next word is in the wordList and has not been visited\n                    if next_word in word_set and next_word not in visited:\n                        # Mark it as visited and enqueue it\n                        visited.add(next_word)\n                        queue.append((next_word, length + 1))\n        \n        # If no path is found, return 0\n        return 0",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/word_ladder_v2_branching/test_solution.py ..          [100%]\n\n============================== 2 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.3854,
+    "python": {
+      "cyclomatic_avg": 8.0,
+      "cyclomatic_max": 8,
+      "wmc": 8,
+      "maintainability_index": 82.60426632773594,
+      "max_nesting_depth": 6,
+      "halstead_volume": 0,
+      "lloc": 24,
+      "loc": 48
+    },
+    "lisp": {
+      "lisp_max_depth": 5,
+      "lisp_constraints": 4,
+      "lisp_rules": 2,
+      "lisp_token_count": 77
+    }
+  }
+}

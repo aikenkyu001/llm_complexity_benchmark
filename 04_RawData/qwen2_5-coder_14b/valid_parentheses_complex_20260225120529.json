@@ -1,0 +1,30 @@
+{
+  "task_name": "valid_parentheses_complex",
+  "model": "qwen2.5-coder:14b",
+  "timestamp": "2026-02-25T12:05:29.525515",
+  "nl_problem": "# Task: valid_parentheses_complex\n# Interface:\nClass: Solution\nMethod: isValid(self, arg1)\n\nGiven a string containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.\nAn input string is valid if:\n1. Open brackets must be closed by the same type of brackets.\n2. Open brackets must be closed in the correct order.\n3. Every close bracket has a corresponding open bracket of the same type.\nInclude support for nested and complex structures.\n\nConstraints:\n- 1 <= s.length <= 10^4\n- s consists of parentheses only '()[]{}'.",
+  "lisp_spec": "(task\n  (name \"isValid\")\n  (signature ((self \"Solution\") (arg1 string)) bool)\n  (constraints\n    (constraint \"The length of the input string is between 1 and 10^4.\")\n    (constraint \"The input string consists only of the characters '(', ')', '{', '}', '[' and ']'.\")\n  )\n  (goal\n    (description \"Determine if the input string containing parentheses is valid.\")\n    (rule \"Open brackets must be closed by the same type of brackets.\")\n    (rule \"Open brackets must be closed in the correct order.\")\n    (rule \"Every close bracket has a corresponding open bracket of the same type.\")\n    (return \"Return true if the string is valid, otherwise return false.\")\n  )\n)",
+  "generated_code": "# solution.py\nfrom typing import *\n\nclass Solution:\n    def isValid(self, s: str) -> bool:\n        # A stack to keep track of opening brackets\n        stack = []\n        \n        # Mapping of closing brackets to their corresponding opening brackets\n        bracket_map = {')': '(', '}': '{', ']': '['}\n        \n        # Iterate through each character in the string\n        for char in s:\n            # If the character is a closing bracket\n            if char in bracket_map:\n                # Pop the topmost element from the stack if it's not empty, otherwise use a dummy value\n                top_element = stack.pop() if stack else '#'\n                \n                # Check if the popped element matches the corresponding opening bracket\n                if bracket_map[char] != top_element:\n                    return False\n            else:\n                # If it's an opening bracket, push it onto the stack\n                stack.append(char)\n        \n        # If the stack is empty, all brackets were matched correctly\n        return not stack",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 3 items\n\n01_TestDefinitions/valid_parentheses_complex/test_solution.py ...        [100%]\n\n============================== 3 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.3271,
+    "python": {
+      "cyclomatic_avg": 5.0,
+      "cyclomatic_max": 5,
+      "wmc": 5,
+      "maintainability_index": 93.42408881666282,
+      "max_nesting_depth": 5,
+      "halstead_volume": 0,
+      "lloc": 14,
+      "loc": 27
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 3,
+      "lisp_rules": 3,
+      "lisp_token_count": 98
+    }
+  }
+}

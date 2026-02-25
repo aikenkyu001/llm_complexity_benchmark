@@ -1,0 +1,30 @@
+{
+  "task_name": "sudoku_solver",
+  "model": "gemma3:12b",
+  "timestamp": "2026-02-20T15:43:46.692264",
+  "nl_problem": "# Task: Sudoku Solver\n# Interface:\nClass: Solution\nMethod: solveSudoku(self, board: List[List[str]]) -> None\n\n# Objective:\nWrite a program to solve a Sudoku puzzle by filling the empty cells.\nModify the board in-place. The function does not need to return anything.\n\n# Constraints:\n1. Each of the digits 1-9 must occur exactly once in each row.\n2. Each of the digits 1-9 must occur exactly once in each column.\n3. Each of the digits 1-9 must occur exactly once in each of the 9 3x3 sub-boxes of the grid.\n4. The '.' character indicates empty cells.\n5. The board size is always 9x9.\n6. You may assume that the given Sudoku puzzle will have a single unique solution.",
+  "lisp_spec": "(task\n  (name \"solveSudoku\")\n  (signature ( (board (list (list string))) ) none)\n  (constraints\n    (constraint \"The board is a 9x9 grid represented as a list of lists of strings.\")\n    (constraint \"Each cell contains a digit '1'-'9' or '.' representing an empty cell.\")\n    (constraint \"Each row must contain digits '1'-'9' exactly once, or '.' for empty cells.\")\n    (constraint \"Each column must contain digits '1'-'9' exactly once, or '.' for empty cells.\")\n    (constraint \"Each of the nine 3x3 sub-boxes must contain digits '1'-'9' exactly once, or '.' for empty cells.\")\n    (constraint \"The puzzle has a single unique solution.\")\n  )\n  (goal\n    (description \"Solve the Sudoku puzzle by filling in the empty cells.\")\n    (rule \"Modify the board in-place, replacing '.' with appropriate digits.\")\n    (rule \"Use backtracking to find a valid solution.\")\n    (return \"The function modifies the input board directly and does not return a value (none).\")\n  )\n)",
+  "generated_code": "from typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\nclass Solution:\n    def solveSudoku(self, board: List[List[str]]) -> None:\n        \"\"\"\n        Solves a Sudoku puzzle in-place.\n\n        Args:\n            board: A 9x9 Sudoku board represented as a list of lists of strings.\n                   Each cell contains a digit '1'-'9' or '.' representing an empty cell.\n\n        Returns:\n            None. The function modifies the input board directly.\n        \"\"\"\n\n        def is_valid(row: int, col: int, num: str) -> bool:\n            \"\"\"Checks if placing 'num' at (row, col) is valid.\"\"\"\n            for i in range(9):\n                if board[row][i] == num or board[i][col] == num:\n                    return False\n            box_row = (row // 3) * 3\n            box_col = (col // 3) * 3\n            for i in range(box_row, box_row + 3):\n                for j in range(box_col, box_col + 3):\n                    if board[i][j] == num:\n                        return False\n            return True\n\n        def solve() -> bool:\n            \"\"\"Recursive backtracking function to solve the Sudoku.\"\"\"\n            for row in range(9):\n                for col in range(9):\n                    if board[row][col] == '.':\n                        for num in range(1, 10):\n                            num_str = str(num)\n                            if is_valid(row, col, num_str):\n                                board[row][col] = num_str\n                                if solve():\n                                    return True\n                                else:\n                                    board[row][col] = '.'  # Backtrack\n                        return False  # No valid number found for this cell\n            return True  # All cells filled\n\n        solve()",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 3 items\n\n01_TestDefinitions/sudoku_solver/test_solution.py ...                    [100%]\n\n============================== 3 passed in 0.04s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.4459,
+    "python": {
+      "cyclomatic_avg": 1.0,
+      "cyclomatic_max": 1,
+      "wmc": 1,
+      "maintainability_index": 78.8396398730339,
+      "max_nesting_depth": 9,
+      "halstead_volume": 0,
+      "lloc": 34,
+      "loc": 47
+    },
+    "lisp": {
+      "lisp_max_depth": 6,
+      "lisp_constraints": 7,
+      "lisp_rules": 2,
+      "lisp_token_count": 142
+    }
+  }
+}

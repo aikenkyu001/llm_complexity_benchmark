@@ -1,0 +1,29 @@
+{
+  "task_name": "minimum_spanning_tree_prim",
+  "model": "qwen_merged_final_model",
+  "timestamp": "2026-02-24T17:48:02.270243",
+  "nl_problem": "# Task: minimum_spanning_tree_prim\n# Interface:\nClass: Solution\nMethod: primMST(self, graph: Dict[int, List[Tuple[int, int]]], n: int) -> int\n\nGiven a weighted, undirected connected graph with n vertices (labeled 0 to n-1), find the sum of the weights of the edges in its Minimum Spanning Tree using Prim's algorithm.\nThe graph is represented as an adjacency list: `graph[u] = [(v, weight), ...]` where u is the source node, v is the destination, and weight is the edge weight.\n\n# Important:\nThe function MUST accept TWO arguments: `graph` and `n`.\n\n# Implementation Hint:\nUse a priority queue (min-heap) to store edges or nodes. Initialize a `visited` array or set of size `n`. \nStart by marking node 0 as visited and adding its neighbors to the heap.\n\nConstraints:\n- 1 <= n <= 1000\n- 1 <= weight <= 1000",
+  "lisp_spec": "(task\n  (name \"primMST\")\n  (signature ( (graph dict int (list tuple)) (n int) ) int)\n  (constraints\n    (constraint \"1 <= n <= 1000\")\n    (constraint \"1 <= weight <= 1000\")\n  )\n  (goal\n    (description \"Find the sum of the weights of the edges in the Minimum Spanning Tree using Prim's algorithm.\")\n    (rule \"Use a priority queue (min-heap) to store edges or nodes.\")\n    (rule \"Initialize a `visited` array or set of size `n`.\")\n    (rule \"Start by marking node 0 as visited and adding its neighbors to the heap.\")\n    (return \"Return the sum of the weights of the edges in the Minimum Spanning Tree.\")\n  ))",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\n# Define any helper classes here if needed\n\nclass Solution:\n    def primMST(self, graph: Dict[int, List[tuple]], n: int) -> int:\n        # Initialize the priority queue with the first node and its neighbors\n        pq = []\n        for neighbor, weight in graph[0]:\n            heapq.heappush(pq, (weight, neighbor))\n        \n        # Initialize the visited set and the total weight\n        visited = {0}\n        total_weight = 0\n        \n        # Continue until all nodes are visited\n        while pq:\n            weight, node = heapq.heappop(pq)\n            \n            # If the node has already been visited, skip it\n            if node in visited:\n                continue\n            \n            # Mark the node as visited\n            visited.add(node)\n            \n            # Add the weight of the edge to the total weight\n            total_weight += weight\n            \n            # Add the neighbors of the current node to the priority queue\n            for neighbor, weight in graph[node]:\n                if neighbor not in visited:\n                    heapq.heappush(pq, (weight, neighbor))\n        \n        # Return the total weight of the MST\n        return total_weight",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /home/miyata/projects/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/minimum_spanning_tree_prim/test_solution.py ..        [100%]\n\n============================== 2 passed in 0.03s ===============================\n",
+  "complexity_metrics": {
+    "total_complexity_score": 0.3398,
+    "python": {
+      "cyclomatic_avg": 6.0,
+      "cyclomatic_max": 6,
+      "wmc": 6,
+      "maintainability_index": 89.73226840219345,
+      "max_nesting_depth": 5,
+      "halstead_volume": 0,
+      "lloc": 20,
+      "loc": 39
+    },
+    "lisp": {
+      "lisp_max_depth": 5,
+      "lisp_constraints": 3,
+      "lisp_rules": 3,
+      "lisp_token_count": 99
+    }
+  }
+}

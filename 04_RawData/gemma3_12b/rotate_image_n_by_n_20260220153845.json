@@ -1,0 +1,30 @@
+{
+  "task_name": "rotate_image_n_by_n",
+  "model": "gemma3:12b",
+  "timestamp": "2026-02-20T15:38:45.583653",
+  "nl_problem": "# Task: rotate_image_n_by_n\n# Interface:\nClass: Solution\nMethod: rotate(self, arg1)\n\nYou are given an n x n 2D matrix representing an image, rotate the image by 90 degrees (clockwise).\nYou have to rotate the image in-place, which means you have to modify the input 2D matrix directly. DO NOT allocate another 2D matrix and do the rotation.\n\nConstraints:\n- n == matrix.length == matrix[i].length\n- 1 <= n <= 20\n- -1000 <= matrix[i][j] <= 1000",
+  "lisp_spec": "(task\n  (name \"rotate\")\n  (signature ( (matrix (list (list int))) ) void)\n  (constraints\n    (constraint \"n == matrix.length == matrix[i].length\")\n    (constraint \"1 <= n <= 20\")\n    (constraint \"-1000 <= matrix[i][j] <= 1000\")\n  )\n  (goal\n    (description \"Rotate the given n x n 2D matrix representing an image by 90 degrees clockwise in-place.\")\n    (rule \"The rotation must be performed in-place, modifying the input matrix directly.\")\n    (return \"The function should modify the input matrix directly and return nothing (void).\")\n  )\n)",
+  "generated_code": "from typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\nclass Solution:\n    def rotate(self, matrix: List[List[int]]) -> None:\n        \"\"\"Rotates the given n x n 2D matrix representing an image by 90 degrees clockwise in-place.\n\n        Args:\n            matrix: The input n x n 2D matrix.\n\n        Returns:\n            None (modifies the matrix in-place).\n        \"\"\"\n        n = len(matrix)\n        for i in range(n // 2):\n            for j in range(i, n - i - 1):\n                temp = matrix[i][j]\n                matrix[i][j] = matrix[n - 1 - j][i]\n                matrix[n - 1 - j][i] = matrix[n - 1 - i][n - 1 - j]\n                matrix[n - 1 - i][n - 1 - j] = matrix[j][n - 1 - i]\n                matrix[j][n - 1 - i] = temp",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/rotate_image_n_by_n/test_solution.py ..               [100%]\n\n============================== 2 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.2527,
+    "python": {
+      "cyclomatic_avg": 3.0,
+      "cyclomatic_max": 3,
+      "wmc": 3,
+      "maintainability_index": 86.80183538648208,
+      "max_nesting_depth": 4,
+      "halstead_volume": 0,
+      "lloc": 14,
+      "loc": 22
+    },
+    "lisp": {
+      "lisp_max_depth": 6,
+      "lisp_constraints": 4,
+      "lisp_rules": 1,
+      "lisp_token_count": 76
+    }
+  }
+}

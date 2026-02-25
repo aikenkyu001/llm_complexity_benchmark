@@ -1,0 +1,30 @@
+{
+  "task_name": "optimal_bst_cost",
+  "model": "qwen2.5-coder:14b",
+  "timestamp": "2026-02-25T11:39:47.156682",
+  "nl_problem": "# Task: Optimal BST Cost\n# Interface:\nClass: Solution\nMethod: optimalBST(self, keys: List[int], freq: List[int]) -> int\n\nGiven a sorted array of keys and their search frequencies, find the minimum cost to construct a Binary Search Tree (BST) such that the total cost of searching all keys is minimized.\nThe cost of searching a key is its frequency multiplied by its depth in the tree (the root has depth 1).\n\n# Implementation Hint:\nUse Dynamic Programming with a 3D state transition. Define `dp[i][j]` as the minimum cost for keys from index `i` to `j`.\nThe cost for a sub-range `dp[i][j]` is the sum of frequencies in that range plus the minimum value of `dp[i][k-1] + dp[k+1][j]` for all possible roots `k` in the range `[i, j]`.\n\nConstraints:\n- 1 <= n <= 100\n- 1 <= frequencies[i] <= 1000",
+  "lisp_spec": "(task\n  (name \"optimalBST\")\n  (signature ((keys (list int)) (freq (list int))) int)\n  (constraints\n    (constraint \"The length of keys and freq lists must be the same.\")\n    (constraint \"1 <= n <= 100 where n is the length of keys.\")\n    (constraint \"1 <= frequencies[i] <= 1000\")\n  )\n  (goal\n    (description \"Find the minimum cost to construct a Binary Search Tree (BST) such that the total cost of searching all keys is minimized.\")\n    (rule \"The cost of searching a key is its frequency multiplied by its depth in the tree (the root has depth 1).\")\n    (rule \"Use Dynamic Programming with a 2D state transition. Define `dp[i][j]` as the minimum cost for keys from index `i` to `j`.\")\n    (rule \"The cost for a sub-range `dp[i][j]` is the sum of frequencies in that range plus the minimum value of `dp[i][k-1] + dp[k+1][j]` for all possible roots `k` in the range `[i, j]`.\")\n    (return \"Return the minimum cost to construct the BST. If no keys are provided, return 0.\")\n  )\n)",
+  "generated_code": "from typing import List\n\nclass Solution:\n    def optimalBST(self, keys: List[int], freq: List[int]) -> int:\n        n = len(keys)\n        \n        # If no keys are provided, return 0\n        if n == 0:\n            return 0\n        \n        # Step 1: Create a prefix sum array to store the cumulative frequencies\n        prefix_sum = [0] * (n + 1)\n        for i in range(n):\n            prefix_sum[i + 1] = prefix_sum[i] + freq[i]\n        \n        # Step 2: Initialize the dp table where dp[i][j] is the minimum cost of BST from keys[i] to keys[j]\n        dp = [[0] * n for _ in range(n)]\n        \n        # Fill the dp table\n        for length in range(1, n + 1):  # length is the length of the subarray\n            for i in range(n - length + 1):\n                j = i + length - 1\n                \n                # Step 3: Calculate the cost for each possible root k in the range [i, j]\n                dp[i][j] = float('inf')\n                total_freq = prefix_sum[j + 1] - prefix_sum[i]\n                \n                for k in range(i, j + 1):\n                    left_cost = dp[i][k - 1] if k > i else 0\n                    right_cost = dp[k + 1][j] if k < j else 0\n                    cost = total_freq + left_cost + right_cost\n                    \n                    if cost < dp[i][j]:\n                        dp[i][j] = cost\n        \n        # The minimum cost to construct the BST for all keys is stored in dp[0][n-1]\n        return dp[0][n - 1]",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/optimal_bst_cost/test_solution.py ..                  [100%]\n\n============================== 2 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.4476,
+    "python": {
+      "cyclomatic_avg": 10.0,
+      "cyclomatic_max": 10,
+      "wmc": 10,
+      "maintainability_index": 78.63065863787631,
+      "max_nesting_depth": 6,
+      "halstead_volume": 0,
+      "lloc": 22,
+      "loc": 37
+    },
+    "lisp": {
+      "lisp_max_depth": 5,
+      "lisp_constraints": 4,
+      "lisp_rules": 3,
+      "lisp_token_count": 163
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "task_name": "BitmaskGrouper",
+  "model": "llama3.2-vision:11b",
+  "timestamp": "2026-02-20T16:10:32.113805",
+  "nl_problem": "# Task: BitmaskGrouper\n# Interface:\nClass: Solution\nMethod: groupNums(self, arg1)\n\nGiven an array of integers `nums`, group the elements into the smallest number of groups such that each group contains elements whose bitwise AND is non-zero.\nReturn the groups as a list of lists. (If multiple groupings exist with the same minimum number, any one is acceptable).\n\nConstraints:\n- 1 <= nums.length <= 1000\n- 0 <= nums[i] <= 10^9",
+  "lisp_spec": "Here is the LISP specification for the given natural language problem:\n\n(task\n  (name \"groupNums\")\n  (signature ( (self Solution) (arg1 (list int)) ) (list (list int)))\n  (constraints\n    (constraint \"1 <= nums.length <= 1000\")\n    (constraint \"0 <= nums[i] <= 10^9\")\n  )\n  (goal\n    (description \"Group the elements into the smallest number of groups such that each group contains elements whose bitwise AND is non-zero.\")\n    (rule \"Each group must have a non-zero bitwise AND.\")\n    (return \"The groups as a list of lists.\")\n  )\n)",
+  "generated_code": "from typing import List\n\nclass Solution:\n    def groupNums(self, nums: List[int]) -> List[List[int]]:\n        # Create a dictionary to store the bitwise AND of each number and the list of numbers that have this bitwise AND\n        bitwise_and_dict: Dict[int, List[int]] = collections.defaultdict(list)\n        \n        # Iterate over each number in the input list\n        for num in nums:\n            # Calculate the bitwise AND of the current number and all previously seen numbers\n            bitwise_and = num\n            for prev_num in bitwise_and_dict:\n                bitwise_and &= prev_num\n            \n            # Add the current number to the list of numbers that have the calculated bitwise AND\n            bitwise_and_dict[bitwise_and].append(num)\n        \n        # Filter out the groups that have a bitwise AND of 0\n        non_zero_groups = [group for group in bitwise_and_dict.values() if group[0] != 0]\n        \n        # Return the groups as a list of lists\n        return non_zero_groups",
+  "test_passed": false,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/BitmaskGrouper/test_solution.py FF                    [100%]\n\n=================================== FAILURES ===================================\n__________________________ test_bitmask_grouper_basic __________________________\n\n    def test_bitmask_grouper_basic():\n        solution = Solution()\n        nums = [1, 2, 4, 8]\n        # Bitwise AND of any two is 0. So 4 groups.\n>       result = solution.groupNums(nums)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^\n\n01_TestDefinitions/BitmaskGrouper/test_solution.py:8: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <solution.Solution object at 0x104c0b0e0>, nums = [1, 2, 4, 8]\n\n    def groupNums(self, nums: List[int]) -> List[List[int]]:\n        # Create a dictionary to store the bitwise AND of each number and the list of numbers that have this bitwise AND\n>       bitwise_and_dict: Dict[int, List[int]] = collections.defaultdict(list)\n                                                 ^^^^^^^^^^^\nE       NameError: name 'collections' is not defined. Did you forget to import 'collections'?\n\n01_TestDefinitions/BitmaskGrouper/solution.py:6: NameError\n__________________________ test_bitmask_grouper_merge __________________________\n\n    def test_bitmask_grouper_merge():\n        solution = Solution()\n        nums = [3, 1, 6, 2]\n        # 3 & 1 = 1 (!= 0), 6 & 2 = 2 (!= 0)\n        # Possible groups: [[3, 1], [6, 2]]\n>       result = solution.groupNums(nums)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^\n\n01_TestDefinitions/BitmaskGrouper/test_solution.py:16: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <solution.Solution object at 0x104c75310>, nums = [3, 1, 6, 2]\n\n    def groupNums(self, nums: List[int]) -> List[List[int]]:\n        # Create a dictionary to store the bitwise AND of each number and the list of numbers that have this bitwise AND\n>       bitwise_and_dict: Dict[int, List[int]] = collections.defaultdict(list)\n                                                 ^^^^^^^^^^^\nE       NameError: name 'collections' is not defined. Did you forget to import 'collections'?\n\n01_TestDefinitions/BitmaskGrouper/solution.py:6: NameError\n=========================== short test summary info ============================\nFAILED 01_TestDefinitions/BitmaskGrouper/test_solution.py::test_bitmask_grouper_basic\nFAILED 01_TestDefinitions/BitmaskGrouper/test_solution.py::test_bitmask_grouper_merge\n============================== 2 failed in 0.03s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.2585,
+    "python": {
+      "cyclomatic_avg": 5.0,
+      "cyclomatic_max": 5,
+      "wmc": 5,
+      "maintainability_index": 96.53095694275689,
+      "max_nesting_depth": 4,
+      "halstead_volume": 0,
+      "lloc": 12,
+      "loc": 22
+    },
+    "lisp": {
+      "lisp_max_depth": 5,
+      "lisp_constraints": 3,
+      "lisp_rules": 1,
+      "lisp_token_count": 80
+    }
+  }
+}

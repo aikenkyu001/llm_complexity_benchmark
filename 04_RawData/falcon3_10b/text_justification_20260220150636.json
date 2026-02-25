@@ -1,0 +1,30 @@
+{
+  "task_name": "text_justification",
+  "model": "falcon3:10b",
+  "timestamp": "2026-02-20T15:06:36.899961",
+  "nl_problem": "# Task: text_justification\n# Interface:\nClass: Solution\nMethod: fullJustify(self, arg1, arg2)\n\nGiven an array of strings words and a width maxWidth, format the text such that each line has exactly maxWidth characters and is fully (left and right) justified.\nYou should pack your words in a greedy approach; that is, pack as many words as you can in each line. Pad extra spaces ' ' when necessary so that each line has exactly maxWidth characters.\nExtra spaces between words should be distributed as evenly as possible. If the number of spaces on a line does not divide evenly between words, the empty slots on the left will be assigned more spaces than the slots on the right.\nFor the last line of text, it should be left-justified, and no extra space is inserted between words.\n\nConstraints:\n- 1 <= words.length <= 300\n- 1 <= words[i].length <= 20\n- words[i] consists of only English letters and symbols.\n- 1 <= maxWidth <= 100\n- words[i].length <= maxWidth",
+  "lisp_spec": "(task\n (name \"fullJustify\")\n (signature ( (self) (words (list str)) (maxWidth int) ) (list str))\n (constraints\n   (constraint \"1 <= words.length <= 300\")\n   (constraint \"1 <= words[i].length <= 20\")\n   (constraint \"words[i] consists of only English letters and symbols.\")\n   (constraint \"1 <= maxWidth <= 100\")\n   (constraint \"words[i].length <= maxWidth\")\n )\n (goal\n   (description \"Format the text such that each line has exactly maxWidth characters and is fully (left and right) justified.\")\n   (rule \"Pack words in a greedy approach; distribute extra spaces as evenly as possible between words.\")\n   (rule \"For the last line, it should be left-justified with no extra space between words.\")\n   (return \"A list of strings where each string represents a fully justified line.\")\n )\n)",
+  "generated_code": "class Solution:\n    def fullJustify(self, words: List[str], maxWidth: int) -> List[str]:\n        def justify_line(words, width):\n            if len(words) == 1 or width == len(''.join(words)):\n                return ' '.join(words) + ' ' * (maxWidth - width)\n            else:\n                spaces = maxWidth - sum(len(word) for word in words)\n                gaps = len(words) - 1\n                base, extra = divmod(spaces, gaps)\n                return (' ' * (base + 1)).join(words[:extra]) + ' ' * (extra + 1) + (' ' * base).join(words[extra:])\n\n        result = []\n        current_line = []\n        current_length = 0\n\n        for word in words:\n            if current_length + len(word) + len(current_line) > maxWidth:\n                result.append(justify_line(current_line, current_length))\n                current_line = []\n                current_length = 0\n            current_line.append(word)\n            current_length += len(word)\n\n        # Justify the last line\n        result.append(' '.join(current_line).ljust(maxWidth))\n\n        return result",
+  "test_passed": false,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/text_justification/test_solution.py FF                [100%]\n\n=================================== FAILURES ===================================\n________________________ test_text_justification_basic _________________________\n\n    def test_text_justification_basic():\n        solution = Solution()\n        words = [\"This\", \"is\", \"an\", \"example\", \"of\", \"text\", \"justification.\"]\n        maxWidth = 16\n        expected = [\n           \"This    is    an\",\n           \"example  of text\",\n           \"justification.  \"\n        ]\n>       assert solution.fullJustify(words, maxWidth) == expected\nE       AssertionError: assert ['This is an ...ification.  '] == ['This    is ...ification.  ']\nE         \nE         At index 0 diff: 'This is an        ' != 'This    is    an'\nE         Use -v to get more diff\n\n01_TestDefinitions/text_justification/test_solution.py:13: AssertionError\n_______________________ test_text_justification_complex ________________________\n\n    def test_text_justification_complex():\n        solution = Solution()\n        words = [\"What\",\"must\",\"be\",\"acknowledgment\",\"shall\",\"be\"]\n        maxWidth = 16\n        expected = [\n          \"What   must   be\",\n          \"acknowledgment  \",\n          \"shall be        \"\n        ]\n>       assert solution.fullJustify(words, maxWidth) == expected\nE       AssertionError: assert ['What must b...l be        '] == ['What   must...l be        ']\nE         \nE         At index 0 diff: 'What must be      ' != 'What   must   be'\nE         Use -v to get more diff\n\n01_TestDefinitions/text_justification/test_solution.py:24: AssertionError\n=========================== short test summary info ============================\nFAILED 01_TestDefinitions/text_justification/test_solution.py::test_text_justification_basic\nFAILED 01_TestDefinitions/text_justification/test_solution.py::test_text_justification_complex\n============================== 2 failed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.32010000000000005,
+    "python": {
+      "cyclomatic_avg": 3.0,
+      "cyclomatic_max": 3,
+      "wmc": 3,
+      "maintainability_index": 65.01685646701591,
+      "max_nesting_depth": 4,
+      "halstead_volume": 0,
+      "lloc": 23,
+      "loc": 27
+    },
+    "lisp": {
+      "lisp_max_depth": 5,
+      "lisp_constraints": 6,
+      "lisp_rules": 2,
+      "lisp_token_count": 113
+    }
+  }
+}

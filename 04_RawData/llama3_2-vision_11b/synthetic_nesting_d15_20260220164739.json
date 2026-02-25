@@ -1,0 +1,30 @@
+{
+  "task_name": "synthetic_nesting_d15",
+  "model": "llama3.2-vision:11b",
+  "timestamp": "2026-02-20T16:47:39.458587",
+  "nl_problem": "# Task: Nested Logic Test (Depth 15)\n# Interface:\nClass: Solution\nMethod: checkNested(self, x0: int, x1: int, x2: int, x3: int, x4: int, x5: int, x6: int, x7: int, x8: int, x9: int, x10: int, x11: int, x12: int, x13: int, x14: int) -> bool\n\n# Objective:\nThis is a test of structural nesting. Return True ONLY if all the following conditions are met:\n1. x0 is greater than 0\n2. x1 is greater than 0\n3. x2 is greater than 0\n4. x3 is greater than 0\n5. x4 is greater than 0\n6. x5 is greater than 0\n7. x6 is greater than 0\n8. x7 is greater than 0\n9. x8 is greater than 0\n10. x9 is greater than 0\n11. x10 is greater than 0\n12. x11 is greater than 0\n13. x12 is greater than 0\n14. x13 is greater than 0\n15. x14 is greater than 0\n\nEach condition must be checked inside the previous one (nested if statements).",
+  "lisp_spec": "Here is the LISP specification for the given natural language problem:\n\n(task\n  (name \"checkNested\")\n  (signature ( (x0 int) (x1 int) (x2 int) (x3 int) (x4 int) (x5 int) (x6 int) (x7 int) (x8 int) (x9 int) (x10 int) (x11 int) (x12 int) (x13 int) (x14 int) ) bool)\n  (constraints\n    (constraint \"All input values must be greater than 0.\")\n  )\n  (goal\n    (description \"Check nested conditions for all input values.\")\n    (rule \"Each condition must be checked inside the previous one.\")\n    (return \"True if all conditions are met, False otherwise.\")\n  )\n))",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\n\nclass Solution:\n    def checkNested(self, x0: int, x1: int, x2: int, x3: int, x4: int, x5: int, x6: int, x7: int, x8: int, x9: int, x10: int, x11: int, x12: int, x13: int, x14: int) -> bool:\n        \"\"\"\n        Check nested conditions for all input values.\n\n        Args:\n        x0 (int): The first input value.\n        x1 (int): The second input value.\n        x2 (int): The third input value.\n        x3 (int): The fourth input value.\n        x4 (int): The fifth input value.\n        x5 (int): The sixth input value.\n        x6 (int): The seventh input value.\n        x7 (int): The eighth input value.\n        x8 (int): The ninth input value.\n        x9 (int): The tenth input value.\n        x10 (int): The eleventh input value.\n        x11 (int): The twelfth input value.\n        x12 (int): The thirteenth input value.\n        x13 (int): The fourteenth input value.\n        x14 (int): The fifteenth input value.\n\n        Returns:\n        bool: True if all conditions are met, False otherwise.\n        \"\"\"\n        # Check if all input values are greater than 0\n        if not all(x > 0 for x in [x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14]):\n            return False\n\n        # Check nested conditions\n        for i in range(1, 15):\n            if x0 > x1 and x1 > x2 and x2 > x3 and x3 > x4 and x4 > x5 and x5 > x6 and x6 > x7 and x7 > x8 and x8 > x9 and x9 > x10 and x10 > x11 and x11 > x12 and x12 > x13 and x13 > x14:\n                return True\n\n        return False",
+  "test_passed": false,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/synthetic_nesting_d15/test_solution.py F.             [100%]\n\n=================================== FAILURES ===================================\n______________________________ test_nesting_true _______________________________\n\n    def test_nesting_true():\n        sol = Solution()\n>       assert sol.checkNested(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1) == True\nE       assert False == True\nE        +  where False = checkNested(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)\nE        +    where checkNested = <solution.Solution object at 0x102a7f0e0>.checkNested\n\n01_TestDefinitions/synthetic_nesting_d15/test_solution.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED 01_TestDefinitions/synthetic_nesting_d15/test_solution.py::test_nesting_true\n========================= 1 failed, 1 passed in 0.03s ==========================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.4028,
+    "python": {
+      "cyclomatic_avg": 18.0,
+      "cyclomatic_max": 18,
+      "wmc": 18,
+      "maintainability_index": 51.098374210769904,
+      "max_nesting_depth": 4,
+      "halstead_volume": 0,
+      "lloc": 10,
+      "loc": 38
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 2,
+      "lisp_rules": 1,
+      "lisp_token_count": 89
+    }
+  }
+}

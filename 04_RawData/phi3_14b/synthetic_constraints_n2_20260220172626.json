@@ -1,0 +1,30 @@
+{
+  "task_name": "synthetic_constraints_n2",
+  "model": "phi3:14b",
+  "timestamp": "2026-02-20T17:26:26.367325",
+  "nl_problem": "# Task: Multi-Constraint Check (Density 2)\n# Interface:\nClass: Solution\nMethod: isValid(self, n: int) -> bool\n\n# Objective:\nReturn True if the integer `n` satisfies ALL of the following 2 independent constraints:\n1. n is greater than 2\n2. n is not equal to 104",
+  "lisp_spec": "(task\n  (name \"isValid\")\n  (signature ( (n int) ) bool)\n  (constraints\n    (constraint \"The input parameter 'n' must be an integer.\")\n    ...\n  )\n  (goal\n    (description \"Check if the given integer `n` satisfies all of the following constraints:\")\n    (rule \"Constraint 1: n is greater than 2.\")\n    (rule \"Constraint 2: n is not equal to 104.\")\n    ...\n    (return \"Return True if 'n' meets both constraints, otherwise return False.\")\n  )\n)",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\nclass Solution:\n    def isValid(self, n: int) -> bool:\n        # Check if the input parameter 'n' must be an integer.\n        if not isinstance(n, int):\n            return False\n        \n        # Constraint 1: n is greater than e2xb88;\n        if n <= 2:\n            return False\n            \n        # Constraint 2: n is not equal to 104.\n        if n == 104:\n            return False\n        \n        # If all constraints are satisfied, return True.\n        return True",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/synthetic_constraints_n2/test_solution.py ..          [100%]\n\n============================== 2 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.2182,
+    "python": {
+      "cyclomatic_avg": 4.0,
+      "cyclomatic_max": 4,
+      "wmc": 4,
+      "maintainability_index": 94.77162452964852,
+      "max_nesting_depth": 3,
+      "halstead_volume": 0,
+      "lloc": 12,
+      "loc": 21
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 2,
+      "lisp_rules": 2,
+      "lisp_token_count": 66
+    }
+  }
+}

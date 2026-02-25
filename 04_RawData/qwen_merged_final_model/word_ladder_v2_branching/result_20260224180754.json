@@ -1,0 +1,29 @@
+{
+  "task_name": "word_ladder_v2_branching",
+  "model": "qwen_merged_final_model",
+  "timestamp": "2026-02-24T18:07:54.584247",
+  "nl_problem": "# Task: word_ladder_v2_branching\n# Interface:\nClass: Solution\nMethod: ladderLength(self, arg1, arg2, arg3)\n\nGiven two words, beginWord and endWord, and a dictionary's word list, find the length of the shortest transformation sequence from beginWord to endWord.\nThis is a complex version with multiple additional rules:\n1. You MUST use a Bidirectional BFS to minimize the search space.\n2. For each word transformation, you must check a 'forbidden_combinations' list (not provided, assume a helper `is_forbidden(word1, word2)` exists or handle it as a potential constraint).\n3. The wordList can be very large; prioritize memory efficiency.\n4. Return 0 if no path exists.\n\nConstraints:\n- Word length up to 20.\n- wordList size up to 10^5.\n- beginWord and endWord are different.",
+  "lisp_spec": "(task\n  (name \"ladderLength_v2_branching\")\n  (signature ( (beginWord str) (endWord str) (wordList list) ) int)\n  (constraints\n    (constraint \"Word length up to 20.\")\n    (constraint \"wordList size up to 10^5.\")\n    (constraint \"beginWord and endWord are different.\")\n  )\n  (goal\n    (description \"Find the length of the shortest transformation sequence from beginWord to endWord using a Bidirectional BFS.\")\n    (rule \"Each word transformation must check a 'forbidden_combinations' list.\")\n    (rule \"Prioritize memory efficiency.\")\n    (return \"Return 0 if no path exists.\")\n  ))",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\n# Define any helper classes here if needed\n\nclass Solution:\n    def ladderLength_v2_branching(self, beginWord: str, endWord: str, wordList: List[str]) -> int:\n        # Your implementation here\n        pass",
+  "test_passed": false,
+  "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /home/miyata/projects/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/word_ladder_v2_branching/test_solution.py FF          [100%]\n\n=================================== FAILURES ===================================\n__________________________ test_word_ladder_v2_basic ___________________________\n\n    def test_word_ladder_v2_basic():\n        solution = Solution()\n        beginWord = \"hit\"\n        endWord = \"cog\"\n        wordList = [\"hot\",\"dot\",\"dog\",\"lot\",\"log\",\"cog\"]\n>       assert solution.ladderLength(beginWord, endWord, wordList) == 5\n               ^^^^^^^^^^^^^^^^^^^^^\nE       AttributeError: 'Solution' object has no attribute 'ladderLength'\n\n01_TestDefinitions/word_ladder_v2_branching/test_solution.py:9: AttributeError\n___________________________ test_word_ladder_v2_long ___________________________\n\n    def test_word_ladder_v2_long():\n        solution = Solution()\n        beginWord = \"aaaaa\"\n        endWord = \"bbbbb\"\n        wordList = [\"aaaab\",\"aaabb\",\"aabbb\",\"abbbb\",\"bbbbb\"]\n>       assert solution.ladderLength(beginWord, endWord, wordList) == 6\n               ^^^^^^^^^^^^^^^^^^^^^\nE       AttributeError: 'Solution' object has no attribute 'ladderLength'\n\n01_TestDefinitions/word_ladder_v2_branching/test_solution.py:16: AttributeError\n=========================== short test summary info ============================\nFAILED 01_TestDefinitions/word_ladder_v2_branching/test_solution.py::test_word_ladder_v2_basic\nFAILED 01_TestDefinitions/word_ladder_v2_branching/test_solution.py::test_word_ladder_v2_long\n============================== 2 failed in 0.03s ===============================\n",
+  "complexity_metrics": {
+    "total_complexity_score": 0.1969,
+    "python": {
+      "cyclomatic_avg": 1.0,
+      "cyclomatic_max": 1,
+      "wmc": 1,
+      "maintainability_index": 100.0,
+      "max_nesting_depth": 2,
+      "halstead_volume": 0,
+      "lloc": 6,
+      "loc": 11
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 4,
+      "lisp_rules": 2,
+      "lisp_token_count": 72
+    }
+  }
+}

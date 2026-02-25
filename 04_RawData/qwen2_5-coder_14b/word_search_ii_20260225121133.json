@@ -1,0 +1,30 @@
+{
+  "task_name": "word_search_ii",
+  "model": "qwen2.5-coder:14b",
+  "timestamp": "2026-02-25T12:11:33.405027",
+  "nl_problem": "# Task: word_search_ii\n# Interface:\nClass: Solution\nMethod: findWords(self, arg1, arg2)\n\nGiven an m x n board of characters and a list of strings words, return all words on the board.\nEach word must be constructed from letters of sequentially adjacent cells, where adjacent cells are horizontally or vertically neighboring. The same letter cell may not be used more than once in a word.\nYou should use a Trie data structure to optimize the search.\n\nConstraints:\n- m == board.length\n- n == board[i].length\n- 1 <= m, n <= 12\n- board and words consist of lowercase English letters.\n- 1 <= words.length <= 3 * 10^4\n- All strings in words are unique.",
+  "lisp_spec": "(task\n  (name \"findWords\")\n  (signature ((board (list (list char))) (words (list string))) (list string))\n  (constraints\n    (constraint \"m == board.length\")\n    (constraint \"n == board[i].length\")\n    (constraint \"1 <= m, n <= 12\")\n    (constraint \"board and words consist of lowercase English letters.\")\n    (constraint \"1 <= words.length <= 3 * 10^4\")\n    (constraint \"All strings in words are unique.\")\n  )\n  (goal\n    (description \"Return all words from the list that can be formed by sequentially adjacent cells in the board.\")\n    (rule \"Words must be constructed from letters of sequentially adjacent cells, where adjacent cells are horizontally or vertically neighboring.\")\n    (rule \"The same letter cell may not be used more than once in a word.\")\n    (rule \"Use a Trie data structure to optimize the search.\")\n    (return \"A list of strings that are found on the board according to the given rules.\")\n  )\n)",
+  "generated_code": "from typing import List, Tuple\n\nclass TrieNode:\n    def __init__(self):\n        self.children: Dict[str, TrieNode] = {}\n        self.is_end_of_word: bool = False\n\nclass Trie:\n    def __init__(self):\n        self.root = TrieNode()\n    \n    def insert(self, word: str) -> None:\n        node = self.root\n        for char in word:\n            if char not in node.children:\n                node.children[char] = TrieNode()\n            node = node.children[char]\n        node.is_end_of_word = True\n    \n    def search(self, word: str) -> bool:\n        node = self.root\n        for char in word:\n            if char not in node.children:\n                return False\n            node = node.children[char]\n        return node.is_end_of_word\n\nclass Solution:\n    def findWords(self, board: List[List[str]], words: List[str]) -> List[str]:\n        # Build the Trie from the list of words\n        trie = Trie()\n        for word in words:\n            trie.insert(word)\n        \n        m, n = len(board), len(board[0])\n        result: Set[str] = set()\n        visited: List[List[bool]] = [[False] * n for _ in range(m)]\n        \n        def dfs(x: int, y: int, path: str, node: TrieNode) -> None:\n            if node.is_end_of_word:\n                result.add(path)\n            \n            # Mark the current cell as visited\n            visited[x][y] = True\n            \n            # Explore all 4 possible directions\n            for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:\n                nx, ny = x + dx, y + dy\n                if 0 <= nx < m and 0 <= ny < n and not visited[nx][ny] and board[nx][ny] in node.children:\n                    dfs(nx, ny, path + board[nx][ny], node.children[board[nx][ny]])\n            \n            # Unmark the current cell as visited (backtrack)\n            visited[x][y] = False\n        \n        # Start DFS from each cell in the board\n        for i in range(m):\n            for j in range(n):\n                if board[i][j] in trie.root.children:\n                    dfs(i, j, board[i][j], trie.root.children[board[i][j]])\n        \n        return list(result)",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/word_search_ii/test_solution.py ..                    [100%]\n\n============================== 2 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.427,
+    "python": {
+      "cyclomatic_avg": 2.8,
+      "cyclomatic_max": 6,
+      "wmc": 14,
+      "maintainability_index": 63.53943167870882,
+      "max_nesting_depth": 5,
+      "halstead_volume": 0,
+      "lloc": 48,
+      "loc": 61
+    },
+    "lisp": {
+      "lisp_max_depth": 6,
+      "lisp_constraints": 7,
+      "lisp_rules": 3,
+      "lisp_token_count": 135
+    }
+  }
+}

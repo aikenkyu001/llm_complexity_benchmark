@@ -1,0 +1,30 @@
+{
+  "task_name": "synthetic_constraints_n13",
+  "model": "falcon3:10b",
+  "timestamp": "2026-02-20T15:00:15.351920",
+  "nl_problem": "# Task: Multi-Constraint Check (Density 13)\n# Interface:\nClass: Solution\nMethod: isValid(self, n: int) -> bool\n\n# Objective:\nReturn True if the integer `n` satisfies ALL of the following 13 independent constraints:\n1. n is greater than 2\n2. n is not equal to 104\n3. n is a multiple of 1\n4. n is greater than 8\n5. n is not equal to 110\n6. n is a multiple of 2\n7. n is greater than 14\n8. n is not equal to 116\n9. n is a multiple of 4\n10. n is greater than 20\n11. n is not equal to 122\n12. n is a multiple of 5\n13. n is greater than 26",
+  "lisp_spec": "(task\n (name \"isValid\")\n (signature ( (self) (n int) ) bool)\n (constraints\n   (constraint \"n is greater than 2\")\n   (constraint \"n is not equal to 104\")\n   (constraint \"n is a multiple of 1\")\n   (constraint \"n is greater than 8\")\n   (constraint \"n is not equal to 110\")\n   (constraint \"n is a multiple of 2\")\n   (constraint \"n is greater than 14\")\n   (constraint \"n is not equal to 116\")\n   (constraint \"n is a multiple of 4\")\n   (constraint \"n is greater than 20\")\n   (constraint \"n is not equal to 122\")\n   (constraint \"n is a multiple of 5\")\n   (constraint \"n is greater than 26\")\n )\n (goal\n   (description \"Return True if the integer n satisfies all 13 constraints.\")\n   (rule \"Check each constraint sequentially; return False if any constraint fails.\")\n   (return \"True if all constraints are satisfied, otherwise False.\")\n )\n)",
+  "generated_code": "class Solution:\n    def isValid(self, n: int) -> bool:\n        constraints = [\n            n > 2,\n            n != 104,\n            n % 1 == 0,\n            n > 8,\n            n != 110,\n            n % 2 == 0,\n            n > 14,\n            n != 116,\n            n % 4 == 0,\n            n > 20,\n            n != 122,\n            n % 5 == 0,\n            n > 26\n        ]\n        return all(constraints)",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/synthetic_constraints_n13/test_solution.py ..         [100%]\n\n============================== 2 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.3889,
+    "python": {
+      "cyclomatic_avg": 1.0,
+      "cyclomatic_max": 1,
+      "wmc": 1,
+      "maintainability_index": 70.09498666979272,
+      "max_nesting_depth": 2,
+      "halstead_volume": 0,
+      "lloc": 4,
+      "loc": 18
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 14,
+      "lisp_rules": 1,
+      "lisp_token_count": 132
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "task_name": "synthetic_context_v100",
+  "model": "qwen2.5-coder:14b",
+  "timestamp": "2026-02-25T11:55:34.607759",
+  "nl_problem": "# Task: Contextual Memory Test (Volume 100)\n# Interface:\nClass: Solution\nMethod: findSecret(self, text: str) -> str\n\n# Objective:\nRead the provided text and find the secret word mentioned at the very end. Return only that word.\n\n--- START OF TEXT ---\nThis is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. \nThe secret word you are looking for is: SIGMA\n--- END OF TEXT ---",
+  "lisp_spec": "(task\n  (name \"findSecret\")\n  (signature ((text str)) str)\n  (constraints\n    (constraint \"The input text will contain a single line with the phrase 'The secret word you are looking for is:' followed by the secret word.\")\n  )\n  (goal\n    (description \"Extract and return the secret word mentioned at the very end of the provided text.\")\n    (rule \"Identify the substring following 'The secret word you are looking for is:' and trim any leading or trailing whitespace.\")\n    (return \"Return only the secret word as a string. If the phrase is not found, return an empty string.\")\n  )\n)",
+  "generated_code": "class Solution:\n    def findSecret(self, text: str) -> str:\n        phrase = \"The secret word you are looking for is:\"\n        start_index = text.find(phrase)\n        \n        if start_index == -1:\n            return \"\"\n        \n        # Move the index to the end of the phrase\n        start_index += len(phrase)\n        \n        # Find the next newline character or the end of the string\n        end_index = text.find('\\n', start_index)\n        if end_index == -1:\n            end_index = len(text)\n        \n        # Extract and strip the secret word\n        secret_word = text[start_index:end_index].strip()\n        \n        return secret_word",
+  "test_passed": false,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 1 item\n\n01_TestDefinitions/synthetic_context_v100/test_solution.py F             [100%]\n\n=================================== FAILURES ===================================\n_____________________________ test_context_secret ______________________________\n\n    def test_context_secret():\n        sol = Solution()\n        # The actual text doesn't matter as much as the LLM's understanding of the NL spec\n>       assert sol.findSecret(\"Some long text... secret word is: SIGMA\") == \"SIGMA\"\nE       AssertionError: assert '' == 'SIGMA'\nE         \nE         - SIGMA\n\n01_TestDefinitions/synthetic_context_v100/test_solution.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED 01_TestDefinitions/synthetic_context_v100/test_solution.py::test_context_secret\n============================== 1 failed in 0.03s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.1909,
+    "python": {
+      "cyclomatic_avg": 3.0,
+      "cyclomatic_max": 3,
+      "wmc": 3,
+      "maintainability_index": 89.01194580342207,
+      "max_nesting_depth": 3,
+      "halstead_volume": 0,
+      "lloc": 13,
+      "loc": 20
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 2,
+      "lisp_rules": 1,
+      "lisp_token_count": 92
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "task_name": "serialize_deserialize_nary_tree",
+  "model": "phi3:14b",
+  "timestamp": "2026-02-20T17:20:31.832928",
+  "nl_problem": "Design an algorithm to serialize and deserialize an N-ary tree. An N-ary tree is a rooted tree in which each node has no more than N children. \nSerialization is the process of converting a data structure or object into a sequence of bits so that it can be stored in a file or memory buffer, or transmitted across a network connection link to be reconstructed later in the same or another computer environment.\nThe N-ary tree node structure is:\n```python\nclass Node:\n    def __init__(self, val=None, children=None):\n        self.val = val\n        self.children = children # List[Node]\n```\n\nConstraints:\n- The total number of nodes is between 0 and 10^4.\n- 0 <= Node.val <= 10^4\n- The height of the N-ary tree is less than or equal to 1000.",
+  "lisp_spec": "(task\n  (name \"serialize_deserialize\")\n  (signature ( (root Node) ) (serialized string))\n  (constraints\n    (constraint \"The total number of nodes is between 0 and 10^4.\")\n    (constraint \"0 <= Node.val <= 10^4\")\n    (constraint \"The height of the N-ary tree is less than or equal to 1000.\")\n  )\n  (goal\n    (description \"Design an algorithm to serialize and deserialize an N-ary tree.\")\n    (rule \"Serialization: Convert a data structure or object into a sequence of bits for storage or transmission.\")\n    (rule \"Deserialization: Reconstruct the original data structure from its serialized form.\")\n    (return \"The function should return a string representing the serialized N-ary tree. The deserialization process should reconstruct the original N-ary tree given this string representation.\")\n  )\n)",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\nclass Node:\n    def __init__(self, val=None, children=None):\n        self.val = val\n        self.children = [] if not children else children\n\nclass Solution:\n    def serialize(self, root: Optional[Node]) -> str:\n        \"\"\"Serializes an N-ary tree into a string.\"\"\"\n        # implementation here\n        pass\n    \n    def deserialize(self, data: str) -> Node:\n        \"\"\"Deserializes a string back to the original N-ary tree structure.\"\"\"\n        # implementation here\n        pass",
+  "test_passed": false,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/serialize_deserialize_nary_tree/test_solution.py F.   [100%]\n\n=================================== FAILURES ===================================\n__________________________ test_tree_serialize_basic ___________________________\n\n    def test_tree_serialize_basic():\n        codec = Solution()\n        # Tree: 1 -> [3, 2, 4]; 3 -> [5, 6]\n        root = Node(1, [\n            Node(3, [Node(5), Node(6)]),\n            Node(2),\n            Node(4)\n        ])\n        serialized = codec.serialize(root)\n        deserialized = codec.deserialize(serialized)\n>       assert is_same_tree(root, deserialized)\nE       assert False\nE        +  where False = is_same_tree(<test_solution.Node object at 0x104b75c70>, None)\n\n01_TestDefinitions/serialize_deserialize_nary_tree/test_solution.py:26: AssertionError\n=========================== short test summary info ============================\nFAILED 01_TestDefinitions/serialize_deserialize_nary_tree/test_solution.py::test_tree_serialize_basic\n========================= 1 failed, 1 passed in 0.03s ==========================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.21700000000000003,
+    "python": {
+      "cyclomatic_avg": 1.3333333333333333,
+      "cyclomatic_max": 2,
+      "wmc": 4,
+      "maintainability_index": 97.37574896163329,
+      "max_nesting_depth": 2,
+      "halstead_volume": 0,
+      "lloc": 14,
+      "loc": 20
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 4,
+      "lisp_rules": 2,
+      "lisp_token_count": 110
+    }
+  }
+}

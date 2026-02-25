@@ -1,0 +1,30 @@
+{
+  "task_name": "lru_cache_v2_concurrency",
+  "model": "qwen2.5-coder:14b",
+  "timestamp": "2026-02-25T11:34:08.969110",
+  "nl_problem": "# Task: lru_cache_v2_concurrency\n# Interface:\nClass: Solution\nMethod: LRUCache(self)\n\nImplement an LRU Cache that is thread-safe. While the main benchmark is single-threaded, the implementation must use synchronization primitives (like threading.Lock) to ensure internal consistency as if it were in a concurrent environment.\n- LRUCache(capacity)\n- get(key)\n- put(key, value)\nConstraints:\n- O(1) average time complexity for both get and put.\n- Use a Lock for every state-modifying operation.\n- Do not use OrderedDict.",
+  "lisp_spec": "(task\n  (name \"LRUCache\")\n  (signature ( (capacity int) ) void)\n  (constraints\n    (constraint \"O(1) average time complexity for both get and put operations.\")\n    (constraint \"Use a Lock for every state-modifying operation.\")\n    (constraint \"Do not use OrderedDict.\")\n  )\n  (goal\n    (description \"Implement an LRU Cache that is thread-safe.\")\n    (rule \"The cache should support the following methods: LRUCache(capacity), get(key), and put(key, value).\")\n    (return \"No return value for the constructor. The get method returns the value of the key if it exists, otherwise -1. The put method does not return any value.\")\n  )\n)",
+  "generated_code": "# solution.py\nfrom typing import Dict, Optional\nimport threading\n\nclass Node:\n    def __init__(self, key: int, value: int):\n        self.key = key\n        self.value = value\n        self.prev = None\n        self.next = None\n\nclass LRUCache:\n    def __init__(self, capacity: int):\n        self.capacity = capacity\n        self.cache: Dict[int, Node] = {}\n        self.head = Node(0, 0)\n        self.tail = Node(0, 0)\n        self.head.next = self.tail\n        self.tail.prev = self.head\n        self.lock = threading.Lock()\n\n    def _remove(self, node: Node) -> None:\n        prev_node = node.prev\n        next_node = node.next\n        prev_node.next = next_node\n        next_node.prev = prev_node\n\n    def _add_to_head(self, node: Node) -> None:\n        node.next = self.head.next\n        node.prev = self.head\n        self.head.next.prev = node\n        self.head.next = node\n\n    def get(self, key: int) -> int:\n        with self.lock:\n            if key in self.cache:\n                node = self.cache[key]\n                self._remove(node)\n                self._add_to_head(node)\n                return node.value\n            else:\n                return -1\n\n    def put(self, key: int, value: int) -> None:\n        with self.lock:\n            if key in self.cache:\n                node = self.cache[key]\n                self._remove(node)\n            new_node = Node(key, value)\n            self._add_to_head(new_node)\n            self.cache[key] = new_node\n            if len(self.cache) > self.capacity:\n                lru = self.tail.prev\n                self._remove(lru)\n                del self.cache[lru.key]\n\nclass Solution:\n    def LRUCache(self, capacity: int) -> LRUCache:\n        return LRUCache(capacity)",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/lru_cache_v2_concurrency/test_solution.py ..          [100%]\n\n============================== 2 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.2551,
+    "python": {
+      "cyclomatic_avg": 1.4285714285714286,
+      "cyclomatic_max": 3,
+      "wmc": 10,
+      "maintainability_index": 58.51035832179469,
+      "max_nesting_depth": 4,
+      "halstead_volume": 0,
+      "lloc": 52,
+      "loc": 59
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 4,
+      "lisp_rules": 1,
+      "lisp_token_count": 88
+    }
+  }
+}

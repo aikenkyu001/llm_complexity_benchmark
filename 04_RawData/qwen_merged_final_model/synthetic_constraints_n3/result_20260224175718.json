@@ -1,0 +1,29 @@
+{
+  "task_name": "synthetic_constraints_n3",
+  "model": "qwen_merged_final_model",
+  "timestamp": "2026-02-24T17:57:18.165271",
+  "nl_problem": "# Task: Multi-Constraint Check (Density 3)\n# Interface:\nClass: Solution\nMethod: isValid(self, n: int) -> bool\n\n# Objective:\nReturn True if the integer `n` satisfies ALL of the following 3 independent constraints:\n1. n is greater than 2\n2. n is not equal to 104\n3. n is a multiple of 1",
+  "lisp_spec": "(task\n  (name \"isValid\")\n  (signature ( (n int) ) bool)\n  (constraints\n    (constraint \"n must be greater than 2\")\n    (constraint \"n must not be equal to 104\")\n    (constraint \"n must be a multiple of 1\")\n  )\n  (goal\n    (description \"Return True if the integer `n` satisfies all three given constraints.\")\n    (rule \"Check if n > 2, n != 104, and n % 1 == 0.\")\n    (return \"True if all constraints are satisfied, False otherwise.\")\n  ))",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\n# Define any helper classes here if needed\n\nclass Solution:\n    def isValid(self, n: int) -> bool:\n        # Check if n > 2\n        if n <= 2:\n            return False\n        \n        # Check if n != 104\n        if n == 104:\n            return False\n        \n        # Check if n % 1 == 0\n        if n % 1 != 0:\n            return False\n        \n        # If all checks pass, return True\n        return True",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /home/miyata/projects/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/synthetic_constraints_n3/test_solution.py ..          [100%]\n\n============================== 2 passed in 0.03s ===============================\n",
+  "complexity_metrics": {
+    "total_complexity_score": 0.2394,
+    "python": {
+      "cyclomatic_avg": 4.0,
+      "cyclomatic_max": 4,
+      "wmc": 4,
+      "maintainability_index": 93.6558802893396,
+      "max_nesting_depth": 3,
+      "halstead_volume": 0,
+      "lloc": 12,
+      "loc": 23
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 4,
+      "lisp_rules": 1,
+      "lisp_token_count": 72
+    }
+  }
+}

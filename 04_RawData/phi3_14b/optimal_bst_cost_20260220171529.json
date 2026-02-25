@@ -1,0 +1,30 @@
+{
+  "task_name": "optimal_bst_cost",
+  "model": "phi3:14b",
+  "timestamp": "2026-02-20T17:15:29.464562",
+  "nl_problem": "# Task: Optimal BST Cost\n# Interface:\nClass: Solution\nMethod: optimalBST(self, keys: List[int], freq: List[int]) -> int\n\nGiven a sorted array of keys and their search frequencies, find the minimum cost to construct a Binary Search Tree (BST) such that the total cost of searching all keys is minimized.\nThe cost of searching a key is its frequency multiplied by its depth in the tree (the root has depth 1).\n\n# Implementation Hint:\nUse Dynamic Programming with a 3D state transition. Define `dp[i][j]` as the minimum cost for keys from index `i` to `j`.\nThe cost for a sub-range `dp[i][j]` is the sum of frequencies in that range plus the minimum value of `dp[i][k-1] + dp[k+1][j]` for all possible roots `k` in the range `[i, j]`.\n\nConstraints:\n- 1 <= n <= 100\n- 1 <= frequencies[i] <= 1000",
+  "lisp_spec": "(task\n  (name \"optimalBST\")\n  (signature ( (keys List[int]) (freqs List[int]) ) int)\n  (constraints\n    (constraint \"1 <= n <= 100\")\n    (constraint \"1 <= frequencies[i] <= 1000\")\n  )\n  (goal\n    (description \"Find the minimum cost to construct a Binary Search Tree (BST) such that the total cost of searching all keys is minimized.\")\n    (rule \"The cost of searching a key is its frequency multiplied by its depth in the tree (the root has depth 1).\")\n    (return \"Returns the minimum cost for keys from index `i` to `j`. The cost for a sub-range `dp[i][j]` is the sum of frequencies in that range plus the minimum value of `dp[i][k-1] + dp[k+1][j]` for all possible roots `k` in the range `[i, j]`.\")\n  )\n)",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\ndef optimalBST(keys: List[int], freqs: List[int]) -> int:\n    n = len(keys)\n    \n    # Create a list of tuples (freq, key) and sort it by frequency in descending order.\n    nodes = sorted([(-freq, key) for key, freq in zip(keys, freqs)], key=lambda x: x[0])\n    \n    dp = [[0] * n for _ in range(n)]  # Initialize the DP table with zeros.\n    \n    # Fill up the diagonal of the DP table (base case).\n    for i in range(n):\n        dp[i][i] = -nodes[i][0]\n        \n    # Iterate over all subarrays of length 2 to n, and fill up the DP table.\n    for l in range(2, n + 1):\n        for i in range(n - l + 1):\n            j = i + l - 1\n            \n            # Calculate the cost of searching all keys from index `i` to `j`.\n            dp[i][j] = nodes[i][0] + nodes[j][0]\n            \n            for k in range(i, j):\n                # The minimum value of `dp[i][k-1] + dp[k+1][j]` is the cost of searching all keys from index `i` to `j`.\n                dp[i][j] = min(dp[i][j], nodes[i][0] + sum(nodes[k+1:j+1]) + dp[i][k-1] + dp[k+1][j])\n                \n    return -dp[0][n-1]  # Return the minimum cost for keys from index `0` to `n-1`.",
+  "test_passed": false,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 0 items / 1 error\n\n==================================== ERRORS ====================================\n____ ERROR collecting 01_TestDefinitions/optimal_bst_cost/test_solution.py _____\nImportError while importing test module '/private/test/llm_complexity_benchmark/01_TestDefinitions/optimal_bst_cost/test_solution.py'.\nHint: make sure your test modules/packages have valid Python names.\nTraceback:\n/opt/homebrew/Cellar/python@3.14/3.14.3_1/Frameworks/Python.framework/Versions/3.14/lib/python3.14/importlib/__init__.py:88: in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n01_TestDefinitions/optimal_bst_cost/test_solution.py:2: in <module>\n    from solution import Solution\nE   ImportError: cannot import name 'Solution' from 'solution' (/private/test/llm_complexity_benchmark/01_TestDefinitions/optimal_bst_cost/solution.py)\n=========================== short test summary info ============================\nERROR 01_TestDefinitions/optimal_bst_cost/test_solution.py\n!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!\n=============================== 1 error in 0.08s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.2909,
+    "python": {
+      "cyclomatic_avg": 7.0,
+      "cyclomatic_max": 7,
+      "wmc": 7,
+      "maintainability_index": 84.16573784451748,
+      "max_nesting_depth": 4,
+      "halstead_volume": 0,
+      "lloc": 18,
+      "loc": 30
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 3,
+      "lisp_rules": 1,
+      "lisp_token_count": 117
+    }
+  }
+}

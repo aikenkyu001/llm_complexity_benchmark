@@ -1,0 +1,30 @@
+{
+  "task_name": "permutations_with_duplicates",
+  "model": "qwen2.5-coder:3b",
+  "timestamp": "2026-02-22T18:25:35.400229",
+  "nl_problem": "# Task: permutations_with_duplicates\n# Interface:\nClass: Solution\nMethod: permuteUnique(self, arg1)\n\nGiven a collection of numbers, nums, that might contain duplicates, return all possible unique permutations in any order.\n\nConstraints:\n- 1 <= nums.length <= 8\n- -10 <= nums[i] <= 10",
+  "lisp_spec": "(task\n  (name \"permuteUnique\")\n  (signature ( (nums list) ) (list list))\n  (constraints\n    (constraint \"The length of nums is between 1 and 8.\")\n    (constraint \"Each number in nums is within the range -10 to 10.\")\n  )\n  (goal\n    (description \"Return all unique permutations of the given collection of numbers.\")\n    (rule \"Each permutation must be a list of distinct elements.\")\n    (return \"A list containing all unique permutations as lists.\")\n  )\n)",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\nclass Solution:\n    def permuteUnique(self, nums: List[int]) -> List[List[int]]:\n        result = []\n        used = [False] * len(nums)\n        \n        def backtrack(path):\n            if len(path) == len(nums):\n                result.append(path[:])\n                return\n            \n            for i in range(len(nums)):\n                if not used[i]:\n                    # Skip duplicates\n                    if i > 0 and nums[i] == nums[i - 1] and not used[i - 1]:\n                        continue\n                    \n                    used[i] = True\n                    path.append(nums[i])\n                    backtrack(path)\n                    path.pop()\n                    used[i] = False\n        \n        nums.sort()  # Sort to handle duplicates\n        backtrack([])\n        return result\n\n# Example usage:\n# sol = Solution()\n# print(sol.permuteUnique([1, 1, 2]))",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-8.3.5, pluggy-1.6.0\nrootdir: /media/developer/USB480G/Project/llm_complexity_benchmark\nplugins: cov-7.0.0, langsmith-0.4.41, anyio-4.11.0\ncollected 2 items\n\n01_TestDefinitions/permutations_with_duplicates/test_solution.py ..      [100%]\n\n============================== 2 passed in 0.05s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.2559,
+    "python": {
+      "cyclomatic_avg": 1.0,
+      "cyclomatic_max": 1,
+      "wmc": 1,
+      "maintainability_index": 80.74788366925115,
+      "max_nesting_depth": 6,
+      "halstead_volume": 0,
+      "lloc": 24,
+      "loc": 34
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 3,
+      "lisp_rules": 1,
+      "lisp_token_count": 67
+    }
+  }
+}

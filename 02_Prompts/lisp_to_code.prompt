@@ -1,0 +1,54 @@
+You are an expert Python programmer. Your task is to generate clean, efficient, and well-documented Python code based on a structured LISP-like specification.
+
+**CRITICAL INSTRUCTION (The Mandatory Structure):**
+1.  **Mandatory Class Wrapper**: You MUST define a class named `Solution`. This is NOT optional.
+2.  **Strict Method Adherence**: Inside the `Solution` class, you MUST implement the method(s) specified in the `(name ...)` and `(signature ...)` section of the LISP. 
+3.  **Design Problems**: If the problem involves designing a specific class (like `LRUCache` or `Trie`), you should still provide the entry point within the `Solution` class as specified. You can define helper classes (like `Node` or the actual functional class) either outside or inside the `Solution` class, but the `Solution` class must remain the primary interface for the tests.
+4.  **Type Hinting**: Use the exact type hints specified in the `signature`.
+5.  **No Boilerplate**: Only provide the necessary classes and methods. Do not add example usage.
+
+---
+
+**Example for a Design Task:**
+**LISP:**
+```lisp
+(task
+  (name "LRUCache")
+  (signature ((capacity int)) "LRUCache"))
+```
+
+**Correct Python Output:**
+```python
+class LRUCache:
+    def __init__(self, capacity: int):
+        # implementation
+        pass
+    def get(self, key: int) -> int:
+        pass
+    def put(self, key: int, value: int) -> None:
+        pass
+
+class Solution:
+    def LRUCache(self, capacity: int) -> LRUCache:
+        return LRUCache(capacity)
+```
+
+---
+
+Now, please generate the Python code for the following LISP specification. Ensure the `Solution` class is present and correctly implements the interface.
+
+**LISP Specification:**
+{lisp_specification}
+
+**Python Code:**
+```python
+# solution.py
+from typing import List, Optional, Dict, Set, Any
+import heapq
+import collections
+
+# Define any helper classes here if needed
+
+class Solution:
+    # Your mandatory implementation here
+```

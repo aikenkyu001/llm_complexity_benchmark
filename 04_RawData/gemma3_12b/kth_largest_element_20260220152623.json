@@ -1,0 +1,30 @@
+{
+  "task_name": "kth_largest_element",
+  "model": "gemma3:12b",
+  "timestamp": "2026-02-20T15:26:23.593469",
+  "nl_problem": "# Task: kth_largest_element\n# Interface:\nClass: Solution\nMethod: findKthLargest(self, arg1, arg2, arg3, arg4, arg5, arg6, arg7)\n\nGiven an integer array nums and an integer k, return the kth largest element in the array.\nNote that it is the kth largest element in the sorted order, not the kth distinct element.\nCan you solve it without sorting the entire array? (e.g., using a heap or quickselect).\n\nConstraints:\n- 1 <= k <= nums.length <= 10^5\n- -10^4 <= nums[i] <= 10^4",
+  "lisp_spec": "(task\n  (name \"findKthLargest\")\n  (signature ( (nums (list int)) (k int) ) int)\n  (constraints\n    (constraint \"1 <= k <= nums.length\")\n    (constraint \"nums.length <= 10^5\")\n    (constraint \"-10^4 <= nums[i] <= 10^4\")\n  )\n  (goal\n    (description \"Find the kth largest element in the given integer array.\")\n    (rule \"The array should be treated as if it were sorted in descending order.\")\n    (rule \"Return the element at index (length - k) in the sorted array.\")\n    (return \"Return the kth largest element.  If k is 1, return the largest element. If k is equal to the length of nums, return the smallest element.\")\n  )\n)",
+  "generated_code": "from typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\nclass Solution:\n    def findKthLargest(self, nums: List[int], k: int) -> int:\n        \"\"\"\n        Finds the kth largest element in the given integer array.\n\n        Args:\n            nums: The list of integers.\n            k: The kth largest element to find.\n\n        Returns:\n            The kth largest element in the array.\n        \"\"\"\n        return heapq.nlargest(k, nums)[-1]",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/kth_largest_element/test_solution.py ..               [100%]\n\n============================== 2 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.2021,
+    "python": {
+      "cyclomatic_avg": 1.0,
+      "cyclomatic_max": 1,
+      "wmc": 1,
+      "maintainability_index": 99.09698637701055,
+      "max_nesting_depth": 2,
+      "halstead_volume": 0,
+      "lloc": 7,
+      "loc": 17
+    },
+    "lisp": {
+      "lisp_max_depth": 5,
+      "lisp_constraints": 4,
+      "lisp_rules": 2,
+      "lisp_token_count": 98
+    }
+  }
+}

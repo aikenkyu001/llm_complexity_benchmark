@@ -1,0 +1,30 @@
+{
+  "task_name": "permutations_with_duplicates",
+  "model": "falcon3:10b",
+  "timestamp": "2026-02-20T14:57:51.454793",
+  "nl_problem": "# Task: permutations_with_duplicates\n# Interface:\nClass: Solution\nMethod: permuteUnique(self, arg1)\n\nGiven a collection of numbers, nums, that might contain duplicates, return all possible unique permutations in any order.\n\nConstraints:\n- 1 <= nums.length <= 8\n- -10 <= nums[i] <= 10",
+  "lisp_spec": "(task\n (name \"permuteUnique\")\n (signature ( (self) (arg1 (list int)) ) (list (list int)))\n (constraints\n   (constraint \"The length of nums is between 1 and 8, inclusive.\")\n   (constraint \"Each element in nums is between -10 and 10, inclusive.\")\n )\n (goal\n   (description \"Generate all unique permutations of the given list of numbers.\")\n   (rule \"Return a list of lists where each inner list is a unique permutation of the input list.\")\n   (return \"A list containing all unique permutations of the input list nums.\")\n )\n)",
+  "generated_code": "from typing import List, Set\n\nclass Solution:\n    def permuteUnique(self, nums: List[int]) -> List[List[int]]:\n        def backtrack(start=0):\n            if start == len(nums):\n                result.append(nums[:])\n            for i in range(start, len(nums)):\n                if i > start and nums[i] == nums[start]:\n                    continue\n                nums[start], nums[i] = nums[i], nums[start]\n                backtrack(start + 1)\n                nums[start], nums[i] = nums[i], nums[start]  # backtrack\n\n        result = []\n        nums.sort()  # Sorting helps in skipping duplicates\n        backtrack()\n        return result",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/permutations_with_duplicates/test_solution.py ..      [100%]\n\n============================== 2 passed in 0.01s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.23370000000000002,
+    "python": {
+      "cyclomatic_avg": 1.0,
+      "cyclomatic_max": 1,
+      "wmc": 1,
+      "maintainability_index": 80.327999507548,
+      "max_nesting_depth": 5,
+      "halstead_volume": 0,
+      "lloc": 17,
+      "loc": 18
+    },
+    "lisp": {
+      "lisp_max_depth": 5,
+      "lisp_constraints": 3,
+      "lisp_rules": 1,
+      "lisp_token_count": 81
+    }
+  }
+}

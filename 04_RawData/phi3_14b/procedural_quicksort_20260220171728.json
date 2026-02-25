@@ -1,0 +1,30 @@
+{
+  "task_name": "procedural_quicksort",
+  "model": "phi3:14b",
+  "timestamp": "2026-02-20T17:17:28.819521",
+  "nl_problem": "# Task: procedural_quicksort\n# Interface:\nClass: Solution\nMethod: quickSort(self, arg1)\n\nImplement the QuickSort algorithm procedurally. The function should take an array of integers and sort it in ascending order in-place.\nYou should use a partition scheme (e.g., Lomuto or Hoare partition).\nNote: The problem is focused on the correct implementation of the sorting logic, not just using built-in `.sort()`.\n\nConstraints:\n- 1 <= arr.length <= 10^5\n- -10^9 <= arr[i] <= 10^9",
+  "lisp_spec": "(task\n  (name \"quickSort\")\n  (signature ( (arr list) ) nil)\n  (constraints\n    (constraint \"The length of the array is between 1 and 10^5.\")\n    (constraint \"Each element in the array is an integer, with a value between -10^9 and 10^9 inclusive.\")\n  )\n  (goal\n    (description \"Implement the QuickSort algorithm procedurally to sort an array of integers in ascending order in-place using either Lomuto or Hoare partition scheme.\")\n    (rule \"The function should not use built-in sorting methods like .sort().\")\n    (return \"A sorted list with elements arranged in ascending order. If the input is empty, return an empty list.\")\n  )\n)",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\ndef partition(arr: List[int], low: int, high: int) -> int:\n    pivot = arr[high]\n    i = low - 1\n    for j in range(low, high):\n        if arr[j] < pivot:\n            i += 1\n            arr[i], arr[j] = arr[j], arr[i]\n    arr[i + 1], arr[high] = arr[high], arr[i + 1]\n    return i + 1\n\ndef quickSort(arr: List[int], low: int, high: Optional[int]) -> None:\n    if low < high:\n        pi = partition(arr, low, high)\n        quickSort(arr, low, pi - 1)\n        quickSort(arr, pi + 1, high)\n\nclass Solution:\n    def quickSort(self, arr: List[int]) -> None:\n        if len(arr) > 0:\n            quickSort(arr, 0, len(arr) - 1)",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 3 items\n\n01_TestDefinitions/procedural_quicksort/test_solution.py ...             [100%]\n\n============================== 3 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.21150000000000002,
+    "python": {
+      "cyclomatic_avg": 2.3333333333333335,
+      "cyclomatic_max": 3,
+      "wmc": 7,
+      "maintainability_index": 68.27710471297254,
+      "max_nesting_depth": 3,
+      "halstead_volume": 0,
+      "lloc": 21,
+      "loc": 25
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 3,
+      "lisp_rules": 1,
+      "lisp_token_count": 95
+    }
+  }
+}

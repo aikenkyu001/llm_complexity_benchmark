@@ -1,0 +1,30 @@
+{
+  "task_name": "optimal_bst_cost",
+  "model": "qwen2.5-coder:7b",
+  "timestamp": "2026-02-23T10:15:54.880997",
+  "nl_problem": "# Task: Optimal BST Cost\n# Interface:\nClass: Solution\nMethod: optimalBST(self, keys: List[int], freq: List[int]) -> int\n\nGiven a sorted array of keys and their search frequencies, find the minimum cost to construct a Binary Search Tree (BST) such that the total cost of searching all keys is minimized.\nThe cost of searching a key is its frequency multiplied by its depth in the tree (the root has depth 1).\n\n# Implementation Hint:\nUse Dynamic Programming with a 3D state transition. Define `dp[i][j]` as the minimum cost for keys from index `i` to `j`.\nThe cost for a sub-range `dp[i][j]` is the sum of frequencies in that range plus the minimum value of `dp[i][k-1] + dp[k+1][j]` for all possible roots `k` in the range `[i, j]`.\n\nConstraints:\n- 1 <= n <= 100\n- 1 <= frequencies[i] <= 1000",
+  "lisp_spec": "(task\n  (name \"optimalBST\")\n  (signature ( (keys (list int)) (freq (list int)) ) int)\n  (constraints\n    (constraint \"1 <= n <= 100\")\n    (constraint \"1 <= frequencies[i] <= 1000\")\n  )\n  (goal\n    (description \"Find the minimum cost to construct a Binary Search Tree (BST) such that the total cost of searching all keys is minimized.\")\n    (rule \"The cost of searching a key is its frequency multiplied by its depth in the tree (the root has depth 1).\")\n    (return \"The minimum cost to construct the BST.\")\n  )\n)",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\nclass Node:\n    def __init__(self, key: int, freq: int):\n        self.key = key\n        self.freq = freq\n        self.left = None\n        self.right = None\n\nclass Solution:\n    def optimalBST(self, keys: List[int], freq: List[int]) -> int:\n        n = len(keys)\n        \n        # Create a list of nodes with their frequencies\n        nodes = [Node(key, freq[i]) for i, key in enumerate(keys)]\n        \n        # Initialize the DP table\n        dp = [[0] * (n + 1) for _ in range(n + 1)]\n        \n        # Initialize the sum table\n        sum_freq = [[0] * (n + 1) for _ in range(n + 1)]\n        \n        # Fill the sum_freq table\n        for i in range(n):\n            sum_freq[i][i+1] = freq[i]\n        \n        for length in range(2, n + 1):\n            for i in range(n - length + 1):\n                j = i + length\n                dp[i][j] = float('inf')\n                for r in range(i, j):\n                    cost = sum_freq[i][j] + dp[i][r] + dp[r+1][j]\n                    if cost < dp[i][j]:\n                        dp[i][j] = cost\n        \n        return dp[0][n]",
+  "test_passed": false,
+  "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-8.3.5, pluggy-1.6.0\nrootdir: /media/developer/USB480G/Project/llm_complexity_benchmark\nplugins: cov-7.0.0, langsmith-0.4.41, anyio-4.11.0\ncollected 2 items\n\n01_TestDefinitions/optimal_bst_cost/test_solution.py FF                  [100%]\n\n=================================== FAILURES ===================================\n____________________________ test_optimal_bst_basic ____________________________\n\n    def test_optimal_bst_basic():\n        solution = Solution()\n        keys = [10, 12, 20]\n        freq = [34, 8, 50]\n        # Optimal cost is 142\n>       assert solution.optimalBST(keys, freq) == 142\nE       assert 0 == 142\nE        +  where 0 = optimalBST([10, 12, 20], [34, 8, 50])\nE        +    where optimalBST = <solution.Solution object at 0x79c4b9e34ce0>.optimalBST\n\n01_TestDefinitions/optimal_bst_cost/test_solution.py:9: AssertionError\n___________________________ test_optimal_bst_simple ____________________________\n\n    def test_optimal_bst_simple():\n        solution = Solution()\n        keys = [10, 12]\n        freq = [3, 4]\n        # Root 12: 4*1 + 3*2 = 10\n        # Root 10: 3*1 + 4*2 = 11\n>       assert solution.optimalBST(keys, freq) == 10\nE       assert 0 == 10\nE        +  where 0 = optimalBST([10, 12], [3, 4])\nE        +    where optimalBST = <solution.Solution object at 0x79c4ba058dd0>.optimalBST\n\n01_TestDefinitions/optimal_bst_cost/test_solution.py:17: AssertionError\n=========================== short test summary info ============================\nFAILED 01_TestDefinitions/optimal_bst_cost/test_solution.py::test_optimal_bst_basic\nFAILED 01_TestDefinitions/optimal_bst_cost/test_solution.py::test_optimal_bst_simple\n============================== 2 failed in 0.22s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.35910000000000003,
+    "python": {
+      "cyclomatic_avg": 5.0,
+      "cyclomatic_max": 9,
+      "wmc": 10,
+      "maintainability_index": 74.68840714780681,
+      "max_nesting_depth": 6,
+      "halstead_volume": 0,
+      "lloc": 26,
+      "loc": 39
+    },
+    "lisp": {
+      "lisp_max_depth": 5,
+      "lisp_constraints": 3,
+      "lisp_rules": 1,
+      "lisp_token_count": 83
+    }
+  }
+}

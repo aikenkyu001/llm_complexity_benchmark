@@ -1,0 +1,30 @@
+{
+  "task_name": "synthetic_nesting_d5",
+  "model": "qwen2.5-coder:3b",
+  "timestamp": "2026-02-22T18:32:43.585986",
+  "nl_problem": "# Task: Nested Logic Test (Depth 5)\n# Interface:\nClass: Solution\nMethod: checkNested(self, x0: int, x1: int, x2: int, x3: int, x4: int) -> bool\n\n# Objective:\nThis is a test of structural nesting. Return True ONLY if all the following conditions are met:\n1. x0 is greater than 0\n2. x1 is greater than 0\n3. x2 is greater than 0\n4. x3 is greater than 0\n5. x4 is greater than 0\n\nEach condition must be checked inside the previous one (nested if statements).",
+  "lisp_spec": "(task\n  (name \"checkNested\")\n  (signature ( (x0 int) (x1 int) (x2 int) (x3 int) (x4 int) ) bool)\n  (constraints\n    (constraint \"All input parameters must be greater than 0.\")\n  )\n  (goal\n    (description \"Return True only if all conditions are met:\")\n    (rule \"Check if x0 is greater than 0.\")\n    (rule \"Check if x1 is greater than 0.\")\n    (rule \"Check if x2 is greater than 0.\")\n    (rule \"Check if x3 is greater than 0.\")\n    (rule \"Check if x4 is greater than 0.\")\n    (return \"True only if all conditions are met, False otherwise.\")\n  )\n)",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\n\nclass Solution:\n    def checkNested(self, x0: int, x1: int, x2: int, x3: int, x4: int) -> bool:\n        # Check if all input parameters are greater than 0\n        return all(x > 0 for x in [x0, x1, x2, x3, x4])",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-8.3.5, pluggy-1.6.0\nrootdir: /media/developer/USB480G/Project/llm_complexity_benchmark\nplugins: cov-7.0.0, langsmith-0.4.41, anyio-4.11.0\ncollected 2 items\n\n01_TestDefinitions/synthetic_nesting_d5/test_solution.py ..              [100%]\n\n============================== 2 passed in 0.03s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.23299999999999998,
+    "python": {
+      "cyclomatic_avg": 2.0,
+      "cyclomatic_max": 2,
+      "wmc": 2,
+      "maintainability_index": 100.0,
+      "max_nesting_depth": 2,
+      "halstead_volume": 0,
+      "lloc": 4,
+      "loc": 7
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 2,
+      "lisp_rules": 5,
+      "lisp_token_count": 90
+    }
+  }
+}

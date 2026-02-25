@@ -1,0 +1,29 @@
+{
+  "task_name": "interval_merger",
+  "model": "qwen_merged_final_model",
+  "timestamp": "2026-02-24T17:42:40.094762",
+  "nl_problem": "# Task: interval_merger\n# Interface:\nClass: Solution\nMethod: merge(self, arg1)\n\nGiven an array of intervals where `intervals[i] = [starti, endi]`, merge all overlapping intervals, and return an array of the non-overlapping intervals that cover all the intervals in the input.\n\nConstraints:\n- 1 <= intervals.length <= 10^4\n- intervals[i].length == 2\n- 0 <= starti <= endi <= 10^4",
+  "lisp_spec": "(task\n  (name \"merge\")\n  (signature ( (intervals list (list int int))) list (list int int)))\n  (constraints\n    (constraint \"1 <= intervals.length <= 10^4\")\n    (constraint \"intervals[i].length == 2\")\n    (constraint \"0 <= starti <= endi <= 10^4\")\n  )\n  (goal\n    (description \"Merge all overlapping intervals and return the non-overlapping intervals that cover all the intervals in the input.\")\n    (rule \"Intervals are sorted by their start time.\")\n    (rule \"If two intervals overlap, merge them into a single interval.\")\n    (rule \"Return the merged intervals as a list of lists.\")\n    (return \"A list of non-overlapping intervals that cover all the intervals in the input.\")\n  ))",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\n# Define any helper classes here if needed\n\nclass Solution:\n    def merge(self, intervals: List[List[int]]) -> List[List[int]]:\n        # Sort intervals by their start time\n        intervals.sort(key=lambda x: x[0])\n        \n        merged = []\n        current_interval = intervals[0]\n        \n        for interval in intervals[1:]:\n            if interval[0] <= current_interval[1]:\n                # Merge intervals\n                current_interval[1] = max(current_interval[1], interval[1])\n            else:\n                # Add the current merged interval to the result\n                merged.append(current_interval)\n                current_interval = interval\n        \n        # Add the last merged interval\n        merged.append(current_interval)\n        \n        return merged",
+  "test_passed": false,
+  "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /home/miyata/projects/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 3 items\n\n01_TestDefinitions/interval_merger/test_solution.py ..F                  [100%]\n\n=================================== FAILURES ===================================\n__________________________ test_interval_merge_empty ___________________________\n\n    def test_interval_merge_empty():\n        solution = Solution()\n>       assert solution.merge([]) == []\n               ^^^^^^^^^^^^^^^^^^\n\n01_TestDefinitions/interval_merger/test_solution.py:16: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <solution.Solution object at 0x78b3217d4590>, intervals = []\n\n    def merge(self, intervals: List[List[int]]) -> List[List[int]]:\n        # Sort intervals by their start time\n        intervals.sort(key=lambda x: x[0])\n    \n        merged = []\n>       current_interval = intervals[0]\n                           ^^^^^^^^^^^^\nE       IndexError: list index out of range\n\n01_TestDefinitions/interval_merger/solution.py:14: IndexError\n=========================== short test summary info ============================\nFAILED 01_TestDefinitions/interval_merger/test_solution.py::test_interval_merge_empty\n========================= 1 failed, 2 passed in 0.04s ==========================\n",
+  "complexity_metrics": {
+    "total_complexity_score": 0.2969,
+    "python": {
+      "cyclomatic_avg": 3.0,
+      "cyclomatic_max": 3,
+      "wmc": 3,
+      "maintainability_index": 95.79691370505559,
+      "max_nesting_depth": 4,
+      "halstead_volume": 0,
+      "lloc": 17,
+      "loc": 28
+    },
+    "lisp": {
+      "lisp_max_depth": 5,
+      "lisp_constraints": 4,
+      "lisp_rules": 3,
+      "lisp_token_count": 97
+    }
+  }
+}

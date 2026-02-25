@@ -1,0 +1,30 @@
+{
+  "task_name": "procedural_quicksort",
+  "model": "gemma3:12b",
+  "timestamp": "2026-02-20T15:36:06.184352",
+  "nl_problem": "# Task: procedural_quicksort\n# Interface:\nClass: Solution\nMethod: quickSort(self, arg1)\n\nImplement the QuickSort algorithm procedurally. The function should take an array of integers and sort it in ascending order in-place.\nYou should use a partition scheme (e.g., Lomuto or Hoare partition).\nNote: The problem is focused on the correct implementation of the sorting logic, not just using built-in `.sort()`.\n\nConstraints:\n- 1 <= arr.length <= 10^5\n- -10^9 <= arr[i] <= 10^9",
+  "lisp_spec": "(task\n  (name \"quickSort\")\n  (signature ( (arr (list int)) ) (list int))\n  (constraints\n    (constraint \"The input list 'arr' contains integers.\")\n    (constraint \"The length of 'arr' is between 1 and 100,000.\")\n    (constraint \"Each element in 'arr' is between -1,000,000,000 and 1,000,000,000.\")\n  )\n  (goal\n    (description \"Sort the input list of integers 'arr' in ascending order in-place using the QuickSort algorithm.\")\n    (rule \"Implement the QuickSort algorithm procedurally.\")\n    (rule \"The algorithm should partition the input list around a pivot element.\")\n    (rule \"The input list 'arr' should be modified in-place.\")\n    (return \"Return the sorted list 'arr'.\")\n  )\n)",
+  "generated_code": "from typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\nclass Solution:\n    def quickSort(self, arr: List[int]) -> List[int]:\n        \"\"\"\n        Sorts the input list of integers 'arr' in ascending order in-place using the QuickSort algorithm.\n\n        Args:\n            arr (List[int]): The list of integers to be sorted.\n\n        Returns:\n            List[int]: The sorted list 'arr'.\n        \"\"\"\n\n        def partition(arr: List[int], low: int, high: int) -> int:\n            \"\"\"\n            Partitions the input list around a pivot element.\n\n            Args:\n                arr (List[int]): The list to be partitioned.\n                low (int): The starting index of the partition.\n                high (int): The ending index of the partition.\n\n            Returns:\n                int: The index of the pivot element after partitioning.\n            \"\"\"\n            pivot = arr[high]\n            i = low - 1\n            for j in range(low, high):\n                if arr[j] <= pivot:\n                    i += 1\n                    arr[i], arr[j] = arr[j], arr[i]\n            arr[i + 1], arr[high] = arr[high], arr[i + 1]\n            return i + 1\n\n        def quickSort_recursive(arr: List[int], low: int, high: int) -> None:\n            \"\"\"\n            Recursive helper function for QuickSort.\n\n            Args:\n                arr (List[int]): The list to be sorted.\n                low (int): The starting index of the partition.\n                high (int): The ending index of the partition.\n            \"\"\"\n            if low < high:\n                pi = partition(arr, low, high)\n                quickSort_recursive(arr, low, pi - 1)\n                quickSort_recursive(arr, pi + 1, high)\n\n        quickSort_recursive(arr, 0, len(arr) - 1)\n        return arr",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 3 items\n\n01_TestDefinitions/procedural_quicksort/test_solution.py ...             [100%]\n\n============================== 3 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.2959,
+    "python": {
+      "cyclomatic_avg": 1.0,
+      "cyclomatic_max": 1,
+      "wmc": 1,
+      "maintainability_index": 79.30666330772094,
+      "max_nesting_depth": 5,
+      "halstead_volume": 0,
+      "lloc": 24,
+      "loc": 53
+    },
+    "lisp": {
+      "lisp_max_depth": 5,
+      "lisp_constraints": 4,
+      "lisp_rules": 3,
+      "lisp_token_count": 92
+    }
+  }
+}

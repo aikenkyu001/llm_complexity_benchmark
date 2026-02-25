@@ -1,0 +1,30 @@
+{
+  "task_name": "kth_largest_element",
+  "model": "qwen2.5-coder:3b",
+  "timestamp": "2026-02-22T18:22:51.667621",
+  "nl_problem": "# Task: kth_largest_element\n# Interface:\nClass: Solution\nMethod: findKthLargest(self, arg1, arg2, arg3, arg4, arg5, arg6, arg7)\n\nGiven an integer array nums and an integer k, return the kth largest element in the array.\nNote that it is the kth largest element in the sorted order, not the kth distinct element.\nCan you solve it without sorting the entire array? (e.g., using a heap or quickselect).\n\nConstraints:\n- 1 <= k <= nums.length <= 10^5\n- -10^4 <= nums[i] <= 10^4",
+  "lisp_spec": "(task\n  (name \"find_kth_largest\")\n  (signature ( (nums list) (k int) ) int)\n  (constraints\n    (constraint \"1 <= k <= nums.length <= 10^5\")\n    (constraint \"-10^4 <= nums[i] <= 10^4\")\n  )\n  (goal\n    (description \"Return the kth largest element in the array.\")\n    (rule \"The function should not sort the entire array.\")\n    (return \"The return value is an integer representing the kth largest element.\")\n  )\n)",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\nclass Solution:\n    def find_kth_largest(self, nums: List[int], k: int) -> int:\n        # Use a min-heap to keep track of the k largest elements\n        min_heap = []\n        \n        for num in nums:\n            if len(min_heap) < k:\n                heapq.heappush(min_heap, num)\n            else:\n                if num > min_heap[0]:\n                    heapq.heapreplace(min_heap, num)\n        \n        # The root of the heap is the kth largest element\n        return min_heap[0]",
+  "test_passed": false,
+  "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-8.3.5, pluggy-1.6.0\nrootdir: /media/developer/USB480G/Project/llm_complexity_benchmark\nplugins: cov-7.0.0, langsmith-0.4.41, anyio-4.11.0\ncollected 2 items\n\n01_TestDefinitions/kth_largest_element/test_solution.py FF               [100%]\n\n=================================== FAILURES ===================================\n____________________________ test_kth_largest_basic ____________________________\n\n    def test_kth_largest_basic():\n        solution = Solution()\n>       assert solution.findKthLargest([3,2,1,5,6,4], 2) == 5\nE       AttributeError: 'Solution' object has no attribute 'findKthLargest'. Did you mean: 'find_kth_largest'?\n\n01_TestDefinitions/kth_largest_element/test_solution.py:6: AttributeError\n___________________________ test_kth_largest_complex ___________________________\n\n    def test_kth_largest_complex():\n        solution = Solution()\n>       assert solution.findKthLargest([3,2,3,1,2,4,5,5,6], 4) == 4\nE       AttributeError: 'Solution' object has no attribute 'findKthLargest'. Did you mean: 'find_kth_largest'?\n\n01_TestDefinitions/kth_largest_element/test_solution.py:10: AttributeError\n=========================== short test summary info ============================\nFAILED 01_TestDefinitions/kth_largest_element/test_solution.py::test_kth_largest_basic\nFAILED 01_TestDefinitions/kth_largest_element/test_solution.py::test_kth_largest_complex\n============================== 2 failed in 0.08s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.267,
+    "python": {
+      "cyclomatic_avg": 4.0,
+      "cyclomatic_max": 4,
+      "wmc": 4,
+      "maintainability_index": 91.22272299481529,
+      "max_nesting_depth": 5,
+      "halstead_volume": 0,
+      "lloc": 13,
+      "loc": 19
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 3,
+      "lisp_rules": 1,
+      "lisp_token_count": 60
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "task_name": "sudoku_solver_v2_nesting",
+  "model": "falcon3:10b",
+  "timestamp": "2026-02-20T14:59:58.022436",
+  "nl_problem": "# Task: sudoku_solver_v2_nesting\n# Interface:\nClass: Solution\nMethod: solveSudoku(self, arg1)\n\nWrite an optimized Sudoku Solver that implements a specific search heuristic.\n\nConstraints & Requirements:\n1. Standard Sudoku Rules: Each digit 1-9 must appear exactly once in each row, column, and 3x3 sub-box.\n2. Search Heuristic (MRV - Minimum Remaining Values): Instead of a simple scan, the solver must identify the empty cell with the fewest possible valid candidates before making a move.\n3. Implementation Structure:\n   - You MUST implement a helper function `get_possible_candidates(row, col)` which checks row, column, and sub-box constraints and returns a set of valid numbers.\n   - You MUST implement a helper function `select_next_cell()` that uses the candidates to find the most constrained cell (the one with the minimum non-zero candidates).\n   - The main solver should recursively call these nested functions.\n4. Input board: 9x9 list of strings, with '.' for empty cells.\n5. In-place modification: The function does not need to return the board.\n6. The solver must be able to handle puzzles that require backtracking.",
+  "lisp_spec": "(task\n (name \"solveSudoku\")\n (signature ( (board (list (list string))) ) None)\n (constraints\n   (constraint \"Standard Sudoku Rules: Each digit 1-9 must appear exactly once in each row, column, and 3x3 sub-box.\")\n   (constraint \"Search Heuristic (MRV): The solver must identify the empty cell with the fewest possible valid candidates before making a move.\")\n   (constraint \"Implementation Structure: Includes helper functions `get_possible_candidates(row, col)` and `select_next_cell()`.\")\n   (constraint \"Input board is a 9x9 list of strings, with '.' for empty cells.\")\n   (constraint \"In-place modification: The function does not return the board.\")\n   (constraint \"The solver must handle puzzles that require backtracking.\")\n )\n (goal\n   (description \"Write an optimized Sudoku Solver implementing a specific search heuristic (MRV).\")\n   (rule \"The solver identifies the empty cell with the fewest possible valid candidates before making a move.\")\n   (rule \"The main solver recursively calls helper functions to solve the puzzle.\")\n   (return \"The function modifies the board in-place to solve the Sudoku puzzle.\")\n )\n)",
+  "generated_code": "from typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\nclass Solution:\n    def solveSudoku(self, board: List[List[str]]) -> None:\n        def get_possible_candidates(row: int, col: int) -> Set[str]:\n            candidates = set('123456789')\n            for i in range(9):\n                if board[row][i] in candidates:\n                    candidates.remove(board[row][i])\n                if board[i][col] in candidates:\n                    candidates.remove(board[i][col])\n            start_row, start_col = 3 * (row // 3), 3 * (col // 3)\n            for i in range(start_row, start_row + 3):\n                for j in range(start_col, start_col + 3):\n                    if board[i][j] in candidates:\n                        candidates.remove(board[i][j])\n            return candidates\n\n        def select_next_cell() -> Optional[Tuple[int, int]]:\n            min_candidates = float('inf')\n            best_cell = None\n            for row in range(9):\n                for col in range(9):\n                    if board[row][col] == '.':\n                        candidates = get_possible_candidates(row, col)\n                        if len(candidates) < min_candidates:\n                            min_candidates = len(candidates)\n                            best_cell = (row, col)\n            return best_cell\n\n        def solve():\n            cell = select_next_cell()\n            if cell is None:\n                return True  # Puzzle solved\n            row, col = cell\n            for candidate in get_possible_candidates(row, col):\n                board[row][col] = candidate\n                if solve():\n                    return True\n                board[row][col] = '.'  # Backtrack\n            return False\n\n        solve()",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/sudoku_solver_v2_nesting/test_solution.py ..          [100%]\n\n============================== 2 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.3977,
+    "python": {
+      "cyclomatic_avg": 1.0,
+      "cyclomatic_max": 1,
+      "wmc": 1,
+      "maintainability_index": 61.94106981260503,
+      "max_nesting_depth": 7,
+      "halstead_volume": 0,
+      "lloc": 41,
+      "loc": 45
+    },
+    "lisp": {
+      "lisp_max_depth": 6,
+      "lisp_constraints": 7,
+      "lisp_rules": 2,
+      "lisp_token_count": 151
+    }
+  }
+}

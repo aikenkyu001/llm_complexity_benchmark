@@ -1,0 +1,29 @@
+{
+  "task_name": "synthetic_constraints_n8",
+  "model": "qwen_merged_final_model",
+  "timestamp": "2026-02-24T17:58:22.119978",
+  "nl_problem": "# Task: Multi-Constraint Check (Density 8)\n# Interface:\nClass: Solution\nMethod: isValid(self, n: int) -> bool\n\n# Objective:\nReturn True if the integer `n` satisfies ALL of the following 8 independent constraints:\n1. n is greater than 2\n2. n is not equal to 104\n3. n is a multiple of 1\n4. n is greater than 8\n5. n is not equal to 110\n6. n is a multiple of 2\n7. n is greater than 14\n8. n is not equal to 116",
+  "lisp_spec": "(task\n  (name \"isValid\")\n  (signature ( (n int) ) bool)\n  (constraints\n    (constraint \"n is greater than 2\")\n    (constraint \"n is not equal to 104\")\n    (constraint \"n is a multiple of 1\")\n    (constraint \"n is greater than 8\")\n    (constraint \"n is not equal to 110\")\n    (constraint \"n is a multiple of 2\")\n    (constraint \"n is greater than 14\")\n    (constraint \"n is not equal to 116\")\n  )\n  (goal\n    (description \"Return True if the integer `n` satisfies ALL of the following 8 independent constraints:\")\n    (rule \"n is greater than 2\")\n    (rule \"n is not equal to 104\")\n    (rule \"n is a multiple of 1\")\n    (rule \"n is greater than 8\")\n    (rule \"n is not equal to 110\")\n    (rule \"n is a multiple of 2\")\n    (rule \"n is greater than 14\")\n    (rule \"n is not equal to 116\")\n    (return \"True if all constraints are satisfied, False otherwise.\")\n  ))",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\n# Define any helper classes here if needed\n\nclass Solution:\n    def isValid(self, n: int) -> bool:\n        # Check if n satisfies all the given constraints\n        constraints = [\n            n > 2,\n            n != 104,\n            n % 1 == 0,\n            n > 8,\n            n != 110,\n            n % 2 == 0,\n            n > 14,\n            n != 116\n        ]\n        \n        # Return True if all constraints are satisfied, False otherwise\n        return all(constraints)",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /home/miyata/projects/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/synthetic_constraints_n8/test_solution.py ..          [100%]\n\n============================== 2 passed in 0.03s ===============================\n",
+  "complexity_metrics": {
+    "total_complexity_score": 0.3911,
+    "python": {
+      "cyclomatic_avg": 1.0,
+      "cyclomatic_max": 1,
+      "wmc": 1,
+      "maintainability_index": 91.96689858091266,
+      "max_nesting_depth": 2,
+      "halstead_volume": 0,
+      "lloc": 7,
+      "loc": 23
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 9,
+      "lisp_rules": 8,
+      "lisp_token_count": 143
+    }
+  }
+}

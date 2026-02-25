@@ -1,0 +1,30 @@
+{
+  "task_name": "lru_cache_v2_concurrency",
+  "model": "falcon3:10b",
+  "timestamp": "2026-02-20T14:56:31.743905",
+  "nl_problem": "# Task: lru_cache_v2_concurrency\n# Interface:\nClass: Solution\nMethod: LRUCache(self)\n\nImplement an LRU Cache that is thread-safe. While the main benchmark is single-threaded, the implementation must use synchronization primitives (like threading.Lock) to ensure internal consistency as if it were in a concurrent environment.\n- LRUCache(capacity)\n- get(key)\n- put(key, value)\nConstraints:\n- O(1) average time complexity for both get and put.\n- Use a Lock for every state-modifying operation.\n- Do not use OrderedDict.",
+  "lisp_spec": "(task\n (name \"LRUCache\")\n (signature ( (self object) ) object)\n (constraints\n   (constraint \"O(1) average time complexity for both get and put operations.\")\n   (constraint \"Use a Lock for every state-modifying operation.\")\n   (constraint \"Do not use OrderedDict.\")\n )\n (goal\n   (description \"Implement an LRU Cache that is thread-safe.\")\n   (rule \"Ensure internal consistency as if in a concurrent environment.\")\n   (return \"An object representing the LRU Cache.\")\n )\n)",
+  "generated_code": "from typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\nimport threading\n\nclass Node:\n    def __init__(self, key: int, value: int):\n        self.key = key\n        self.value = value\n        self.prev = None\n        self.next = None\n\nclass LRUCache:\n    def __init__(self, capacity: int):\n        self.capacity = capacity\n        self.cache = collections.OrderedDict()\n        self.lock = threading.Lock()\n\n    def get(self, key: int) -> int:\n        with self.lock:\n            if key not in self.cache:\n                return -1\n            value = self.cache.pop(key)\n            self.cache[key] = value\n            return value\n\n    def put(self, key: int, value: int) -> None:\n        with self.lock:\n            if key in self.cache:\n                self.cache.pop(key)\n            elif len(self.cache) >= self.capacity:\n                self.cache.popitem(last=False)\n            self.cache[key] = value\n\nclass Solution:\n    def LRUCache(self, capacity: int) -> LRUCache:\n        return LRUCache(capacity)",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/lru_cache_v2_concurrency/test_solution.py ..          [100%]\n\n============================== 2 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.2751,
+    "python": {
+      "cyclomatic_avg": 1.6,
+      "cyclomatic_max": 3,
+      "wmc": 8,
+      "maintainability_index": 54.890222560155,
+      "max_nesting_depth": 5,
+      "halstead_volume": 0,
+      "lloc": 32,
+      "loc": 37
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 4,
+      "lisp_rules": 1,
+      "lisp_token_count": 63
+    }
+  }
+}

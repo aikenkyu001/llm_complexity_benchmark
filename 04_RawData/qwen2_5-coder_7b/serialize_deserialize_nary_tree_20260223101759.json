@@ -1,0 +1,30 @@
+{
+  "task_name": "serialize_deserialize_nary_tree",
+  "model": "qwen2.5-coder:7b",
+  "timestamp": "2026-02-23T10:17:59.628084",
+  "nl_problem": "Design an algorithm to serialize and deserialize an N-ary tree. An N-ary tree is a rooted tree in which each node has no more than N children. \nSerialization is the process of converting a data structure or object into a sequence of bits so that it can be stored in a file or memory buffer, or transmitted across a network connection link to be reconstructed later in the same or another computer environment.\nThe N-ary tree node structure is:\n```python\nclass Node:\n    def __init__(self, val=None, children=None):\n        self.val = val\n        self.children = children # List[Node]\n```\n\nConstraints:\n- The total number of nodes is between 0 and 10^4.\n- 0 <= Node.val <= 10^4\n- The height of the N-ary tree is less than or equal to 1000.",
+  "lisp_spec": "(task\n  (name \"serialize_deserialize_nary_tree\")\n  (signature ( (root (list Node)) ) (string))\n  (constraints\n    (constraint \"The total number of nodes is between 0 and 10^4.\")\n    (constraint \"0 <= Node.val <= 10^4\")\n    (constraint \"The height of the N-ary tree is less than or equal to 1000.\")\n  )\n  (goal\n    (description \"Serialize an N-ary tree into a string and deserialize it back to its original structure.\")\n    (rule \"Each node's value should be represented as a string in the serialized format.\")\n    (rule \"Children of each node should be separated by commas.\")\n    (rule \"The root node is represented first, followed by its children in a depth-first manner.\")\n    (return \"A string representing the serialized N-ary tree.\")\n  )\n)",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\nclass Node:\n    def __init__(self, val=None, children=None):\n        self.val = val\n        self.children = children if children is not None else []\n\nclass Solution:\n    def serialize(self, root: 'Node') -> str:\n        \"\"\"Encodes a tree to a single string.\n        \n        :type root: Node\n        :rtype: str\n        \"\"\"\n        if not root:\n            return \"\"\n        \n        def dfs(node):\n            if node is None:\n                yield \"None,\"\n            else:\n                yield str(node.val) + \",\"\n                for child in node.children:\n                    yield from dfs(child)\n        \n        return \"\".join(dfs(root))\n\n    def deserialize(self, data: str) -> 'Node':\n        \"\"\"Decodes your encoded data to tree.\n        \n        :type data: str\n        :rtype: Node\n        \"\"\"\n        if not data:\n            return None\n        \n        def iter_nodes():\n            for val in data.split(\",\"):\n                yield val\n        \n        def dfs(it):\n            val = next(it)\n            if val == \"None\":\n                return None\n            node = Node(int(val), [])\n            while True:\n                child = dfs(it)\n                if child is None:\n                    break\n                node.children.append(child)\n            return node\n        \n        it = iter_nodes()\n        return dfs(next(it))",
+  "test_passed": false,
+  "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-8.3.5, pluggy-1.6.0\nrootdir: /media/developer/USB480G/Project/llm_complexity_benchmark\nplugins: cov-7.0.0, langsmith-0.4.41, anyio-4.11.0\ncollected 2 items\n\n01_TestDefinitions/serialize_deserialize_nary_tree/test_solution.py F.   [100%]\n\n=================================== FAILURES ===================================\n__________________________ test_tree_serialize_basic ___________________________\n\n    def test_tree_serialize_basic():\n        codec = Solution()\n        # Tree: 1 -> [3, 2, 4]; 3 -> [5, 6]\n        root = Node(1, [\n            Node(3, [Node(5), Node(6)]),\n            Node(2),\n            Node(4)\n        ])\n        serialized = codec.serialize(root)\n>       deserialized = codec.deserialize(serialized)\n\n01_TestDefinitions/serialize_deserialize_nary_tree/test_solution.py:25: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n01_TestDefinitions/serialize_deserialize_nary_tree/solution.py:57: in deserialize\n    return dfs(next(it))\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nit = '1'\n\n    def dfs(it):\n>       val = next(it)\nE       TypeError: 'str' object is not an iterator\n\n01_TestDefinitions/serialize_deserialize_nary_tree/solution.py:45: TypeError\n=========================== short test summary info ============================\nFAILED 01_TestDefinitions/serialize_deserialize_nary_tree/test_solution.py::test_tree_serialize_basic\n========================= 1 failed, 1 passed in 0.14s ==========================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.31179999999999997,
+    "python": {
+      "cyclomatic_avg": 2.0,
+      "cyclomatic_max": 2,
+      "wmc": 6,
+      "maintainability_index": 75.67807339941983,
+      "max_nesting_depth": 5,
+      "halstead_volume": 0,
+      "lloc": 40,
+      "loc": 57
+    },
+    "lisp": {
+      "lisp_max_depth": 5,
+      "lisp_constraints": 4,
+      "lisp_rules": 3,
+      "lisp_token_count": 109
+    }
+  }
+}

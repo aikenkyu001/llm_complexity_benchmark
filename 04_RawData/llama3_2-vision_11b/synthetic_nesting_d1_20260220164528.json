@@ -1,0 +1,30 @@
+{
+  "task_name": "synthetic_nesting_d1",
+  "model": "llama3.2-vision:11b",
+  "timestamp": "2026-02-20T16:45:28.708502",
+  "nl_problem": "# Task: Nested Logic Test (Depth 1)\n# Interface:\nClass: Solution\nMethod: checkNested(self, x0: int) -> bool\n\n# Objective:\nThis is a test of structural nesting. Return True ONLY if all the following conditions are met:\n1. x0 is greater than 0\n\nEach condition must be checked inside the previous one (nested if statements).",
+  "lisp_spec": "Here is the LISP specification for the given natural language problem:\n\n(task\n  (name \"checkNested\")\n  (signature ( (x0 int) ) bool)\n  (constraints\n    (constraint \"x0 must be greater than 0.\")\n  )\n  (goal\n    (description \"Return True if all conditions are met, nested if statements.\")\n    (rule \"Nested if statements: each condition must be checked inside the previous one.\")\n    (return \"True if all conditions are met, False otherwise.\")\n  )\n)\n\nNote that I've followed the strict rules provided, including matching the `Method` name exactly in the `(name ...)` and `(signature ...)` sections.",
+  "generated_code": "class Solution:\n    def checkNested(self, x0: int) -> bool:\n        if x0 <= 0:\n            return False\n        if x0 == 1:\n            return True\n        if x0 % 2 == 0:\n            return False\n        if x0 % 3 == 0:\n            return False\n        return True",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/synthetic_nesting_d1/test_solution.py ..              [100%]\n\n============================== 2 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.2149,
+    "python": {
+      "cyclomatic_avg": 5.0,
+      "cyclomatic_max": 5,
+      "wmc": 5,
+      "maintainability_index": 64.0358640568961,
+      "max_nesting_depth": 3,
+      "halstead_volume": 0,
+      "lloc": 11,
+      "loc": 11
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 2,
+      "lisp_rules": 1,
+      "lisp_token_count": 87
+    }
+  }
+}

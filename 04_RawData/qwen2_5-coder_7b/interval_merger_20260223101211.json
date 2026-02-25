@@ -1,0 +1,30 @@
+{
+  "task_name": "interval_merger",
+  "model": "qwen2.5-coder:7b",
+  "timestamp": "2026-02-23T10:12:11.498202",
+  "nl_problem": "# Task: interval_merger\n# Interface:\nClass: Solution\nMethod: merge(self, arg1)\n\nGiven an array of intervals where `intervals[i] = [starti, endi]`, merge all overlapping intervals, and return an array of the non-overlapping intervals that cover all the intervals in the input.\n\nConstraints:\n- 1 <= intervals.length <= 10^4\n- intervals[i].length == 2\n- 0 <= starti <= endi <= 10^4",
+  "lisp_spec": "(task\n  (name \"merge\")\n  (signature ( (intervals (list (list int int))) ) (list (list int int)))\n  (constraints\n    (constraint \"1 <= intervals.length <= 10^4\")\n    (constraint \"intervals[i].length == 2\")\n    (constraint \"0 <= starti <= endi <= 10^4\")\n  )\n  (goal\n    (description \"Merge all overlapping intervals and return non-overlapping intervals.\")\n    (rule \"Sort the intervals based on their start times.\")\n    (rule \"Iterate through the sorted intervals and merge them if they overlap.\")\n    (return \"An array of merged non-overlapping intervals.\")\n  )\n)",
+  "generated_code": "# solution.py\nfrom typing import List\n\nclass Solution:\n    def merge(self, intervals: List[List[int]]) -> List[List[int]]:\n        if not intervals:\n            return []\n        \n        # Sort the intervals based on their start times\n        intervals.sort(key=lambda x: x[0])\n        \n        merged = [intervals[0]]\n        \n        for current in intervals[1:]:\n            last_merged = merged[-1]\n            \n            # Check if there is an overlap\n            if current[0] <= last_merged[1]:\n                # Merge the overlapping intervals\n                merged[-1][1] = max(last_merged[1], current[1])\n            else:\n                # No overlap, add the interval to the merged list\n                merged.append(current)\n        \n        return merged",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-8.3.5, pluggy-1.6.0\nrootdir: /media/developer/USB480G/Project/llm_complexity_benchmark\nplugins: cov-7.0.0, langsmith-0.4.41, anyio-4.11.0\ncollected 3 items\n\n01_TestDefinitions/interval_merger/test_solution.py ...                  [100%]\n\n============================== 3 passed in 0.08s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.28500000000000003,
+    "python": {
+      "cyclomatic_avg": 4.0,
+      "cyclomatic_max": 4,
+      "wmc": 4,
+      "maintainability_index": 91.49002542029626,
+      "max_nesting_depth": 4,
+      "halstead_volume": 0,
+      "lloc": 15,
+      "loc": 25
+    },
+    "lisp": {
+      "lisp_max_depth": 6,
+      "lisp_constraints": 4,
+      "lisp_rules": 2,
+      "lisp_token_count": 75
+    }
+  }
+}

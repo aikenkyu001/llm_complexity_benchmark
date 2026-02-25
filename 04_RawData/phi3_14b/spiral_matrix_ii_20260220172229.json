@@ -1,0 +1,30 @@
+{
+  "task_name": "spiral_matrix_ii",
+  "model": "phi3:14b",
+  "timestamp": "2026-02-20T17:22:29.668698",
+  "nl_problem": "# Task: spiral_matrix_ii\n# Interface:\nClass: Solution\nMethod: generateMatrix(self, arg1)\n\nGiven a positive integer n, generate an n x n matrix filled with elements from 1 to n^2 in spiral order.\n\nConstraints:\n- 1 <= n <= 20",
+  "lisp_spec": "(task\n  (name \"generateMatrix\")\n  (signature ( (n int) ) (list int))\n  (constraints\n    (constraint \"1 <= n <= 20\")\n  )\n  (goal\n    (description \"Generate an n x n matrix filled with elements from 1 to n^2 in spiral order.\")\n    (rule \"Fill the matrix in a clockwise spiral pattern, starting from the top-left corner and moving right, down, left, up, and so on until all cells are filled.\")\n    (return \"A list representing an n x n matrix with elements 1 to n^2 arranged in a spiral order. If n is less than or equal to 0, return an empty list.\")\n  )\n)",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\nclass Solution:\n    def generateMatrix(self, n: int) -> List[List[int]]:\n        if n <= 0:\n            return []\n        \n        matrix = [[0] * n for _ in range(n)]\n        row_start, col_start = 0, e\n        row_end, col_end = n - 1, n - 1\n        num = 1\n\n        while row_start <= row_end and col_start <= col_end:\n            # Fill the top row from left to right\n            for i in range(col_start, col_end + 1):\n                matrix[row_start][i] = num\n                num += 1\n            row_start += 1\n            \n            # Fill the last column from top to bottom\n            for i in range(row_start, row_end + 1):\n                matrix[i][col_end] = num\n                num += 1\n            col_end -= 1\n            \n            if row_start <= row_end:\n                # Fill the last row from right to left\n                for i in range(col_end, col_start - 1, -1):\n                    matrix[row_end][i] = num\n                    num += 1\n                row_end -= 1\n            \n            if col_start <= col_end:\n                # Fill the first column from bottom to top\n                for i in range(row_end, row_start - 1, -1):\n                    matrix[i][col_start] = num\n                    num += 1\n                col_start += 1\n        \n        return matrix",
+  "test_passed": false,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/spiral_matrix_ii/test_solution.py FF                  [100%]\n\n=================================== FAILURES ===================================\n_____________________________ test_spiral_ii_basic _____________________________\n\n    def test_spiral_ii_basic():\n        solution = Solution()\n>       assert solution.generateMatrix(3) == [[1,2,3],[8,9,4],[7,6,5]]\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^\n\n01_TestDefinitions/spiral_matrix_ii/test_solution.py:6: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <solution.Solution object at 0x103ffb0e0>, n = 3\n\n    def generateMatrix(self, n: int) -> List[List[int]]:\n        if n <= 0:\n            return []\n    \n        matrix = [[0] * n for _ in range(n)]\n>       row_start, col_start = 0, e\n                                  ^\nE       NameError: name 'e' is not defined\n\n01_TestDefinitions/spiral_matrix_ii/solution.py:12: NameError\n______________________________ test_spiral_ii_one ______________________________\n\n    def test_spiral_ii_one():\n        solution = Solution()\n>       assert solution.generateMatrix(1) == [[1]]\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^\n\n01_TestDefinitions/spiral_matrix_ii/test_solution.py:10: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <solution.Solution object at 0x104065310>, n = 1\n\n    def generateMatrix(self, n: int) -> List[List[int]]:\n        if n <= 0:\n            return []\n    \n        matrix = [[0] * n for _ in range(n)]\n>       row_start, col_start = 0, e\n                                  ^\nE       NameError: name 'e' is not defined\n\n01_TestDefinitions/spiral_matrix_ii/solution.py:12: NameError\n=========================== short test summary info ============================\nFAILED 01_TestDefinitions/spiral_matrix_ii/test_solution.py::test_spiral_ii_basic\nFAILED 01_TestDefinitions/spiral_matrix_ii/test_solution.py::test_spiral_ii_one\n============================== 2 failed in 0.03s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.3421,
+    "python": {
+      "cyclomatic_avg": 11.0,
+      "cyclomatic_max": 11,
+      "wmc": 11,
+      "maintainability_index": 70.40549529082051,
+      "max_nesting_depth": 5,
+      "halstead_volume": 0,
+      "lloc": 31,
+      "loc": 43
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 2,
+      "lisp_rules": 1,
+      "lisp_token_count": 98
+    }
+  }
+}

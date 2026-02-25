@@ -1,0 +1,124 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{cite}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\title{Quantifying Design Intelligence: Breaking the Performance Ceiling of Small Language Models via Absolute Discipline}
+\author{Fumio Miyata}
+\date{February 25, 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+While Large Language Models (LLMs) have shown remarkable progress in code generation, their performance often collapses under complex structural constraints. Existing benchmarks primarily measure functional correctness but fail to quantify the precise point of logical failure. In this paper, we introduce the \textbf{LLM Complexity Benchmark}, a multi-dimensional framework designed to identify the \textbf{Collapse Point} of models based on structural and state-space complexity. Furthermore, we propose \textbf{Absolute Discipline}, a fine-tuning methodology and weight crystallization technique that enforces rigorous engineering protocols. Our results demonstrate that applying Absolute Discipline to a 3B-parameter model (Qwen 2.5-Coder) improves its success rate from 30.5\% to 58.6\%, rivaling the performance of 10B-class models. This suggests that the primary bottleneck in small-model reasoning is not parameter count, but a lack of architectural rigor, which can be mitigated through disciplined structural priors.
+\end{abstract}
+
+\section{Introduction}
+The rapid advancement of LLMs has revolutionized automated programming. However, a significant gap remains between generating simple snippets and implementing complex systems that require dynamic state management and strict interface adherence. Smaller models ($<$7B parameters), in particular, often possess the requisite ``knowledge'' (syntax and semantics) but lack the ``discipline'' to execute that knowledge within a coherent architectural framework.
+
+Current benchmarks such as HumanEval \cite{humaneval2021} and MBPP \cite{mbpp2021} are insufficient for evaluating these failures, as they focus on short, single-function tasks. Consequently, they overlook the ``Logical Collapse''---where a model's reasoning breaks down due to nested control flows or high-entropy state transitions.
+
+\textbf{Our Contributions:}
+\begin{enumerate}
+    \item \textbf{The Multi-dimensional Complexity Benchmark}: We propose a 5-axis metric to identify the ``Collapse Point'' where LLM reasoning fails due to structural load.
+    \item \textbf{The Concept of Design Intelligence}: We define and quantify ``Design Intelligence'' as a structural reasoning capability independent of raw parameter count.
+    \item \textbf{Absolute Discipline Methodology}: We introduce a two-stage process---Absolute Discipline SFT and Weight Crystallization---to embed engineering protocols into model weights.
+    \item \textbf{Empirical Breakthrough}: We demonstrate that a 3B model can rival 10B-class models in complex algorithmic tasks by shifting focus from ``scaling knowledge'' to ``crystallizing discipline.''
+\end{enumerate}
+
+\section{Theoretical Framework: Design Intelligence}
+
+\subsection{Defining Design Intelligence}
+We define \textbf{Design Intelligence} ($DI$) as the capability of an LLM to maintain structural and logical consistency throughout the execution of a specification. We model the overall performance ($P$) as a non-linear function of Knowledge ($K$) and Design Intelligence ($DI$):
+\begin{equation}
+    P = f(K, DI)
+\end{equation}
+In small models, $DI$ is the dominant variable determining the success rate in high-complexity tasks. We quantify $DI$ using three measurable sub-metrics:
+\begin{itemize}
+    \item \textbf{Structure Preservation Rate}: The ratio of outputs that maintain the required class and method hierarchies.
+    \item \textbf{Interface Match Rate}: The precision of adherence to predefined signatures.
+    \item \textbf{State Consistency Score}: The absence of self-contradictory logic in boundary conditions.
+\end{itemize}
+
+\subsection{The Collapse Point}
+Auto-regressive models are prone to accumulating local optimization errors, leading to a \textbf{Collapse Point}---a critical complexity threshold where the global logic disintegrates. While techniques like Chain-of-Thought (CoT) \cite{cot2022} provide local reasoning paths, they do not inherently prevent structural decay.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Figure1.png}
+    \caption{The Collapse Point Phenomenon: Logical failure triggered by structural load.}
+    \label{fig:collapse_point}
+\end{figure}
+
+\section{Experimental Design}
+
+\subsection{Complexity Metrics}
+To pinpoint failure points, we employ five metrics: Structural Complexity, Recursion \& Dependency, State Space, Contextual Complexity, and Semantic Nonlinearity.
+
+\subsection{The Scaffolding Pipeline}
+We utilize a \textbf{NL $\to$ LISP $\to$ CODE} pipeline. The LISP representation serves as the ``Architectural Blueprint,'' while Absolute Discipline ensures the model acts as a ``Rigorous Engineer.''
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Figure2.png}
+    \caption{The Absolute Discipline Pipeline: Enforcing structural priors across the transformation stages.}
+    \label{fig:pipeline}
+\end{figure}
+
+\section{Methodology: Absolute Discipline}
+
+\subsection{Absolute Discipline SFT}
+We enforce two primary constraints:
+\begin{itemize}
+    \item \textbf{Mandatory Encapsulation}: Solutions must be wrapped in a specific class structure.
+    \item \textbf{Strict Mapping}: Every identifier in the LISP blueprint must be mapped 1:1 to the implementation.
+\end{itemize}
+
+\subsection{Weight Crystallization}
+We merge the trained LoRA \cite{lora2021} adapters using a 0.7 (Discipline) to 0.3 (Knowledge) ratio \cite{modelmerge2024}. This specific ratio was determined via pilot ablation studies to be the optimal inflection point for structural stability.
+
+\section{Results and Analysis}
+
+\subsection{Performance Matrix}
+Our 3B disciplined model achieved a 58.6\% success rate, rivaling 10B-class models.
+
+\begin{table}[ht]
+    \centering
+    \caption{Model Performance Comparison}
+    \begin{tabular}{lccc}
+        \toprule
+        Model & Success Rate & Avg. Complexity & Note \\
+        \midrule
+        Qwen 2.5-Coder (14B) \cite{qwen2024} & 76.3\% & 0.321 & Top Performer \\
+        Gemma 3 (12B) \cite{gemma2025} & 74.6\% & 0.335 & Consistent \\
+        Falcon 3 (10B) & 59.3\% & 0.280 & Mid-range \\
+        \textbf{Qwen 2.5-Coder (3B) [Final]} & \textbf{58.6\%} & \textbf{0.301} & \textbf{Our Work} \\
+        Qwen 2.5-Coder (3B) [Base] & 30.5\% & 0.285 & Baseline \\
+        \bottomrule
+    \end{tabular}
+    \label{tab:performance}
+\end{table}
+
+\subsection{Analysis}
+The base 3B model hits a Collapse Point at ~0.25 complexity. Applying Absolute Discipline pushes this threshold to ~0.35, proving that discipline can compensate for parameter count.
+
+\section{Discussion}
+Previous research \cite{selfcorrect2023} indicates that LLMs cannot effectively self-correct structural errors. Our findings suggest that internalizing discipline at the weights level is superior. Furthermore, the success of small models \cite{phi22024, gemma2024} suggests a new paradigm: scaling discipline rather than just scaling knowledge.
+
+\section{Conclusion}
+The bottleneck of small models is primarily structural discipline. By crystallizing this discipline into model weights, we elevated a 3B model to 10B-class performance, paving the way for efficient and reliable AI engineering.
+
+All experimental resources, including datasets, benchmark tasks, and training/evaluation scripts, are publicly available at: \url{https://github.com/aikenkyu001/llm_complexity_benchmark}
+
+\bibliographystyle{plain}
+\bibliography{references}
+
+\end{document}

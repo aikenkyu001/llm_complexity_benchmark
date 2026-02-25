@@ -1,0 +1,30 @@
+{
+  "task_name": "text_justification",
+  "model": "qwen2.5-coder:14b",
+  "timestamp": "2026-02-25T12:03:32.121838",
+  "nl_problem": "# Task: text_justification\n# Interface:\nClass: Solution\nMethod: fullJustify(self, arg1, arg2)\n\nGiven an array of strings words and a width maxWidth, format the text such that each line has exactly maxWidth characters and is fully (left and right) justified.\nYou should pack your words in a greedy approach; that is, pack as many words as you can in each line. Pad extra spaces ' ' when necessary so that each line has exactly maxWidth characters.\nExtra spaces between words should be distributed as evenly as possible. If the number of spaces on a line does not divide evenly between words, the empty slots on the left will be assigned more spaces than the slots on the right.\nFor the last line of text, it should be left-justified, and no extra space is inserted between words.\n\nConstraints:\n- 1 <= words.length <= 300\n- 1 <= words[i].length <= 20\n- words[i] consists of only English letters and symbols.\n- 1 <= maxWidth <= 100\n- words[i].length <= maxWidth",
+  "lisp_spec": "(task\n  (name \"fullJustify\")\n  (signature ((words (list string)) (maxWidth int)) (list string))\n  (constraints\n    (constraint \"1 <= length(words) <= 300\")\n    (constraint \"1 <= length(words[i]) <= 20\")\n    (constraint \"words[i] consists of only English letters and symbols.\")\n    (constraint \"1 <= maxWidth <= 100\")\n    (constraint \"length(words[i]) <= maxWidth\")\n  )\n  (goal\n    (description \"Format the text such that each line has exactly maxWidth characters and is fully justified.\")\n    (rule \"Pack as many words as possible in each line using a greedy approach.\")\n    (rule \"Distribute extra spaces between words as evenly as possible.\")\n    (rule \"If the number of spaces on a line does not divide evenly, assign more spaces to the left slots.\")\n    (rule \"The last line should be left-justified with no extra space inserted between words.\")\n    (return \"A list of strings where each string represents a fully justified line.\")\n  )\n)",
+  "generated_code": "class Solution:\n    def fullJustify(self, words: List[str], maxWidth: int) -> List[str]:\n        def justify_line(words: List[str], total_length: int, is_last_line: bool) -> str:\n            if len(words) == 1 or is_last_line:\n                # Left-justify the line\n                return ' '.join(words).ljust(maxWidth)\n            \n            num_spaces = maxWidth - total_length\n            gaps = len(words) - 1\n            spaces_per_gap, extra_spaces = divmod(num_spaces, gaps)\n            \n            justified_line = []\n            for i in range(len(words)):\n                justified_line.append(words[i])\n                if i < gaps:\n                    justified_line.append(' ' * (spaces_per_gap + (1 if i < extra_spaces else 0)))\n            \n            return ''.join(justified_line)\n        \n        result = []\n        current_line = []\n        current_length = 0\n        \n        for word in words:\n            # Check if adding the next word exceeds maxWidth\n            if current_length + len(word) + len(current_line) > maxWidth:\n                # Justify the current line and add it to the result\n                result.append(justify_line(current_line, current_length, False))\n                # Reset for the new line\n                current_line = []\n                current_length = 0\n            \n            # Add the word to the current line\n            current_line.append(word)\n            current_length += len(word)\n        \n        # Justify and add the last line\n        if current_line:\n            result.append(justify_line(current_line, current_length, True))\n        \n        return result",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/text_justification/test_solution.py ..                [100%]\n\n============================== 2 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.40179999999999993,
+    "python": {
+      "cyclomatic_avg": 4.0,
+      "cyclomatic_max": 4,
+      "wmc": 4,
+      "maintainability_index": 76.66289786135424,
+      "max_nesting_depth": 5,
+      "halstead_volume": 0,
+      "lloc": 27,
+      "loc": 41
+    },
+    "lisp": {
+      "lisp_max_depth": 5,
+      "lisp_constraints": 6,
+      "lisp_rules": 4,
+      "lisp_token_count": 134
+    }
+  }
+}

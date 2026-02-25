@@ -1,0 +1,30 @@
+{
+  "task_name": "sudoku_solver_v2_nesting",
+  "model": "llama3.2-vision:11b",
+  "timestamp": "2026-02-20T16:36:52.768180",
+  "nl_problem": "# Task: sudoku_solver_v2_nesting\n# Interface:\nClass: Solution\nMethod: solveSudoku(self, arg1)\n\nWrite an optimized Sudoku Solver that implements a specific search heuristic.\n\nConstraints & Requirements:\n1. Standard Sudoku Rules: Each digit 1-9 must appear exactly once in each row, column, and 3x3 sub-box.\n2. Search Heuristic (MRV - Minimum Remaining Values): Instead of a simple scan, the solver must identify the empty cell with the fewest possible valid candidates before making a move.\n3. Implementation Structure:\n   - You MUST implement a helper function `get_possible_candidates(row, col)` which checks row, column, and sub-box constraints and returns a set of valid numbers.\n   - You MUST implement a helper function `select_next_cell()` that uses the candidates to find the most constrained cell (the one with the minimum non-zero candidates).\n   - The main solver should recursively call these nested functions.\n4. Input board: 9x9 list of strings, with '.' for empty cells.\n5. In-place modification: The function does not need to return the board.\n6. The solver must be able to handle puzzles that require backtracking.",
+  "lisp_spec": "(task\n  (name \"solveSudoku\")\n  (signature ( (self Solution) (arg1 (list (list string))) ) void)\n  (constraints\n    (constraint \"Each digit 1-9 must appear exactly once in each row, column, and 3x3 sub-box.\")\n    (constraint \"The search heuristic is MRV - Minimum Remaining Values.\")\n  )\n  (goal\n    (description \"Optimized Sudoku Solver that implements a specific search heuristic.\")\n    (rule \"The solver must identify the empty cell with the fewest possible valid candidates before making a move.\")\n    (rule \"The solver must recursively call the nested helper functions to find the most constrained cell.\")\n    (return \"The function does not return the board; it modifies it in-place.\")\n    (rule \"The solver must be able to handle puzzles that require backtracking.\")\n  )\n)",
+  "generated_code": "from typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\nclass Solution:\n    def solveSudoku(self, board: List[List[str]]) -> None:\n        rows = [set() for _ in range(9)]\n        cols = [set() for _ in range(9)]\n        boxes = [set() for _ in range(9)]\n        for i in range(9):\n            for j in range(9):\n                if board[i][j] != '.':\n                    num = int(board[i][j])\n                    rows[i].add(num)\n                    cols[j].add(num)\n                    box_index = (i // 3) * 3 + j // 3\n                    boxes[box_index].add(num)\n\n        def is_valid(num: int, row: int, col: int) -> bool:\n            box_index = (row // 3) * 3 + col // 3\n            return num not in rows[row] and num not in cols[col] and num not in boxes[box_index]\n\n        def find_empty() -> Optional[Tuple[int, int]]:\n            for i in range(9):\n                for j in range(9):\n                    if board[i][j] == '.':\n                        return i, j\n            return None\n\n        def solve() -> bool:\n            empty = find_empty()\n            if not empty:\n                return True\n            row, col = empty\n            for num in range(1, 10):\n                if is_valid(num, row, col):\n                    board[row][col] = str(num)\n                    rows[row].add(num)\n                    cols[col].add(num)\n                    box_index = (row // 3) * 3 + col // 3\n                    boxes[box_index].add(num)\n                    if solve():\n                        return True\n                    board[row][col] = '.'\n                    rows[row].remove(num)\n                    cols[col].remove(num)\n                    box_index = (row // 3) * 3 + col // 3\n                    boxes[box_index].remove(num)\n            return False\n\n        solve()",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/sudoku_solver_v2_nesting/test_solution.py ..          [100%]\n\n============================== 2 passed in 0.07s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.3797,
+    "python": {
+      "cyclomatic_avg": 7.0,
+      "cyclomatic_max": 7,
+      "wmc": 7,
+      "maintainability_index": 44.67275926662606,
+      "max_nesting_depth": 6,
+      "halstead_volume": 0,
+      "lloc": 46,
+      "loc": 51
+    },
+    "lisp": {
+      "lisp_max_depth": 6,
+      "lisp_constraints": 3,
+      "lisp_rules": 3,
+      "lisp_token_count": 111
+    }
+  }
+}

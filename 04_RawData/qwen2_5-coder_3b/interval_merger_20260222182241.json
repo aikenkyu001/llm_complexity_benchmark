@@ -1,0 +1,30 @@
+{
+  "task_name": "interval_merger",
+  "model": "qwen2.5-coder:3b",
+  "timestamp": "2026-02-22T18:22:41.509296",
+  "nl_problem": "# Task: interval_merger\n# Interface:\nClass: Solution\nMethod: merge(self, arg1)\n\nGiven an array of intervals where `intervals[i] = [starti, endi]`, merge all overlapping intervals, and return an array of the non-overlapping intervals that cover all the intervals in the input.\n\nConstraints:\n- 1 <= intervals.length <= 10^4\n- intervals[i].length == 2\n- 0 <= starti <= endi <= 10^4",
+  "lisp_spec": "(task\n  (name \"merge\")\n  (signature ( (intervals list) ) list)\n  (constraints\n    (constraint \"1 <= intervals.length <= 10^4\")\n    (constraint \"intervals[i].length == 2\")\n    (constraint \"0 <= starti <= endi <= 10^4\")\n  )\n  (goal\n    (description \"Merge all overlapping intervals in the input array and return an array of non-overlapping intervals.\")\n    (rule \"Two intervals are considered overlapping if one interval's start is less than or equal to the other's end.\")\n    (return \"An array of merged intervals, where each interval is represented as [start, end].\")\n  )\n)",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\nclass Solution:\n    def merge(self, intervals: List[List[int]]) -> List[List[int]]:\n        if not intervals:\n            return []\n\n        # Sort intervals by their start time\n        intervals.sort(key=lambda x: x[0])\n\n        merged = []\n        current_interval = intervals[0]\n\n        for interval in intervals[1:]:\n            if interval[0] <= current_interval[1]:\n                # Merge the current interval with the next one\n                current_interval[1] = max(current_interval[1], interval[1])\n            else:\n                # Add the current merged interval to the result and update current_interval\n                merged.append(current_interval)\n                current_interval = interval\n\n        # Add the last merged interval\n        merged.append(current_interval)\n\n        return merged",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-8.3.5, pluggy-1.6.0\nrootdir: /media/developer/USB480G/Project/llm_complexity_benchmark\nplugins: cov-7.0.0, langsmith-0.4.41, anyio-4.11.0\ncollected 3 items\n\n01_TestDefinitions/interval_merger/test_solution.py ...                  [100%]\n\n============================== 3 passed in 0.05s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.2662,
+    "python": {
+      "cyclomatic_avg": 4.0,
+      "cyclomatic_max": 4,
+      "wmc": 4,
+      "maintainability_index": 89.9297785884228,
+      "max_nesting_depth": 4,
+      "halstead_volume": 0,
+      "lloc": 19,
+      "loc": 29
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 4,
+      "lisp_rules": 1,
+      "lisp_token_count": 81
+    }
+  }
+}

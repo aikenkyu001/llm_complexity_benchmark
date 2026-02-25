@@ -1,0 +1,30 @@
+{
+  "task_name": "dijkstra_shortest_path",
+  "model": "falcon3:10b",
+  "timestamp": "2026-02-20T14:54:50.712229",
+  "nl_problem": "# Task: Dijkstra Shortest Path\n# Interface:\nClass: Solution\nMethod: dijkstra(self, graph: Dict[int, List[Tuple[int, int]]], start_node: int, n: int) -> List[float]\n\nGiven a weighted, undirected graph and a starting node, return the shortest distance to all other nodes from the source.\nThe graph is represented as an adjacency list: `graph[u] = [(v, weight), ...]`.\nIf a node is unreachable, the distance should be infinity (represented as a very large integer or float('inf')).\n\nConstraints:\n- The number of nodes is between 1 and 1000.\n- Weights are non-negative.",
+  "lisp_spec": "(task\n (name \"dijkstra\")\n (signature ( (graph (dict int (list tuple))) (start_node int) (n int) ) (list float))\n (constraints\n   (constraint \"The number of nodes is between 1 and 1000.\")\n   (constraint \"Weights are non-negative.\")\n )\n (goal\n   (description \"Given a weighted, undirected graph and a starting node, return the shortest distance to all other nodes from the source.\")\n   (rule \"The graph is represented as an adjacency list: graph[u] = [(v, weight), ...].\")\n   (return \"A list of floats representing the shortest distances from the start_node to all other nodes. If a node is unreachable, its distance is infinity (represented as a very large float).\")\n )\n)",
+  "generated_code": "from typing import List, Dict, Tuple, Union\nimport heapq\n\nclass Solution:\n    def dijkstra(self, graph: Dict[int, List[Tuple[int, float]]], start_node: int, n: int) -> List[float]:\n        \"\"\"\n        Given a weighted, undirected graph and a starting node, return the shortest distance to all other nodes from the source.\n\n        Args:\n            graph (Dict[int, List[Tuple[int, float]]]): The graph represented as an adjacency list.\n            start_node (int): The starting node.\n            n (int): The number of nodes in the graph.\n\n        Returns:\n            List[float]: A list of floats representing the shortest distances from the start_node to all other nodes.\n                        If a node is unreachable, its distance is represented as a very large float.\n        \"\"\"\n        # Initialize distances with infinity (represented as a very large float)\n        distances = [float('inf')] * n\n        distances[start_node] = 0\n\n        # Priority queue to store (distance, node) pairs\n        pq = [(0, start_node)]\n\n        while pq:\n            current_distance, current_node = heapq.heappop(pq)\n\n            # If the current distance is greater than the recorded distance, skip this iteration\n            if current_distance > distances[current_node]:\n                continue\n\n            for neighbor, weight in graph[current_node]:\n                distance = current_distance + weight\n\n                # Only consider this new path if it's better\n                if distance < distances[neighbor]:\n                    distances[neighbor] = distance\n                    heapq.heappush(pq, (distance, neighbor))\n\n        # Replace infinity with a very large float to represent unreachable nodes\n        for i in range(n):\n            if distances[i] == float('inf'):\n                distances[i] = float('inf')\n\n        return distances",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/dijkstra_shortest_path/test_solution.py ..            [100%]\n\n============================== 2 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.3129,
+    "python": {
+      "cyclomatic_avg": 7.0,
+      "cyclomatic_max": 7,
+      "wmc": 7,
+      "maintainability_index": 86.29195469607218,
+      "max_nesting_depth": 5,
+      "halstead_volume": 0,
+      "lloc": 21,
+      "loc": 45
+    },
+    "lisp": {
+      "lisp_max_depth": 6,
+      "lisp_constraints": 3,
+      "lisp_rules": 1,
+      "lisp_token_count": 102
+    }
+  }
+}

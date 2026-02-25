@@ -1,0 +1,30 @@
+{
+  "task_name": "synthetic_constraints_n20",
+  "model": "qwen2.5-coder:3b",
+  "timestamp": "2026-02-22T18:29:16.303249",
+  "nl_problem": "# Task: Multi-Constraint Check (Density 20)\n# Interface:\nClass: Solution\nMethod: isValid(self, n: int) -> bool\n\n# Objective:\nReturn True if the integer `n` satisfies ALL of the following 20 independent constraints:\n1. n is greater than 2\n2. n is not equal to 104\n3. n is a multiple of 1\n4. n is greater than 8\n5. n is not equal to 110\n6. n is a multiple of 2\n7. n is greater than 14\n8. n is not equal to 116\n9. n is a multiple of 4\n10. n is greater than 20\n11. n is not equal to 122\n12. n is a multiple of 5\n13. n is greater than 26\n14. n is not equal to 128\n15. n is a multiple of 7\n16. n is greater than 32\n17. n is not equal to 134\n18. n is a multiple of 8\n19. n is greater than 38\n20. n is not equal to 140",
+  "lisp_spec": "(task\n  (name \"is_valid\")\n  (signature ( (n int) ) bool)\n  (constraints\n    (constraint \"n is greater than 2\")\n    (constraint \"n is not equal to 104\")\n    (constraint \"n is a multiple of 1\")\n    (constraint \"n is greater than 8\")\n    (constraint \"n is not equal to 110\")\n    (constraint \"n is a multiple of 2\")\n    (constraint \"n is greater than 14\")\n    (constraint \"n is not equal to 116\")\n    (constraint \"n is a multiple of 4\")\n    (constraint \"n is greater than 20\")\n    (constraint \"n is not equal to 122\")\n    (constraint \"n is a multiple of 5\")\n    (constraint \"n is greater than 26\")\n    (constraint \"n is not equal to 128\")\n    (constraint \"n is a multiple of 7\")\n    (constraint \"n is greater than 32\")\n    (constraint \"n is not equal to 134\")\n    (constraint \"n is a multiple of 8\")\n    (constraint \"n is greater than 38\")\n    (constraint \"n is not equal to 140\")\n  )\n  (goal\n    (description \"Return True if the integer `n` satisfies ALL of the following 20 independent constraints.\")\n    (rule \"Check each constraint in sequence.\")\n    (return \"True if all constraints are satisfied, False otherwise.\")\n  )\n)",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\n\nclass Solution:\n    def is_valid(self, n: int) -> bool:\n        constraints = [\n            (n > 2),\n            (n != 104),\n            (n % 1 == 0),\n            (n > 8),\n            (n != 110),\n            (n % 2 == 0),\n            (n > 14),\n            (n != 116),\n            (n % 4 == 0),\n            (n > 20),\n            (n != 122),\n            (n % 5 == 0),\n            (n > 26),\n            (n != 128),\n            (n % 7 == 0),\n            (n > 32),\n            (n != 134),\n            (n % 8 == 0),\n            (n > 38),\n            (n != 140)\n        ]\n        \n        return all(constraint for constraint in constraints)\n\n# Example usage:\n# print(Solution().is_valid(15))  # Output: True",
+  "test_passed": false,
+  "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-8.3.5, pluggy-1.6.0\nrootdir: /media/developer/USB480G/Project/llm_complexity_benchmark\nplugins: cov-7.0.0, langsmith-0.4.41, anyio-4.11.0\ncollected 2 items\n\n01_TestDefinitions/synthetic_constraints_n20/test_solution.py FF         [100%]\n\n=================================== FAILURES ===================================\n____________________________ test_constraints_pass _____________________________\n\n    def test_constraints_pass():\n        sol = Solution()\n        # A large value like 100000 should satisfy simple 'greater than' and 'not equal' rules\n        # We use a value that is likely to be a multiple of small primes too\n>       assert sol.isValid(720720) == True\nE       AttributeError: 'Solution' object has no attribute 'isValid'. Did you mean: 'is_valid'?\n\n01_TestDefinitions/synthetic_constraints_n20/test_solution.py:8: AttributeError\n____________________________ test_constraints_fail _____________________________\n\n    def test_constraints_fail():\n        sol = Solution()\n>       assert sol.isValid(-1) == False\nE       AttributeError: 'Solution' object has no attribute 'isValid'. Did you mean: 'is_valid'?\n\n01_TestDefinitions/synthetic_constraints_n20/test_solution.py:12: AttributeError\n=========================== short test summary info ============================\nFAILED 01_TestDefinitions/synthetic_constraints_n20/test_solution.py::test_constraints_pass\nFAILED 01_TestDefinitions/synthetic_constraints_n20/test_solution.py::test_constraints_fail\n============================== 2 failed in 0.07s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.4104,
+    "python": {
+      "cyclomatic_avg": 2.0,
+      "cyclomatic_max": 2,
+      "wmc": 2,
+      "maintainability_index": 85.18641613964267,
+      "max_nesting_depth": 2,
+      "halstead_volume": 0,
+      "lloc": 5,
+      "loc": 32
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 21,
+      "lisp_rules": 1,
+      "lisp_token_count": 177
+    }
+  }
+}

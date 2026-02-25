@@ -1,0 +1,30 @@
+{
+  "task_name": "regex_matcher",
+  "model": "qwen2.5-coder:3b",
+  "timestamp": "2026-02-22T18:26:26.240589",
+  "nl_problem": "# Task: regex_matcher\n# Interface:\nClass: Solution\nMethod: isMatch(self, arg1, arg2)\n\nGiven an input string s and a pattern p, implement regular expression matching with support for '.' and '*' where:\n- '.' Matches any single character.\u200b\u200b\u200b\u200b\n- '*' Matches zero or more of the preceding element.\nThe matching should cover the entire input string (not partial).\n\nConstraints:\n- 1 <= s.length <= 20\n- 1 <= p.length <= 20\n- s contains only lowercase English letters.\n- p contains only lowercase English letters, '.', and '*'.\n- It is guaranteed for each appearance of the character '*', there will be a previous valid character to match.",
+  "lisp_spec": "(task\n  (name \"isMatch\")\n  (signature ( (s str) (p str) ) bool)\n  (constraints\n    (constraint \"1 <= s.length <= 20\")\n    (constraint \"1 <= p.length <= 20\")\n    (constraint \"s contains only lowercase English letters.\")\n    (constraint \"p contains only lowercase English letters, '.', and '*'.\")\n    (constraint \"It is guaranteed for each appearance of the character '*', there will be a previous valid character to match.\")\n  )\n  (goal\n    (description \"Implement regular expression matching with support for '.' and '*' where:\")\n    (rule \"'.' Matches any single character.\u200b\u200b\u200b\u200b'\")\n    (rule \"'*' Matches zero or more of the preceding element.\")\n    (return \"Return true if the string s matches the pattern p, otherwise return false.\")\n  )\n)",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\nclass Solution:\n    def isMatch(self, s: str, p: str) -> bool:\n        m, n = len(s), len(p)\n        \n        # Initialize a DP table with (m+1) x (n+1) dimensions\n        dp = [[False] * (n + 1) for _ in range(m + 1)]\n        \n        # Base case: empty pattern matches empty string\n        dp[0][0] = True\n        \n        # Handle patterns with '*' at the beginning\n        for j in range(1, n + 1):\n            if p[j - 1] == '*':\n                dp[0][j] = dp[0][j - 2]\n        \n        # Fill the DP table\n        for i in range(1, m + 1):\n            for j in range(1, n + 1):\n                if p[j - 1] == s[i - 1] or p[j - 1] == '.':\n                    dp[i][j] = dp[i - 1][j - 1]\n                elif p[j - 1] == '*':\n                    # '*' matches zero or more of the preceding element\n                    dp[i][j] = dp[i][j - 2] or (dp[i - 1][j] and (s[i - 1] == p[j - 2] or p[j - 2] == '.'))\n        \n        return dp[m][n]",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-8.3.5, pluggy-1.6.0\nrootdir: /media/developer/USB480G/Project/llm_complexity_benchmark\nplugins: cov-7.0.0, langsmith-0.4.41, anyio-4.11.0\ncollected 2 items\n\n01_TestDefinitions/regex_matcher/test_solution.py ..                     [100%]\n\n============================== 2 passed in 0.03s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.48140000000000005,
+    "python": {
+      "cyclomatic_avg": 12.0,
+      "cyclomatic_max": 12,
+      "wmc": 12,
+      "maintainability_index": 79.60763444388932,
+      "max_nesting_depth": 6,
+      "halstead_volume": 0,
+      "lloc": 18,
+      "loc": 30
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 6,
+      "lisp_rules": 2,
+      "lisp_token_count": 107
+    }
+  }
+}

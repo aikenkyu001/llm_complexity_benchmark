@@ -1,0 +1,29 @@
+{
+  "task_name": "fractional_knapsack",
+  "model": "qwen_merged_final_model",
+  "timestamp": "2026-02-24T17:42:11.156409",
+  "nl_problem": "# Task: fractional_knapsack\n# Interface:\nClass: Solution\nMethod: fractionalKnapsack(self, arg1, arg2)\n\nGiven a set of items, each with a weight and a value, and a knapsack of a given capacity, find the maximum total value you can carry. In the fractional knapsack problem, you can break items for maximizing the total value.\nItems are given as a list of pairs: `(value, weight)`.\n\nConstraints:\n- 1 <= n <= 10^5\n- 1 <= capacity <= 10^7\n- 1 <= value, weight <= 1000",
+  "lisp_spec": "(task\n  (name \"fractionalKnapsack\")\n  (signature ( (items list (tuple int int))) (float))\n  (constraints\n    (constraint \"1 <= n <= 10^5\")\n    (constraint \"1 <= capacity <= 10^7\")\n    (constraint \"1 <= value, weight <= 1000\")\n  )\n  (goal\n    (description \"Given a set of items, each with a weight and a value, and a knapsack of a given capacity, find the maximum total value you can carry. In the fractional knapsack problem, you can break items for maximizing the total value.\")\n    (rule \"Sort items by value-to-weight ratio in descending order.\")\n    (rule \"Iterate through sorted items, adding as much as possible of each item until the knapsack is full.\")\n    (rule \"If the knapsack is not full, add the remaining fraction of the last item.\")\n    (return \"The maximum total value that can be carried by the knapsack.\")\n  ))",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\n# Define any helper classes here if needed\n\nclass Item:\n    def __init__(self, weight: int, value: int):\n        self.weight = weight\n        self.value = value\n        self.ratio = value / weight\n\n    def __lt__(self, other):\n        return self.ratio > other.ratio\n\nclass Solution:\n    def fractionalKnapsack(self, items: List[tuple[int, int]]) -> float:\n        # Create a max-heap based on the value-to-weight ratio\n        heap = []\n        for weight, value in items:\n            heapq.heappush(heap, Item(weight, value))\n\n        total_value = 0.0\n        current_capacity = 0\n\n        while heap:\n            item = heapq.heappop(heap)\n            if current_capacity + item.weight <= capacity:\n                total_value += item.value\n                current_capacity += item.weight\n            else:\n                remaining_weight = capacity - current_capacity\n                total_value += remaining_weight * item.ratio\n                break\n\n        return total_value",
+  "test_passed": false,
+  "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /home/miyata/projects/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/fractional_knapsack/test_solution.py FF               [100%]\n\n=================================== FAILURES ===================================\n________________________ test_fractional_knapsack_basic ________________________\n\n    def test_fractional_knapsack_basic():\n        solution = Solution()\n        items = [(60, 10), (100, 20), (120, 30)]\n        capacity = 50\n        # Items (val/weight): (6,10), (5,20), (4,30)\n        # Take all of item1 (60) and item2 (100) and 2/3 of item3 (80) -> 240\n>       assert solution.fractionalKnapsack(items, capacity) == 240.0\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       TypeError: Solution.fractionalKnapsack() takes 2 positional arguments but 3 were given\n\n01_TestDefinitions/fractional_knapsack/test_solution.py:10: TypeError\n________________________ test_fractional_knapsack_empty ________________________\n\n    def test_fractional_knapsack_empty():\n        solution = Solution()\n>       assert solution.fractionalKnapsack([], 10) == 0.0\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       TypeError: Solution.fractionalKnapsack() takes 2 positional arguments but 3 were given\n\n01_TestDefinitions/fractional_knapsack/test_solution.py:14: TypeError\n=========================== short test summary info ============================\nFAILED 01_TestDefinitions/fractional_knapsack/test_solution.py::test_fractional_knapsack_basic\nFAILED 01_TestDefinitions/fractional_knapsack/test_solution.py::test_fractional_knapsack_empty\n============================== 2 failed in 0.04s ===============================\n",
+  "complexity_metrics": {
+    "total_complexity_score": 0.316,
+    "python": {
+      "cyclomatic_avg": 2.0,
+      "cyclomatic_max": 4,
+      "wmc": 6,
+      "maintainability_index": 72.09800698087452,
+      "max_nesting_depth": 4,
+      "halstead_volume": 0,
+      "lloc": 27,
+      "loc": 37
+    },
+    "lisp": {
+      "lisp_max_depth": 5,
+      "lisp_constraints": 4,
+      "lisp_rules": 3,
+      "lisp_token_count": 130
+    }
+  }
+}

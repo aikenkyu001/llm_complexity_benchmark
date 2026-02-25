@@ -1,0 +1,30 @@
+{
+  "task_name": "word_ladder_v2_branching",
+  "model": "gemma3:12b",
+  "timestamp": "2026-02-20T16:07:39.461003",
+  "nl_problem": "# Task: word_ladder_v2_branching\n# Interface:\nClass: Solution\nMethod: ladderLength(self, arg1, arg2, arg3)\n\nGiven two words, beginWord and endWord, and a dictionary's word list, find the length of the shortest transformation sequence from beginWord to endWord.\nThis is a complex version with multiple additional rules:\n1. You MUST use a Bidirectional BFS to minimize the search space.\n2. For each word transformation, you must check a 'forbidden_combinations' list (not provided, assume a helper `is_forbidden(word1, word2)` exists or handle it as a potential constraint).\n3. The wordList can be very large; prioritize memory efficiency.\n4. Return 0 if no path exists.\n\nConstraints:\n- Word length up to 20.\n- wordList size up to 10^5.\n- beginWord and endWord are different.",
+  "lisp_spec": "(task\n  (name \"ladderLength\")\n  (signature ( (beginWord string) (endWord string) (wordList list string) ) int)\n  (constraints\n    (constraint \"Word length is up to 20.\")\n    (constraint \"wordList size is up to 10^5.\")\n    (constraint \"beginWord and endWord are different.\")\n    (constraint \"A helper function `is_forbidden(word1, word2)` exists to check forbidden combinations.\")\n  )\n  (goal\n    (description \"Find the length of the shortest transformation sequence from beginWord to endWord using a bidirectional BFS, respecting forbidden combinations.\")\n    (rule \"Use a bidirectional BFS to minimize search space.\")\n    (rule \"For each word transformation, check if the combination is forbidden using `is_forbidden(word1, word2)`.\")\n    (rule \"Prioritize memory efficiency due to potentially large wordList.\")\n    (return \"Return the length of the shortest transformation sequence. Return 0 if no path exists.\")\n  )\n)",
+  "generated_code": "from typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\ndef is_forbidden(word1: str, word2: str) -> bool:\n    \"\"\"\n    Placeholder for the forbidden word checker.  Replace with actual implementation.\n    \"\"\"\n    return False  # Replace with actual forbidden check\n\nclass Solution:\n    def ladderLength(self, beginWord: str, endWord: str, wordList: List[str]) -> int:\n        \"\"\"\n        Finds the length of the shortest transformation sequence from beginWord to endWord.\n\n        Args:\n            beginWord: The starting word.\n            endWord: The target word.\n            wordList: A list of valid words.\n\n        Returns:\n            The length of the shortest transformation sequence. Returns 0 if no path exists.\n        \"\"\"\n\n        if endWord not in wordList:\n            return 0\n\n        wordSet = set(wordList)\n        queue1 = collections.deque([beginWord])\n        queue2 = collections.deque([endWord])\n        visited1 = {beginWord}\n        visited2 = {endWord}\n        distance = 1\n\n        while queue1 and queue2:\n            # Forward BFS\n            new_queue1 = collections.deque()\n            for word in queue1:\n                for i in range(len(word)):\n                    for char_code in range(ord('a'), ord('z') + 1):\n                        new_word = word[:i] + chr(char_code) + word[i+1:]\n                        if new_word == endWord:\n                            return distance + 1\n                        if new_word in wordSet and new_word not in visited1:\n                            if not is_forbidden(word, new_word):\n                                new_queue1.append(new_word)\n                                visited1.add(new_word)\n            queue1 = new_queue1\n\n            # Backward BFS\n            new_queue2 = collections.deque()\n            for word in queue2:\n                for i in range(len(word)):\n                    for char_code in range(ord('a'), ord('z') + 1):\n                        new_word = word[:i] + chr(char_code) + word[i+1:]\n                        if new_word == beginWord:\n                            return distance + 1\n                        if new_word in wordSet and new_word not in visited2:\n                            if not is_forbidden(new_word, word):\n                                new_queue2.append(new_word)\n                                visited2.add(new_word)\n            queue2 = new_queue2\n\n            distance += 1\n\n        return 0",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/word_ladder_v2_branching/test_solution.py ..          [100%]\n\n============================== 2 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.6084,
+    "python": {
+      "cyclomatic_avg": 9.5,
+      "cyclomatic_max": 18,
+      "wmc": 19,
+      "maintainability_index": 71.07832889085928,
+      "max_nesting_depth": 8,
+      "halstead_volume": 0,
+      "lloc": 46,
+      "loc": 66
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 5,
+      "lisp_rules": 3,
+      "lisp_token_count": 117
+    }
+  }
+}

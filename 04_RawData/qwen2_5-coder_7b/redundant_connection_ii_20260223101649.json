@@ -1,0 +1,30 @@
+{
+  "task_name": "redundant_connection_ii",
+  "model": "qwen2.5-coder:7b",
+  "timestamp": "2026-02-23T10:16:49.189162",
+  "nl_problem": "# Task: redundant_connection_ii\n# Interface:\nClass: Solution\nMethod: findRedundantDirectedConnection(self, arg1)\n\nIn this problem, a rooted tree is a directed graph such that, there is exactly one node (the root) for which all other nodes are descendants of this node, plus every node has exactly one parent, except for the root node which has no parents.\nThe given input is a directed graph that started as a rooted tree with n nodes (with distinct values from 1 to n), with one additional directed edge added. The added edge connects two different vertices chosen from 1 to n, and was not an edge that already existed.\nThe resulting graph is given as a 2D-array of edges. Each element of edges is a pair [ui, vi] that represents a directed edge connecting nodes ui and vi, where ui is a parent of child vi.\nReturn an edge that can be removed so that the resulting graph is a rooted tree of n nodes. If there are multiple answers, return the last occurrence in the given 2D-array.\n\nConstraints:\n- n == edges.length\n- 3 <= n <= 1000\n- edges[i].length == 2\n- 1 <= ui, vi <= n",
+  "lisp_spec": "(task\n  (name \"findRedundantDirectedConnection\")\n  (signature ( (edges (list (list int int))) ) (list int))\n  (constraints\n    (constraint \"n == edges.length\")\n    (constraint \"3 <= n <= 1000\")\n    (constraint \"edges[i].length == 2\")\n    (constraint \"1 <= ui, vi <= n\")\n  )\n  (goal\n    (description \"Find an edge that can be removed to make the graph a rooted tree.\")\n    (rule \"Return the last occurrence of such an edge if there are multiple answers.\")\n    (return \"The edge as a list [ui, vi] that should be removed.\")\n  )\n)",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\nclass Solution:\n    def findRedundantDirectedConnection(self, edges: List[List[int]]) -> List[int]:\n        n = len(edges)\n        parent = [-1] * (n + 1)\n        candidate = -1\n        for u, v in edges:\n            if parent[v] != -1:\n                candidate = v\n                break\n            parent[v] = u\n        \n        if candidate == -1:\n            indegree = [0] * (n + 1)\n            for u, v in edges:\n                indegree[v] += 1\n            for u, v in reversed(edges):\n                if indegree[v] == 2:\n                    return [parent[v], v]\n        \n        for u, v in reversed(edges):\n            if v == candidate:\n                continue\n            parent[v] = -1\n            visited = set()\n            stack = [u]\n            while stack:\n                node = stack.pop()\n                if node == candidate:\n                    return [parent[v], v]\n                visited.add(node)\n                for nei, _ in enumerate(parent):\n                    if nei != node and nei not in visited and parent[nei] == node:\n                        stack.append(nei)\n            parent[v] = u\n        \n        return []",
+  "test_passed": false,
+  "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-8.3.5, pluggy-1.6.0\nrootdir: /media/developer/USB480G/Project/llm_complexity_benchmark\nplugins: cov-7.0.0, langsmith-0.4.41, anyio-4.11.0\ncollected 3 items\n\n01_TestDefinitions/redundant_connection_ii/test_solution.py FFF          [100%]\n\n=================================== FAILURES ===================================\n___________________________ test_redundant_ii_cycle ____________________________\n\n    def test_redundant_ii_cycle():\n        solution = Solution()\n        edges = [[1,2], [1,3], [2,3]]\n>       assert solution.findRedundantDirectedConnection(edges) == [2,3]\nE       assert [-1, 2] == [2, 3]\nE         \nE         At index 0 diff: -1 != 2\nE         Use -v to get more diff\n\n01_TestDefinitions/redundant_connection_ii/test_solution.py:7: AssertionError\n__________________________ test_redundant_ii_complex ___________________________\n\n    def test_redundant_ii_complex():\n        solution = Solution()\n        edges = [[1,2], [2,3], [3,4], [4,1], [1,5]]\n>       assert solution.findRedundantDirectedConnection(edges) == [4,1]\nE       assert [] == [4, 1]\nE         \nE         Right contains 2 more items, first extra item: 4\nE         Use -v to get more diff\n\n01_TestDefinitions/redundant_connection_ii/test_solution.py:12: AssertionError\n________________________ test_redundant_ii_two_parents _________________________\n\n    def test_redundant_ii_two_parents():\n        solution = Solution()\n        edges = [[2,1], [3,1], [4,2], [1,4]]\n>       assert solution.findRedundantDirectedConnection(edges) == [2,1]\nE       assert [-1, 4] == [2, 1]\nE         \nE         At index 0 diff: -1 != 2\nE         Use -v to get more diff\n\n01_TestDefinitions/redundant_connection_ii/test_solution.py:17: AssertionError\n=========================== short test summary info ============================\nFAILED 01_TestDefinitions/redundant_connection_ii/test_solution.py::test_redundant_ii_cycle\nFAILED 01_TestDefinitions/redundant_connection_ii/test_solution.py::test_redundant_ii_complex\nFAILED 01_TestDefinitions/redundant_connection_ii/test_solution.py::test_redundant_ii_two_parents\n============================== 3 failed in 0.10s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.47350000000000003,
+    "python": {
+      "cyclomatic_avg": 15.0,
+      "cyclomatic_max": 15,
+      "wmc": 15,
+      "maintainability_index": 56.94903217970545,
+      "max_nesting_depth": 6,
+      "halstead_volume": 0,
+      "lloc": 36,
+      "loc": 41
+    },
+    "lisp": {
+      "lisp_max_depth": 6,
+      "lisp_constraints": 5,
+      "lisp_rules": 1,
+      "lisp_token_count": 80
+    }
+  }
+}

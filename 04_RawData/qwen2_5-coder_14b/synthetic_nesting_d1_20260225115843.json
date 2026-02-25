@@ -1,0 +1,30 @@
+{
+  "task_name": "synthetic_nesting_d1",
+  "model": "qwen2.5-coder:14b",
+  "timestamp": "2026-02-25T11:58:43.181111",
+  "nl_problem": "# Task: Nested Logic Test (Depth 1)\n# Interface:\nClass: Solution\nMethod: checkNested(self, x0: int) -> bool\n\n# Objective:\nThis is a test of structural nesting. Return True ONLY if all the following conditions are met:\n1. x0 is greater than 0\n\nEach condition must be checked inside the previous one (nested if statements).",
+  "lisp_spec": "(task\n  (name \"checkNested\")\n  (signature ((x0 int)) bool)\n  (constraints\n    (constraint \"x0 must be an integer.\")\n  )\n  (goal\n    (description \"Check if the given integer x0 satisfies all nested conditions.\")\n    (rule \"Return True only if x0 is greater than 0.\")\n    (return \"True if all conditions are met, otherwise False.\")\n  )\n)",
+  "generated_code": "# solution.py\nfrom typing import bool\n\nclass Solution:\n    def checkNested(self, x0: int) -> bool:\n        \"\"\"\n        Check if the given integer x0 satisfies all nested conditions.\n\n        Parameters:\n        x0 (int): The integer to be checked.\n\n        Returns:\n        bool: True if x0 is greater than 0, otherwise False.\n        \"\"\"\n        return x0 > 0",
+  "test_passed": false,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 0 items / 1 error\n\n==================================== ERRORS ====================================\n__ ERROR collecting 01_TestDefinitions/synthetic_nesting_d1/test_solution.py ___\nImportError while importing test module '/private/test/llm_complexity_benchmark/01_TestDefinitions/synthetic_nesting_d1/test_solution.py'.\nHint: make sure your test modules/packages have valid Python names.\nTraceback:\n/opt/homebrew/Cellar/python@3.14/3.14.3_1/Frameworks/Python.framework/Versions/3.14/lib/python3.14/importlib/__init__.py:88: in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n01_TestDefinitions/synthetic_nesting_d1/test_solution.py:2: in <module>\n    from solution import Solution\n01_TestDefinitions/synthetic_nesting_d1/solution.py:2: in <module>\n    from typing import bool\nE   ImportError: cannot import name 'bool' from 'typing' (/opt/homebrew/Cellar/python@3.14/3.14.3_1/Frameworks/Python.framework/Versions/3.14/lib/python3.14/typing.py)\n=========================== short test summary info ============================\nERROR 01_TestDefinitions/synthetic_nesting_d1/test_solution.py\n!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!\n=============================== 1 error in 0.08s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.1321,
+    "python": {
+      "cyclomatic_avg": 1.0,
+      "cyclomatic_max": 1,
+      "wmc": 1,
+      "maintainability_index": 85.87285774682948,
+      "max_nesting_depth": 2,
+      "halstead_volume": 0,
+      "lloc": 5,
+      "loc": 15
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 2,
+      "lisp_rules": 1,
+      "lisp_token_count": 48
+    }
+  }
+}

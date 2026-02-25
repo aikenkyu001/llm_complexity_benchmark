@@ -1,0 +1,30 @@
+{
+  "task_name": "dijkstra_v2_state_space",
+  "model": "llama3.2-vision:11b",
+  "timestamp": "2026-02-20T16:17:38.398393",
+  "nl_problem": "# Task: Dijkstra V2 (State Space)\n# Interface:\nClass: Solution\nMethod: find_min_cost(self, start: Tuple[int, int], target: Tuple[int, int]) -> int\n\nFind the minimum cost to travel from a start coordinate to a target coordinate in a 2D grid where moving from (x, y) to (x+1, y) or (x, y+1) has a cost that depends on the coordinates.\nCost formula: `cost = (x + y) % 5 + 1`.\n\n# Implementation Hint:\nUse Dijkstra's algorithm where the priority queue stores the tuple `(total_cost, x, y)`.\nThe state space is a 2D grid, but logically it could be an infinite plane. Use a dictionary or a set to track visited states and their minimum costs.\n\nConstraints:\n- 0 <= x, y <= 100\n- Cost is always positive.",
+  "lisp_spec": "(task\n  (name \"find_min_cost\")\n  (signature ( (self Solution) (start tuple int int) (target tuple int int) ) int)\n  (constraints\n    (constraint \"0 <= x, y <= 100\")\n    (constraint \"Cost is always positive.\")\n  )\n  (goal\n    (description \"Find the minimum cost to travel from start to target in a 2D grid.\")\n    (rule \"Use Dijkstra's algorithm with priority queue storing (total_cost, x, y).\")\n    (rule \"Use a dictionary or set to track visited states and their minimum costs.\")\n    (return \"The minimum cost to travel from start to target.\")\n  ))\n)",
+  "generated_code": "from typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\nclass Solution:\n    def find_min_cost(self, start: tuple[int, int], target: tuple[int, int]) -> int:\n        # Define the possible movements in the grid (up, down, left, right)\n        movements = [(0, 1), (0, -1), (1, 0), (-1, 0)]\n\n        # Initialize the priority queue with the starting point\n        pq = [(0, start[0], start[1])]\n\n        # Initialize the dictionary to track visited states and their minimum costs\n        visited: Dict[tuple[int, int], int] = {start: 0}\n\n        while pq:\n            # Extract the state with the minimum cost from the priority queue\n            total_cost, x, y = heapq.heappop(pq)\n\n            # If the current state is the target, return the total cost\n            if (x, y) == target:\n                return total_cost\n\n            # Explore the neighbors of the current state\n            for dx, dy in movements:\n                nx, ny = x + dx, y + dy\n\n                # Check if the neighbor is within the grid boundaries\n                if 0 <= nx <= 100 and 0 <= ny <= 100:\n                    # Calculate the new total cost\n                    new_total_cost = total_cost + 1\n\n                    # If the neighbor has not been visited before or the new total cost is less than the previous cost\n                    if (nx, ny) not in visited or new_total_cost < visited[(nx, ny)]:\n                        # Update the visited dictionary and push the new state into the priority queue\n                        visited[(nx, ny)] = new_total_cost\n                        heapq.heappush(pq, (new_total_cost, nx, ny))\n\n        # If the target is not reachable, return -1\n        return -1",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 1 item\n\n01_TestDefinitions/dijkstra_v2_state_space/test_solution.py .            [100%]\n\n============================== 1 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.36679999999999996,
+    "python": {
+      "cyclomatic_avg": 8.0,
+      "cyclomatic_max": 8,
+      "wmc": 8,
+      "maintainability_index": 83.17703424893833,
+      "max_nesting_depth": 6,
+      "halstead_volume": 0,
+      "lloc": 21,
+      "loc": 40
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 3,
+      "lisp_rules": 2,
+      "lisp_token_count": 84
+    }
+  }
+}

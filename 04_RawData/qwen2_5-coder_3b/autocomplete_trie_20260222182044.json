@@ -1,0 +1,30 @@
+{
+  "task_name": "autocomplete_trie",
+  "model": "qwen2.5-coder:3b",
+  "timestamp": "2026-02-22T18:20:44.102870",
+  "nl_problem": "# Task: Autocomplete System\n# Interface:\nClass: Solution\nMethod: initAutocomplete(self, sentences: List[str], times: List[int]) -> None\nMethod: query(self, prefix: str) -> List[str]\n\nDesign an autocomplete system that returns the top 3 historical sentences that start with the same prefix.\nThe system is initialized with a list of sentences and their respective search counts (times).\n- `initAutocomplete(sentences, times)`: Initializes the system.\n- `query(prefix)`: Returns the top 3 hot sentences starting with the prefix. If multiple sentences have the same frequency, return them in lexicographical order.\n\n# Implementation Hint:\nUse a Trie to store sentences. Each node in the Trie can store the historical sentences and their frequencies passing through that node.\nFor the `query` method, navigate to the node representing the prefix and retrieve the top results.\n\nConstraints:\n- Sentences contain only lowercase English letters and spaces.\n- Up to 100 historical sentences.",
+  "lisp_spec": "(task\n  (name \"initAutocomplete\")\n  (signature ( (sentences list) (times list) ) void)\n  (constraints\n    (constraint \"Sentences contain only lowercase English letters and spaces.\")\n    (constraint \"Up to 100 historical sentences.\")\n  )\n  (goal\n    (description \"Initializes the autocomplete system with a list of sentences and their respective search counts.\")\n    (rule \"The `initAutocomplete` method should store each sentence along with its frequency in a Trie data structure.\")\n  )\n)\n\n(task\n  (name \"query\")\n  (signature ( (prefix string) ) list)\n  (constraints\n    (constraint \"Prefix contains only lowercase English letters and spaces.\")\n  )\n  (goal\n    (description \"Returns the top 3 hot sentences starting with the prefix. If multiple sentences have the same frequency, return them in lexicographical order.\")\n    (rule \"The `query` method should navigate to the Trie node representing the prefix and retrieve the top 3 results based on frequency and lexicographical order.\")\n  )\n)",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\nclass TrieNode:\n    def __init__(self):\n        self.children = {}\n        self.hotness = 0\n        self.sentences: Set[str] = set()\n\nclass Solution:\n    def initAutocomplete(self, sentences: List[str], times: List[int]) -> None:\n        # Initialize the Trie with each sentence and its frequency\n        self.root = TrieNode()\n        for sentence, time in zip(sentences, times):\n            node = self.root\n            for char in sentence:\n                if char not in node.children:\n                    node.children[char] = TrieNode()\n                node = node.children[char]\n                node.hotness += time\n                node.sentences.add(sentence)\n\n    def query(self, prefix: str) -> List[str]:\n        # Query the Trie for sentences starting with the given prefix\n        node = self.root\n        for char in prefix:\n            if char not in node.children:\n                return []\n            node = node.children[char]\n        \n        # Use a max-heap to find the top 3 hot sentences\n        heap = []\n        def dfs(node):\n            nonlocal heap\n            if len(heap) < 3 or node.hotness > -heap[0][0]:\n                heapq.heappush(heap, (-node.hotness, node.sentences))\n                if len(heap) > 3:\n                    heapq.heappop(heap)\n        \n        dfs(node)\n        \n        # Extract and sort the sentences\n        return [sentence for _, sentence in sorted(heap)]",
+  "test_passed": false,
+  "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-8.3.5, pluggy-1.6.0\nrootdir: /media/developer/USB480G/Project/llm_complexity_benchmark\nplugins: cov-7.0.0, langsmith-0.4.41, anyio-4.11.0\ncollected 1 item\n\n01_TestDefinitions/autocomplete_trie/test_solution.py F                  [100%]\n\n=================================== FAILURES ===================================\n___________________________ test_autocomplete_basic ____________________________\n\n    def test_autocomplete_basic():\n        sentences = [\"i love you\", \"island\", \"ironman\", \"i love leetcode\"]\n        times = [5, 3, 2, 2]\n        # In a real scenario, this might be a class. Let's assume a class AutocompleteSystem.\n        # For this task, we will simplify it to a method.\n        solution = Solution()\n        solution.initAutocomplete(sentences, times)\n    \n>       assert solution.query(\"i\") == [\"i love you\", \"island\", \"i love leetcode\"]\nE       AssertionError: assert [{'i love lee...n', 'island'}] == ['i love you'...ove leetcode']\nE         \nE         At index 0 diff: {'island', 'i love you', 'i love leetcode', 'ironman'} != 'i love you'\nE         Right contains 2 more items, first extra item: 'island'\nE         Use -v to get more diff\n\n01_TestDefinitions/autocomplete_trie/test_solution.py:12: AssertionError\n=========================== short test summary info ============================\nFAILED 01_TestDefinitions/autocomplete_trie/test_solution.py::test_autocomplete_basic\n============================== 1 failed in 0.08s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.3418,
+    "python": {
+      "cyclomatic_avg": 3.0,
+      "cyclomatic_max": 4,
+      "wmc": 9,
+      "maintainability_index": 71.59844255408045,
+      "max_nesting_depth": 5,
+      "halstead_volume": 0,
+      "lloc": 35,
+      "loc": 45
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 5,
+      "lisp_rules": 2,
+      "lisp_token_count": 134
+    }
+  }
+}

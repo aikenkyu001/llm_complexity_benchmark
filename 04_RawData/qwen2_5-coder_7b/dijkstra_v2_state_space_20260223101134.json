@@ -1,0 +1,30 @@
+{
+  "task_name": "dijkstra_v2_state_space",
+  "model": "qwen2.5-coder:7b",
+  "timestamp": "2026-02-23T10:11:34.113791",
+  "nl_problem": "# Task: Dijkstra V2 (State Space)\n# Interface:\nClass: Solution\nMethod: find_min_cost(self, start: Tuple[int, int], target: Tuple[int, int]) -> int\n\nFind the minimum cost to travel from a start coordinate to a target coordinate in a 2D grid where moving from (x, y) to (x+1, y) or (x, y+1) has a cost that depends on the coordinates.\nCost formula: `cost = (x + y) % 5 + 1`.\n\n# Implementation Hint:\nUse Dijkstra's algorithm where the priority queue stores the tuple `(total_cost, x, y)`.\nThe state space is a 2D grid, but logically it could be an infinite plane. Use a dictionary or a set to track visited states and their minimum costs.\n\nConstraints:\n- 0 <= x, y <= 100\n- Cost is always positive.",
+  "lisp_spec": "(task\n  (name \"find_min_cost\")\n  (signature ( (start tuple) (target tuple) ) int)\n  (constraints\n    (constraint \"0 <= x, y <= 100 for both start and target coordinates.\")\n    (constraint \"Cost is always positive.\")\n  )\n  (goal\n    (description \"Find the minimum cost to travel from a start coordinate to a target coordinate in a 2D grid.\")\n    (rule \"Use Dijkstra's algorithm with a priority queue storing tuples (total_cost, x, y).\")\n    (rule \"Track visited states and their minimum costs using a dictionary or set.\")\n    (return \"The minimum cost to travel from the start coordinate to the target coordinate. If no path is possible, return infinity.\")\n  )\n)",
+  "generated_code": "# solution.py\nfrom typing import Tuple, Optional\nimport heapq\n\nclass Solution:\n    def find_min_cost(self, start: Tuple[int, int], target: Tuple[int, int]) -> int:\n        directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]\n        rows, cols = 101, 101\n        min_cost = [[float('inf')] * cols for _ in range(rows)]\n        min_cost[start[0]][start[1]] = 0\n        pq = [(0, start[0], start[1])]\n        \n        while pq:\n            current_cost, x, y = heapq.heappop(pq)\n            \n            if (x, y) == target:\n                return current_cost\n            \n            for dx, dy in directions:\n                nx, ny = x + dx, y + dy\n                if 0 <= nx < rows and 0 <= ny < cols:\n                    new_cost = current_cost + 1  # Assuming cost is always positive and equal to 1 for simplicity\n                    if new_cost < min_cost[nx][ny]:\n                        min_cost[nx][ny] = new_cost\n                        heapq.heappush(pq, (new_cost, nx, ny))\n        \n        return float('inf')",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-8.3.5, pluggy-1.6.0\nrootdir: /media/developer/USB480G/Project/llm_complexity_benchmark\nplugins: cov-7.0.0, langsmith-0.4.41, anyio-4.11.0\ncollected 1 item\n\n01_TestDefinitions/dijkstra_v2_state_space/test_solution.py .            [100%]\n\n============================== 1 passed in 0.05s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.37,
+    "python": {
+      "cyclomatic_avg": 8.0,
+      "cyclomatic_max": 8,
+      "wmc": 8,
+      "maintainability_index": 71.91467669477159,
+      "max_nesting_depth": 6,
+      "halstead_volume": 0,
+      "lloc": 21,
+      "loc": 27
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 3,
+      "lisp_rules": 2,
+      "lisp_token_count": 100
+    }
+  }
+}

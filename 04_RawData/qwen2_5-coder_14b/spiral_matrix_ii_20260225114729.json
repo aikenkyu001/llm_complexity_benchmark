@@ -1,0 +1,30 @@
+{
+  "task_name": "spiral_matrix_ii",
+  "model": "qwen2.5-coder:14b",
+  "timestamp": "2026-02-25T11:47:29.920290",
+  "nl_problem": "# Task: spiral_matrix_ii\n# Interface:\nClass: Solution\nMethod: generateMatrix(self, arg1)\n\nGiven a positive integer n, generate an n x n matrix filled with elements from 1 to n^2 in spiral order.\n\nConstraints:\n- 1 <= n <= 20",
+  "lisp_spec": "(task\n  (name \"generateMatrix\")\n  (signature ((self object) (n int)) (list (list int)))\n  (constraints\n    (constraint \"1 <= n <= 20\")\n  )\n  (goal\n    (description \"Generate an n x n matrix filled with elements from 1 to n^2 in spiral order.\")\n    (rule \"The matrix should be filled in a spiral order starting from the top-left corner and moving clockwise.\")\n    (return \"A list of lists representing the n x n matrix filled with integers from 1 to n^2 in spiral order.\")\n  )\n)",
+  "generated_code": "class Solution:\n    def generateMatrix(self, n: int) -> List[List[int]]:\n        # Initialize an n x n matrix with zeros\n        matrix = [[0] * n for _ in range(n)]\n        \n        # Define the directions for moving right, down, left, and up\n        directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]\n        direction_index = 0\n        \n        # Start from the top-left corner of the matrix\n        row, col = 0, 0\n        \n        for num in range(1, n * n + 1):\n            # Place the current number in the matrix\n            matrix[row][col] = num\n            \n            # Calculate the next position based on the current direction\n            next_row = row + directions[direction_index][0]\n            next_col = col + directions[direction_index][1]\n            \n            # Check if the next position is out of bounds or already filled\n            if (next_row < 0 or next_row >= n or \n                next_col < 0 or next_col >= n or \n                matrix[next_row][next_col] != 0):\n                # Change direction to the next one in the list\n                direction_index = (direction_index + 1) % 4\n                next_row = row + directions[direction_index][0]\n                next_col = col + directions[direction_index][1]\n            \n            # Move to the next position\n            row, col = next_row, next_col\n        \n        return matrix",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/spiral_matrix_ii/test_solution.py ..                  [100%]\n\n============================== 2 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.2756,
+    "python": {
+      "cyclomatic_avg": 8.0,
+      "cyclomatic_max": 8,
+      "wmc": 8,
+      "maintainability_index": 84.38715455030147,
+      "max_nesting_depth": 4,
+      "halstead_volume": 0,
+      "lloc": 16,
+      "loc": 33
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 2,
+      "lisp_rules": 1,
+      "lisp_token_count": 78
+    }
+  }
+}

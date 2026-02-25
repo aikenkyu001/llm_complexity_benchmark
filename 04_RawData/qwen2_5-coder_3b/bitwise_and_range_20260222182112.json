@@ -1,0 +1,30 @@
+{
+  "task_name": "bitwise_and_range",
+  "model": "qwen2.5-coder:3b",
+  "timestamp": "2026-02-22T18:21:12.083362",
+  "nl_problem": "# Task: bitwise_and_range\n# Interface:\nClass: Solution\nMethod: rangeBitwiseAnd(self, arg1, arg2)\n\nGiven two integers left and right that represent the range [left, right], return the bitwise AND of all numbers in this range, inclusive.\n\nConstraints:\n- 0 <= left <= right <= 2^31 - 1",
+  "lisp_spec": "(task\n  (name \"rangeBitwiseAnd\")\n  (signature ( (arg1 int) (arg2 int) ) int)\n  (constraints\n    (constraint \"0 <= arg1 <= arg2 <= 2^31 - 1\")\n  )\n  (goal\n    (description \"Return the bitwise AND of all numbers in the range [left, right], inclusive.\")\n    (rule \"The result should be the common bits between all numbers in the range.\")\n    (return \"The integer value representing the bitwise AND of all numbers in the specified range.\")\n  )\n)",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\n\nclass Solution:\n    def rangeBitwiseAnd(self, left: int, right: int) -> int:\n        \"\"\"\n        Return the bitwise AND of all numbers in the range [left, right], inclusive.\n\n        :param left: The lower bound of the range (inclusive).\n        :param right: The upper bound of the range (inclusive).\n        :return: The integer value representing the bitwise AND of all numbers in the specified range.\n        \"\"\"\n        # Initialize result to the maximum possible value\n        result = 0\n        \n        # Iterate over each bit position from most significant to least significant\n        for i in range(31, -1, -1):\n            # Check if the current bit is set in both left and right numbers\n            if (left >> i) & 1 == 1 and (right >> i) & 1 == 1:\n                result |= (1 << i)\n        \n        return result",
+  "test_passed": false,
+  "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-8.3.5, pluggy-1.6.0\nrootdir: /media/developer/USB480G/Project/llm_complexity_benchmark\nplugins: cov-7.0.0, langsmith-0.4.41, anyio-4.11.0\ncollected 3 items\n\n01_TestDefinitions/bitwise_and_range/test_solution.py F.F                [100%]\n\n=================================== FAILURES ===================================\n____________________________ test_bitwise_and_basic ____________________________\n\n    def test_bitwise_and_basic():\n        solution = Solution()\n>       assert solution.rangeBitwiseAnd(5, 7) == 4 # 101 & 110 & 111 = 100 (4)\nE       assert 5 == 4\nE        +  where 5 = rangeBitwiseAnd(5, 7)\nE        +    where rangeBitwiseAnd = <solution.Solution object at 0x7d6e278b3680>.rangeBitwiseAnd\n\n01_TestDefinitions/bitwise_and_range/test_solution.py:6: AssertionError\n____________________________ test_bitwise_and_large ____________________________\n\n    def test_bitwise_and_large():\n        solution = Solution()\n>       assert solution.rangeBitwiseAnd(1, 2147483647) == 0\nE       assert 1 == 0\nE        +  where 1 = rangeBitwiseAnd(1, 2147483647)\nE        +    where rangeBitwiseAnd = <solution.Solution object at 0x7d6e295e7b30>.rangeBitwiseAnd\n\n01_TestDefinitions/bitwise_and_range/test_solution.py:14: AssertionError\n=========================== short test summary info ============================\nFAILED 01_TestDefinitions/bitwise_and_range/test_solution.py::test_bitwise_and_basic\nFAILED 01_TestDefinitions/bitwise_and_range/test_solution.py::test_bitwise_and_large\n========================= 2 failed, 1 passed in 0.07s ==========================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.22380000000000003,
+    "python": {
+      "cyclomatic_avg": 4.0,
+      "cyclomatic_max": 4,
+      "wmc": 4,
+      "maintainability_index": 85.14741597911629,
+      "max_nesting_depth": 4,
+      "halstead_volume": 0,
+      "lloc": 9,
+      "loc": 22
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 2,
+      "lisp_rules": 1,
+      "lisp_token_count": 69
+    }
+  }
+}

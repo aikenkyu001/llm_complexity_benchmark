@@ -1,0 +1,30 @@
+{
+  "task_name": "synthetic_constraints_n1",
+  "model": "qwen2.5-coder:7b",
+  "timestamp": "2026-02-23T10:20:01.502622",
+  "nl_problem": "# Task: Multi-Constraint Check (Density 1)\n# Interface:\nClass: Solution\nMethod: isValid(self, n: int) -> bool\n\n# Objective:\nReturn True if the integer `n` satisfies ALL of the following 1 independent constraints:\n1. n is greater than 2",
+  "lisp_spec": "(task\n  (name \"isValid\")\n  (signature ( (n int) ) bool)\n  (constraints\n    (constraint \"n is greater than 2.\")\n  )\n  (goal\n    (description \"Check if the integer n satisfies all specified constraints.\")\n    (rule \"The function must return True if n > 2, otherwise False.\")\n    (return \"Return True if n is greater than 2; otherwise, return False.\")\n  )\n)",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\n\nclass Solution:\n    def isValid(self, n: int) -> bool:\n        \"\"\"\n        Check if the integer n satisfies all specified constraints.\n        \n        Args:\n        n (int): The integer to check.\n        \n        Returns:\n        bool: True if n is greater than 2; otherwise, return False.\n        \"\"\"\n        return n > 2",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-8.3.5, pluggy-1.6.0\nrootdir: /media/developer/USB480G/Project/llm_complexity_benchmark\nplugins: cov-7.0.0, langsmith-0.4.41, anyio-4.11.0\ncollected 2 items\n\n01_TestDefinitions/synthetic_constraints_n1/test_solution.py ..          [100%]\n\n============================== 2 passed in 1.91s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.1333,
+    "python": {
+      "cyclomatic_avg": 1.0,
+      "cyclomatic_max": 1,
+      "wmc": 1,
+      "maintainability_index": 85.87285774682948,
+      "max_nesting_depth": 2,
+      "halstead_volume": 0,
+      "lloc": 5,
+      "loc": 15
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 2,
+      "lisp_rules": 1,
+      "lisp_token_count": 54
+    }
+  }
+}

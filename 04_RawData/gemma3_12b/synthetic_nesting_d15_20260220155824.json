@@ -1,0 +1,30 @@
+{
+  "task_name": "synthetic_nesting_d15",
+  "model": "gemma3:12b",
+  "timestamp": "2026-02-20T15:58:24.766309",
+  "nl_problem": "# Task: Nested Logic Test (Depth 15)\n# Interface:\nClass: Solution\nMethod: checkNested(self, x0: int, x1: int, x2: int, x3: int, x4: int, x5: int, x6: int, x7: int, x8: int, x9: int, x10: int, x11: int, x12: int, x13: int, x14: int) -> bool\n\n# Objective:\nThis is a test of structural nesting. Return True ONLY if all the following conditions are met:\n1. x0 is greater than 0\n2. x1 is greater than 0\n3. x2 is greater than 0\n4. x3 is greater than 0\n5. x4 is greater than 0\n6. x5 is greater than 0\n7. x6 is greater than 0\n8. x7 is greater than 0\n9. x8 is greater than 0\n10. x9 is greater than 0\n11. x10 is greater than 0\n12. x11 is greater than 0\n13. x12 is greater than 0\n14. x13 is greater than 0\n15. x14 is greater than 0\n\nEach condition must be checked inside the previous one (nested if statements).",
+  "lisp_spec": "(task\n  (name \"checkNested\")\n  (signature ( (x0 int) (x1 int) (x2 int) (x3 int) (x4 int) (x5 int) (x6 int) (x7 int) (x8 int) (x9 int) (x10 int) (x11 int) (x12 int) (x13 int) (x14 int) ) bool)\n  (constraints\n    (constraint \"All input parameters are integers.\")\n    (constraint \"The function must return True only if all conditions are met.\")\n  )\n  (goal\n    (description \"Check if all input integers are greater than 0.\")\n    (rule \"The function must evaluate each condition inside a nested if statement.\")\n    (return \"Returns True if all input integers are greater than 0. Otherwise, returns False.\")\n  )\n)",
+  "generated_code": "from typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\nclass Solution:\n    def checkNested(self, x0: int, x1: int, x2: int, x3: int, x4: int, x5: int, x6: int, x7: int, x8: int, x9: int, x10: int, x11: int, x12: int, x13: int, x14: int) -> bool:\n        \"\"\"\n        Checks if all input integers are greater than 0.\n\n        Args:\n            x0: The first integer.\n            x1: The second integer.\n            x2: The third integer.\n            x3: The fourth integer.\n            x4: The fifth integer.\n            x5: The sixth integer.\n            x6: The seventh integer.\n            x7: The eighth integer.\n            x8: The ninth integer.\n            x9: The tenth integer.\n            x10: The eleventh integer.\n            x11: The twelfth integer.\n            x12: The thirteenth integer.\n            x13: The fourteenth integer.\n            x14: The fifteenth integer.\n\n        Returns:\n            True if all input integers are greater than 0. Otherwise, False.\n        \"\"\"\n        if x0 > 0 and \\\n           x1 > 0 and \\\n           x2 > 0 and \\\n           x3 > 0 and \\\n           x4 > 0 and \\\n           x5 > 0 and \\\n           x6 > 0 and \\\n           x7 > 0 and \\\n           x8 > 0 and \\\n           x9 > 0 and \\\n           x10 > 0 and \\\n           x11 > 0 and \\\n           x12 > 0 and \\\n           x13 > 0 and \\\n           x14 > 0:\n            return True\n        else:\n            return False",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/synthetic_nesting_d15/test_solution.py ..             [100%]\n\n============================== 2 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.37420000000000003,
+    "python": {
+      "cyclomatic_avg": 16.0,
+      "cyclomatic_max": 16,
+      "wmc": 16,
+      "maintainability_index": 85.30387786940678,
+      "max_nesting_depth": 3,
+      "halstead_volume": 0,
+      "lloc": 10,
+      "loc": 47
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 3,
+      "lisp_rules": 1,
+      "lisp_token_count": 96
+    }
+  }
+}

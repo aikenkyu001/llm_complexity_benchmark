@@ -1,0 +1,30 @@
+{
+  "task_name": "synthetic_context_v500",
+  "model": "falcon3:10b",
+  "timestamp": "2026-02-20T15:03:27.661637",
+  "nl_problem": "# Task: Contextual Memory Test (Volume 500)\n# Interface:\nClass: Solution\nMethod: findSecret(self, text: str) -> str\n\n# Objective:\nRead the provided text and find the secret word mentioned at the very end. Return only that word.\n\n--- START OF TEXT ---\nThis is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. \nThe secret word you are looking for is: SIGMA\n--- END OF TEXT ---",
+  "lisp_spec": "(task\n (name \"findSecret\")\n (signature ( (self) (text str) ) str)\n (constraints\n   (constraint \"The input text is a string containing multiple lines of background information.\")\n   (constraint \"The secret word is always the last word in the text.\")\n )\n (goal\n   (description \"Extract the secret word from the provided text.\")\n   (rule \"The function should return only the last word of the text as the secret word.\")\n   (return \"The secret word is returned as a string.\")\n )\n)",
+  "generated_code": "class Solution:\n    def findSecret(self, text: str) -> str:\n        # Split the text into words\n        words = text.split()\n        # Return the last word as the secret word\n        return words[-1]",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 1 item\n\n01_TestDefinitions/synthetic_context_v500/test_solution.py .             [100%]\n\n============================== 1 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.1573,
+    "python": {
+      "cyclomatic_avg": 1.0,
+      "cyclomatic_max": 1,
+      "wmc": 1,
+      "maintainability_index": 100.0,
+      "max_nesting_depth": 2,
+      "halstead_volume": 0,
+      "lloc": 4,
+      "loc": 6
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 3,
+      "lisp_rules": 1,
+      "lisp_token_count": 74
+    }
+  }
+}

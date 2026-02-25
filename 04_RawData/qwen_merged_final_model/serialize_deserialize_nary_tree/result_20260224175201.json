@@ -1,0 +1,29 @@
+{
+  "task_name": "serialize_deserialize_nary_tree",
+  "model": "qwen_merged_final_model",
+  "timestamp": "2026-02-24T17:52:01.229913",
+  "nl_problem": "Design an algorithm to serialize and deserialize an N-ary tree. An N-ary tree is a rooted tree in which each node has no more than N children. \nSerialization is the process of converting a data structure or object into a sequence of bits so that it can be stored in a file or memory buffer, or transmitted across a network connection link to be reconstructed later in the same or another computer environment.\nThe N-ary tree node structure is:\n```python\nclass Node:\n    def __init__(self, val=None, children=None):\n        self.val = val\n        self.children = children # List[Node]\n```\n\nConstraints:\n- The total number of nodes is between 0 and 10^4.\n- 0 <= Node.val <= 10^4\n- The height of the N-ary tree is less than or equal to 1000.",
+  "lisp_spec": "(task\n  (name \"serializeAndDeserializeNaryTree\")\n  (signature ( (root Node) ) str)\n  (constraints\n    (constraint \"The total number of nodes is between 0 and 10^4.\")\n    (constraint \"0 <= Node.val <= 10^4\")\n    (constraint \"The height of the N-ary tree is less than or equal to 1000.\")\n  )\n  (goal\n    (description \"Design an algorithm to serialize and deserialize an N-ary tree.\")\n    (rule \"Serialization should convert the tree into a string representation.\")\n    (rule \"Deserialization should reconstruct the tree from the string representation.\")\n    (return \"Return the serialized string for the given root node.\")\n  ))",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\n# Define any helper classes here if needed\n\nclass Node:\n    def __init__(self, val=None, children=None):\n        self.val = val\n        self.children = children if children is not None else []\n\nclass Codec:\n\n    def serialize(self, root: 'Node') -> str:\n        \"\"\"Encodes a tree to a single string.\"\"\"\n        if not root:\n            return \"\"\n        \n        def dfs(node):\n            result = str(node.val) + \",\"\n            for child in node.children:\n                result += dfs(child) + \",\"\n            return result\n        \n        return dfs(root)\n\n    def deserialize(self, data: str) -> 'Node':\n        \"\"\"Decodes your encoded data to tree.\"\"\"\n        if not data:\n            return None\n        \n        def build_tree(nodes):\n            if not nodes:\n                return None\n            \n            val = nodes.popleft()\n            if val == \",\":\n                return None\n            \n            node = Node(int(val))\n            while nodes and nodes[0] != \",\":\n                node.children.append(build_tree(nodes))\n            \n            return node\n        \n        nodes = collections.deque(data.split(\",\"))\n        return build_tree(nodes)\n\nclass Solution:\n    def serializeAndDeserializeNaryTree(self, root: 'Node') -> str:\n        return Codec().serialize(root)\n    \n    def deserializeNaryTree(self, data: str) -> 'Node':\n        return Codec().deserialize(data)",
+  "test_passed": false,
+  "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /home/miyata/projects/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/serialize_deserialize_nary_tree/test_solution.py FF   [100%]\n\n=================================== FAILURES ===================================\n__________________________ test_tree_serialize_basic ___________________________\n\n    def test_tree_serialize_basic():\n        codec = Solution()\n        # Tree: 1 -> [3, 2, 4]; 3 -> [5, 6]\n        root = Node(1, [\n            Node(3, [Node(5), Node(6)]),\n            Node(2),\n            Node(4)\n        ])\n>       serialized = codec.serialize(root)\n                     ^^^^^^^^^^^^^^^\nE       AttributeError: 'Solution' object has no attribute 'serialize'\n\n01_TestDefinitions/serialize_deserialize_nary_tree/test_solution.py:24: AttributeError\n___________________________ test_tree_serialize_none ___________________________\n\n    def test_tree_serialize_none():\n        codec = Solution()\n>       assert codec.deserialize(codec.serialize(None)) is None\n               ^^^^^^^^^^^^^^^^^\nE       AttributeError: 'Solution' object has no attribute 'deserialize'\n\n01_TestDefinitions/serialize_deserialize_nary_tree/test_solution.py:30: AttributeError\n=========================== short test summary info ============================\nFAILED 01_TestDefinitions/serialize_deserialize_nary_tree/test_solution.py::test_tree_serialize_basic\nFAILED 01_TestDefinitions/serialize_deserialize_nary_tree/test_solution.py::test_tree_serialize_none\n============================== 2 failed in 0.04s ===============================\n",
+  "complexity_metrics": {
+    "total_complexity_score": 0.262,
+    "python": {
+      "cyclomatic_avg": 1.6,
+      "cyclomatic_max": 2,
+      "wmc": 8,
+      "maintainability_index": 63.1562399275645,
+      "max_nesting_depth": 4,
+      "halstead_volume": 0,
+      "lloc": 39,
+      "loc": 55
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 4,
+      "lisp_rules": 2,
+      "lisp_token_count": 85
+    }
+  }
+}

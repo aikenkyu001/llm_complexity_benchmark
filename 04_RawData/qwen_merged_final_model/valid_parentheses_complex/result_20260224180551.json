@@ -1,0 +1,29 @@
+{
+  "task_name": "valid_parentheses_complex",
+  "model": "qwen_merged_final_model",
+  "timestamp": "2026-02-24T18:05:51.574991",
+  "nl_problem": "# Task: valid_parentheses_complex\n# Interface:\nClass: Solution\nMethod: isValid(self, arg1)\n\nGiven a string containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.\nAn input string is valid if:\n1. Open brackets must be closed by the same type of brackets.\n2. Open brackets must be closed in the correct order.\n3. Every close bracket has a corresponding open bracket of the same type.\nInclude support for nested and complex structures.\n\nConstraints:\n- 1 <= s.length <= 10^4\n- s consists of parentheses only '()[]{}'.",
+  "lisp_spec": "(task\n  (name \"isValid\")\n  (signature ( (s str) ) bool)\n  (constraints\n    (constraint \"1 <= s.length <= 10^4\")\n    (constraint \"s consists of parentheses only '()[]{}'.\")\n  )\n  (goal\n    (description \"Determine if the input string is valid according to the given rules.\")\n    (rule \"Open brackets must be closed by the same type of brackets.\")\n    (rule \"Open brackets must be closed in the correct order.\")\n    (rule \"Every close bracket has a corresponding open bracket of the same type.\")\n    (rule \"Support for nested and complex structures.\")\n    (return \"Return True if the string is valid, False otherwise.\")\n  ))",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\n# Define any helper classes here if needed\n\nclass Solution:\n    def isValid(self, s: str) -> bool:\n        stack = []\n        mapping = {')': '(', '}': '{', ']': '['}\n        \n        for char in s:\n            if char in mapping.values():\n                stack.append(char)\n            elif char in mapping.keys():\n                if not stack or stack.pop() != mapping[char]:\n                    return False\n            else:\n                # Invalid character\n                return False\n        \n        return len(stack) == 0",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /home/miyata/projects/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 3 items\n\n01_TestDefinitions/valid_parentheses_complex/test_solution.py ...        [100%]\n\n============================== 3 passed in 0.02s ===============================\n",
+  "complexity_metrics": {
+    "total_complexity_score": 0.3832,
+    "python": {
+      "cyclomatic_avg": 6.0,
+      "cyclomatic_max": 6,
+      "wmc": 6,
+      "maintainability_index": 82.31185863787557,
+      "max_nesting_depth": 6,
+      "halstead_volume": 0,
+      "lloc": 17,
+      "loc": 23
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 3,
+      "lisp_rules": 4,
+      "lisp_token_count": 91
+    }
+  }
+}

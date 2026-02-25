@@ -1,0 +1,30 @@
+{
+  "task_name": "BitmaskGrouper",
+  "model": "qwen2.5-coder:14b",
+  "timestamp": "2026-02-25T11:21:37.434993",
+  "nl_problem": "# Task: BitmaskGrouper\n# Interface:\nClass: Solution\nMethod: groupNums(self, arg1)\n\nGiven an array of integers `nums`, group the elements into the smallest number of groups such that each group contains elements whose bitwise AND is non-zero.\nReturn the groups as a list of lists. (If multiple groupings exist with the same minimum number, any one is acceptable).\n\nConstraints:\n- 1 <= nums.length <= 1000\n- 0 <= nums[i] <= 10^9",
+  "lisp_spec": "(task\n  (name \"groupNums\")\n  (signature ( (nums (list int)) ) (list (list int)))\n  (constraints\n    (constraint \"The length of nums is between 1 and 1000.\")\n    (constraint \"Each element in nums is between 0 and 10^9.\")\n  )\n  (goal\n    (description \"Group the elements of the array `nums` into the smallest number of groups such that each group contains elements whose bitwise AND is non-zero.\")\n    (rule \"Return the groups as a list of lists.\")\n    (return \"If multiple groupings exist with the same minimum number, any one is acceptable.\")\n  )\n)",
+  "generated_code": "from typing import List\n\nclass Solution:\n    def groupNums(self, nums: List[int]) -> List[List[int]]:\n        # Sort nums in descending order based on their bit count\n        nums.sort(key=lambda x: bin(x).count('1'), reverse=True)\n        \n        groups = []\n        while nums:\n            # Start a new group with the first element\n            current_group = [nums.pop(0)]\n            \n            # Try to add more elements to the current group\n            i = 0\n            while i < len(nums):\n                if all(num & current_group[0] != 0 for num in current_group):\n                    current_group.append(nums.pop(i))\n                else:\n                    i += 1\n            \n            groups.append(current_group)\n        \n        return groups",
+  "test_passed": false,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/BitmaskGrouper/test_solution.py FF                    [100%]\n\n=================================== FAILURES ===================================\n__________________________ test_bitmask_grouper_basic __________________________\n\n    def test_bitmask_grouper_basic():\n        solution = Solution()\n        nums = [1, 2, 4, 8]\n        # Bitwise AND of any two is 0. So 4 groups.\n        result = solution.groupNums(nums)\n>       assert len(result) == 4\nE       assert 2 == 4\nE        +  where 2 = len([[1, 2], [4, 8]])\n\n01_TestDefinitions/BitmaskGrouper/test_solution.py:9: AssertionError\n__________________________ test_bitmask_grouper_merge __________________________\n\n    def test_bitmask_grouper_merge():\n        solution = Solution()\n        nums = [3, 1, 6, 2]\n        # 3 & 1 = 1 (!= 0), 6 & 2 = 2 (!= 0)\n        # Possible groups: [[3, 1], [6, 2]]\n        result = solution.groupNums(nums)\n>       assert len(result) == 2\nE       assert 1 == 2\nE        +  where 1 = len([[3, 6, 1, 2]])\n\n01_TestDefinitions/BitmaskGrouper/test_solution.py:17: AssertionError\n=========================== short test summary info ============================\nFAILED 01_TestDefinitions/BitmaskGrouper/test_solution.py::test_bitmask_grouper_basic\nFAILED 01_TestDefinitions/BitmaskGrouper/test_solution.py::test_bitmask_grouper_merge\n============================== 2 failed in 0.03s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.28450000000000003,
+    "python": {
+      "cyclomatic_avg": 5.0,
+      "cyclomatic_max": 5,
+      "wmc": 5,
+      "maintainability_index": 84.9764874654253,
+      "max_nesting_depth": 5,
+      "halstead_volume": 0,
+      "lloc": 16,
+      "loc": 23
+    },
+    "lisp": {
+      "lisp_max_depth": 5,
+      "lisp_constraints": 3,
+      "lisp_rules": 1,
+      "lisp_token_count": 85
+    }
+  }
+}

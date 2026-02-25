@@ -1,0 +1,30 @@
+{
+  "task_name": "synthetic_constraints_n8",
+  "model": "phi3:14b",
+  "timestamp": "2026-02-20T17:29:47.290959",
+  "nl_problem": "# Task: Multi-Constraint Check (Density 8)\n# Interface:\nClass: Solution\nMethod: isValid(self, n: int) -> bool\n\n# Objective:\nReturn True if the integer `n` satisfies ALL of the following 8 independent constraints:\n1. n is greater than 2\n2. n is not equal to 104\n3. n is a multiple of 1\n4. n is greater than 8\n5. n is not equal to 110\n6. n is a multiple of 2\n7. n is greater than 14\n8. n is not equal to 116",
+  "lisp_spec": "(task\n  (name \"isValid\")\n  (signature ( (n int) ) bool)\n  (constraints\n    (constraint \"n must be greater than 2.\")\n    (constraint \"n should not equal to 104.\")\n    (constraint \"n is a multiple of 1.\")\n    (constraint \"n must be greater than 8.\")\n    (constraint \"n should not equal to 110.\")\n    (constraint \"n is a multiple of 2.\")\n    (constraint \"n must be greater than 14.\")\n    (constraint \"n should not equal to 116.\")\n  )\n  (goal\n    (description \"Return True if the integer n satisfies all 8 independent constraints.\")\n    (rule \"Check each constraint in order and return False as soon as one is violated.\")\n    (return \"True if all conditions are met, otherwise False.\")\n  )\n)",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\nclass Solution:\n    def isValid(self, n: int) -> bool:\n        # Check each constraint in order and return False as soon as one is violated\n        \n        if n <= 2 or n == 104 or n % 1 != 0 or n < 8 or n == 110 or n % 2 != 0 or n < 14 or n == 116:\n            return False\n            \n        # If all conditions are met, return True\n        return True",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/synthetic_constraints_n8/test_solution.py ..          [100%]\n\n============================== 2 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.40869999999999995,
+    "python": {
+      "cyclomatic_avg": 9.0,
+      "cyclomatic_max": 9,
+      "wmc": 9,
+      "maintainability_index": 91.06208793236055,
+      "max_nesting_depth": 3,
+      "halstead_volume": 0,
+      "lloc": 8,
+      "loc": 14
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 9,
+      "lisp_rules": 1,
+      "lisp_token_count": 106
+    }
+  }
+}

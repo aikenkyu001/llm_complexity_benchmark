@@ -1,0 +1,30 @@
+{
+  "task_name": "synthetic_nesting_d7",
+  "model": "gemma3:12b",
+  "timestamp": "2026-02-20T16:01:19.120731",
+  "nl_problem": "# Task: Nested Logic Test (Depth 7)\n# Interface:\nClass: Solution\nMethod: checkNested(self, x0: int, x1: int, x2: int, x3: int, x4: int, x5: int, x6: int) -> bool\n\n# Objective:\nThis is a test of structural nesting. Return True ONLY if all the following conditions are met:\n1. x0 is greater than 0\n2. x1 is greater than 0\n3. x2 is greater than 0\n4. x3 is greater than 0\n5. x4 is greater than 0\n6. x5 is greater than 0\n7. x6 is greater than 0\n\nEach condition must be checked inside the previous one (nested if statements).",
+  "lisp_spec": "(task\n  (name \"checkNested\")\n  (signature ( (x0 int) (x1 int) (x2 int) (x3 int) (x4 int) (x5 int) (x6 int) ) bool)\n  (constraints\n    (constraint \"All input parameters (x0 to x6) are integers.\")\n    (constraint \"The nesting of conditional statements must follow the specified order.\")\n  )\n  (goal\n    (description \"Determine if all input integers are greater than zero, using nested conditional statements.\")\n    (rule \"The function must return True only if all input integers are strictly greater than zero.\")\n    (return \"Returns True if all input integers are greater than zero. Returns False otherwise.\")\n  )\n)",
+  "generated_code": "from typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\nclass Solution:\n    def checkNested(self, x0: int, x1: int, x2: int, x3: int, x4: int, x5: int, x6: int) -> bool:\n        \"\"\"\n        Determine if all input integers are greater than zero, using nested conditional statements.\n\n        Args:\n            x0: The first integer.\n            x1: The second integer.\n            x2: The third integer.\n            x3: The fourth integer.\n            x4: The fifth integer.\n            x5: The sixth integer.\n            x6: The seventh integer.\n\n        Returns:\n            True if all input integers are greater than zero. False otherwise.\n        \"\"\"\n        if x0 > 0 and x1 > 0 and x2 > 0 and x3 > 0 and x4 > 0 and x5 > 0 and x6 > 0:\n            return True\n        else:\n            return False",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/synthetic_nesting_d7/test_solution.py ..              [100%]\n\n============================== 2 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.27299999999999996,
+    "python": {
+      "cyclomatic_avg": 8.0,
+      "cyclomatic_max": 8,
+      "wmc": 8,
+      "maintainability_index": 80.17929018046576,
+      "max_nesting_depth": 3,
+      "halstead_volume": 0,
+      "lloc": 10,
+      "loc": 25
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 3,
+      "lisp_rules": 1,
+      "lisp_token_count": 90
+    }
+  }
+}

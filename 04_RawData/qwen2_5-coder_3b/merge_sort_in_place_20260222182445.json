@@ -1,0 +1,30 @@
+{
+  "task_name": "merge_sort_in_place",
+  "model": "qwen2.5-coder:3b",
+  "timestamp": "2026-02-22T18:24:45.011877",
+  "nl_problem": "# Task: merge_sort_in_place\n# Interface:\nClass: Solution\nMethod: sortList(self, arg1)\n\nGiven the head of a linked list, return the list after sorting it in ascending order using merge sort.\nThe sorting must be done in-place (i.e., modifying the links, not creating new nodes where possible) and achieve O(n log n) time complexity.\nThe linked list node is:\n```python\nclass ListNode:\n    def __init__(self, val=0, next=None):\n        self.val = val\n        self.next = next\n```\n\nConstraints:\n- The number of nodes in the list is in the range [0, 5 * 10^4].\n- -10^5 <= Node.val <= 10^5",
+  "lisp_spec": "(task\n  (name \"merge_sort_in_place\")\n  (signature ( (head ListNode) ) void)\n  (constraints\n    (constraint \"The number of nodes in the list is in the range [0, 5 * 10^4].\")\n    (constraint \"-10^5 <= Node.val <= 10^5.\")\n  )\n  (goal\n    (description \"Sort the linked list in-place using merge sort with O(n log n) time complexity.\")\n    (rule \"The sorting must be done in-place, modifying the links of the nodes.\")\n    (return \"The head of the sorted linked list.\")\n  )\n)",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\nclass ListNode:\n    def __init__(self, val=0, next=None):\n        self.val = val\n        self.next = next\n\nclass Solution:\n    def merge_sort_in_place(self, head: ListNode) -> None:\n        if not head or not head.next:\n            return\n        \n        # Helper function to find the middle of the list\n        def find_middle(node):\n            slow = fast = node\n            while fast and fast.next:\n                slow = slow.next\n                fast = fast.next.next\n            return slow\n        \n        # Helper function to merge two sorted lists\n        def merge(l1: ListNode, l2: ListNode) -> ListNode:\n            dummy = ListNode()\n            current = dummy\n            while l1 and l2:\n                if l1.val < l2.val:\n                    current.next = l1\n                    l1 = l1.next\n                else:\n                    current.next = l2\n                    l2 = l2.next\n                current = current.next\n            current.next = l1 or l2\n            return dummy.next\n        \n        # Find the middle of the list\n        mid = find_middle(head)\n        \n        # Recursively sort the two halves\n        self.merge_sort_in_place(head)\n        self.merge_sort_in_place(mid.next)\n        \n        # Merge the sorted halves\n        head = merge(head, mid.next)\n\n# Example usage:\n# node1 = ListNode(4)\n# node2 = ListNode(2)\n# node3 = ListNode(1)\n# node4 = ListNode(3)\n# node1.next = node2\n# node2.next = node3\n# node3.next = node4\n\n# Solution().merge_sort_in_place(node1)",
+  "test_passed": false,
+  "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-8.3.5, pluggy-1.6.0\nrootdir: /media/developer/USB480G/Project/llm_complexity_benchmark\nplugins: cov-7.0.0, langsmith-0.4.41, anyio-4.11.0\ncollected 2 items\n\n01_TestDefinitions/merge_sort_in_place/test_solution.py FF               [100%]\n\n=================================== FAILURES ===================================\n____________________________ test_merge_sort_basic _____________________________\n\n    def test_merge_sort_basic():\n        solution = Solution()\n        head = from_list([4, 2, 1, 3])\n>       result = solution.sortList(head)\nE       AttributeError: 'Solution' object has no attribute 'sortList'\n\n01_TestDefinitions/merge_sort_in_place/test_solution.py:28: AttributeError\n____________________________ test_merge_sort_empty _____________________________\n\n    def test_merge_sort_empty():\n        solution = Solution()\n>       assert solution.sortList(None) is None\nE       AttributeError: 'Solution' object has no attribute 'sortList'\n\n01_TestDefinitions/merge_sort_in_place/test_solution.py:33: AttributeError\n=========================== short test summary info ============================\nFAILED 01_TestDefinitions/merge_sort_in_place/test_solution.py::test_merge_sort_basic\nFAILED 01_TestDefinitions/merge_sort_in_place/test_solution.py::test_merge_sort_empty\n============================== 2 failed in 0.08s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.2569,
+    "python": {
+      "cyclomatic_avg": 2.0,
+      "cyclomatic_max": 3,
+      "wmc": 4,
+      "maintainability_index": 81.67553434144845,
+      "max_nesting_depth": 5,
+      "halstead_volume": 0,
+      "lloc": 34,
+      "loc": 58
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 3,
+      "lisp_rules": 1,
+      "lisp_token_count": 72
+    }
+  }
+}

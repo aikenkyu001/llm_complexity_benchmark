@@ -1,0 +1,30 @@
+{
+  "task_name": "spiral_matrix_ii",
+  "model": "qwen2.5-coder:3b",
+  "timestamp": "2026-02-22T18:27:32.712563",
+  "nl_problem": "# Task: spiral_matrix_ii\n# Interface:\nClass: Solution\nMethod: generateMatrix(self, arg1)\n\nGiven a positive integer n, generate an n x n matrix filled with elements from 1 to n^2 in spiral order.\n\nConstraints:\n- 1 <= n <= 20",
+  "lisp_spec": "(task\n  (name \"generate_matrix_ii\")\n  (signature ( (n int) ) (list list int))\n  (constraints\n    (constraint \"1 <= n <= 20\")\n  )\n  (goal\n    (description \"Generate an n x n matrix filled with elements from 1 to n^2 in spiral order.\")\n    (rule \"Start filling the matrix from the top-left corner and move right, down, left, up in a spiral pattern.\")\n    (return \"The generated n x n matrix with elements in spiral order.\")\n  )\n)",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\n\nclass Solution:\n    def generateMatrix(self, n: int) -> List[List[int]]:\n        matrix = [[0] * n for _ in range(n)]\n        top, bottom, left, right = 0, n - 1, 0, n - 1\n        num = 1\n        \n        while top <= bottom and left <= right:\n            # Fill the top row from left to right\n            for i in range(left, right + 1):\n                matrix[top][i] = num\n                num += 1\n            top += 1\n            \n            # Fill the right column from top to bottom\n            for i in range(top, bottom + 1):\n                matrix[i][right] = num\n                num += 1\n            right -= 1\n            \n            if top <= bottom:\n                # Fill the bottom row from right to left\n                for i in range(right, left - 1, -1):\n                    matrix[bottom][i] = num\n                    num += 1\n                bottom -= 1\n            \n            if left <= right:\n                # Fill the left column from bottom to top\n                for i in range(bottom, top - 1, -1):\n                    matrix[i][left] = num\n                    num += 1\n                left += 1\n        \n        return matrix\n\n# Example usage (not included)",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-8.3.5, pluggy-1.6.0\nrootdir: /media/developer/USB480G/Project/llm_complexity_benchmark\nplugins: cov-7.0.0, langsmith-0.4.41, anyio-4.11.0\ncollected 2 items\n\n01_TestDefinitions/spiral_matrix_ii/test_solution.py ..                  [100%]\n\n============================== 2 passed in 0.03s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.324,
+    "python": {
+      "cyclomatic_avg": 10.0,
+      "cyclomatic_max": 10,
+      "wmc": 10,
+      "maintainability_index": 75.32315539874251,
+      "max_nesting_depth": 5,
+      "halstead_volume": 0,
+      "lloc": 26,
+      "loc": 39
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 2,
+      "lisp_rules": 1,
+      "lisp_token_count": 70
+    }
+  }
+}

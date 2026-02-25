@@ -1,0 +1,30 @@
+{
+  "task_name": "procedural_quicksort",
+  "model": "qwen2.5-coder:3b",
+  "timestamp": "2026-02-22T18:25:50.936778",
+  "nl_problem": "# Task: procedural_quicksort\n# Interface:\nClass: Solution\nMethod: quickSort(self, arg1)\n\nImplement the QuickSort algorithm procedurally. The function should take an array of integers and sort it in ascending order in-place.\nYou should use a partition scheme (e.g., Lomuto or Hoare partition).\nNote: The problem is focused on the correct implementation of the sorting logic, not just using built-in `.sort()`.\n\nConstraints:\n- 1 <= arr.length <= 10^5\n- -10^9 <= arr[i] <= 10^9",
+  "lisp_spec": "(task\n  (name \"procedural_quicksort\")\n  (signature ( (arr list) ) void)\n  (constraints\n    (constraint \"The array must contain integers.\")\n    (constraint \"The length of the array must be between 1 and 10^5, inclusive.\")\n    (constraint \"Each element in the array must be within the range -10^9 to 10^9, inclusive.\")\n  )\n  (goal\n    (description \"Implement the QuickSort algorithm procedurally. The function should take an array of integers and sort it in ascending order in-place.\")\n    (rule \"Use a partition scheme such as Lomuto or Hoare partition.\")\n    (return \"The array will be sorted in place, meaning no additional data structures are used to store intermediate results.\")\n  )\n)",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\n\nclass Solution:\n    def procedural_quicksort(self, arr: List[int]) -> None:\n        \"\"\"\n        Sorts the given list of integers in place using the QuickSort algorithm.\n\n        :param arr: List of integers to be sorted.\n        \"\"\"\n        if not arr or len(arr) <= 1:\n            return\n\n        # Helper function to perform partitioning\n        def partition(low: int, high: int) -> int:\n            pivot = arr[high]\n            i = low - 1\n            for j in range(low, high):\n                if arr[j] < pivot:\n                    i += 1\n                    arr[i], arr[j] = arr[j], arr[i]\n            arr[i + 1], arr[high] = arr[high], arr[i + 1]\n            return i + 1\n\n        # Recursive QuickSort function\n        def quicksort(low: int, high: int) -> None:\n            if low < high:\n                pi = partition(low, high)\n                quicksort(low, pi - 1)\n                quicksort(pi + 1, high)\n\n        quicksort(0, len(arr) - 1)",
+  "test_passed": false,
+  "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-8.3.5, pluggy-1.6.0\nrootdir: /media/developer/USB480G/Project/llm_complexity_benchmark\nplugins: cov-7.0.0, langsmith-0.4.41, anyio-4.11.0\ncollected 3 items\n\n01_TestDefinitions/procedural_quicksort/test_solution.py FFF             [100%]\n\n=================================== FAILURES ===================================\n_____________________________ test_quicksort_basic _____________________________\n\n    def test_quicksort_basic():\n        solution = Solution()\n        arr = [10, 7, 8, 9, 1, 5]\n>       solution.quickSort(arr)\nE       AttributeError: 'Solution' object has no attribute 'quickSort'\n\n01_TestDefinitions/procedural_quicksort/test_solution.py:7: AttributeError\n_____________________________ test_quicksort_empty _____________________________\n\n    def test_quicksort_empty():\n        solution = Solution()\n        arr = []\n>       solution.quickSort(arr)\nE       AttributeError: 'Solution' object has no attribute 'quickSort'\n\n01_TestDefinitions/procedural_quicksort/test_solution.py:13: AttributeError\n__________________________ test_quicksort_duplicates ___________________________\n\n    def test_quicksort_duplicates():\n        solution = Solution()\n        arr = [3, 1, 4, 1, 5, 9, 2, 6, 5]\n>       solution.quickSort(arr)\nE       AttributeError: 'Solution' object has no attribute 'quickSort'\n\n01_TestDefinitions/procedural_quicksort/test_solution.py:19: AttributeError\n=========================== short test summary info ============================\nFAILED 01_TestDefinitions/procedural_quicksort/test_solution.py::test_quicksort_basic\nFAILED 01_TestDefinitions/procedural_quicksort/test_solution.py::test_quicksort_empty\nFAILED 01_TestDefinitions/procedural_quicksort/test_solution.py::test_quicksort_duplicates\n============================== 3 failed in 0.07s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.2823,
+    "python": {
+      "cyclomatic_avg": 3.0,
+      "cyclomatic_max": 3,
+      "wmc": 3,
+      "maintainability_index": 82.57476731940967,
+      "max_nesting_depth": 5,
+      "halstead_volume": 0,
+      "lloc": 21,
+      "loc": 32
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 4,
+      "lisp_rules": 1,
+      "lisp_token_count": 99
+    }
+  }
+}

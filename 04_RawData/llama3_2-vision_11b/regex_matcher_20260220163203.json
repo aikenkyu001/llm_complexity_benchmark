@@ -1,0 +1,30 @@
+{
+  "task_name": "regex_matcher",
+  "model": "llama3.2-vision:11b",
+  "timestamp": "2026-02-20T16:32:03.198993",
+  "nl_problem": "# Task: regex_matcher\n# Interface:\nClass: Solution\nMethod: isMatch(self, arg1, arg2)\n\nGiven an input string s and a pattern p, implement regular expression matching with support for '.' and '*' where:\n- '.' Matches any single character.\u200b\u200b\u200b\u200b\n- '*' Matches zero or more of the preceding element.\nThe matching should cover the entire input string (not partial).\n\nConstraints:\n- 1 <= s.length <= 20\n- 1 <= p.length <= 20\n- s contains only lowercase English letters.\n- p contains only lowercase English letters, '.', and '*'.\n- It is guaranteed for each appearance of the character '*', there will be a previous valid character to match.",
+  "lisp_spec": "(task\n  (name \"isMatch\")\n  (signature ( (self Solution) (arg1 str) (arg2 str) ) bool)\n  (constraints\n    (constraint \"1 <= s.length <= 20\")\n    (constraint \"1 <= p.length <= 20\")\n    (constraint \"s contains only lowercase English letters.\")\n    (constraint \"p contains only lowercase English letters, '.' and '*'.\")\n    (constraint \"It is guaranteed for each appearance of the character '*', there will be a previous valid character to match.\")\n  )\n  (goal\n    (description \"Implement regular expression matching with support for '.' and '*'.\")\n    (rule \"The matching should cover the entire input string (not partial).\")\n    (return \"True if the pattern matches the input string, False otherwise.\")\n  ))",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\n\nclass Solution:\n    def isMatch(self, s: str, p: str) -> bool:\n        \"\"\"\n        Implement regular expression matching with support for '.' and '*'.\n\n        Args:\n        s (str): The input string.\n        p (str): The pattern string.\n\n        Returns:\n        bool: True if the pattern matches the input string, False otherwise.\n        \"\"\"\n        # Initialize a 2D array to store the dynamic programming results\n        dp = [[False] * (len(p) + 1) for _ in range(len(s) + 1)]\n\n        # An empty pattern matches an empty string\n        dp[0][0] = True\n\n        # If the pattern is not empty but the string is, there is no match\n        for j in range(1, len(p) + 1):\n            if p[j - 1] == '*':\n                dp[0][j] = dp[0][j - 2]\n\n        # Fill in the rest of the 2D array\n        for i in range(1, len(s) + 1):\n            for j in range(1, len(p) + 1):\n                # If the current characters in the string and pattern match\n                if p[j - 1] in {s[i - 1], '.'}:\n                    dp[i][j] = dp[i - 1][j - 1]\n                # If the current character in the pattern is '*'\n                elif p[j - 1] == '*':\n                    # If the previous character in the pattern matches the current character in the string\n                    if p[j - 2] in {s[i - 1], '.'}:\n                        # The '*' can match zero or more occurrences of the previous character\n                        dp[i][j] = dp[i][j - 2] or dp[i - 1][j]\n                    # If the previous character in the pattern does not match the current character in the string\n                    else:\n                        dp[i][j] = dp[i][j - 2]\n\n        # The result is stored in the bottom-right corner of the 2D array\n        return dp[-1][-1]",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/regex_matcher/test_solution.py ..                     [100%]\n\n============================== 2 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.4598,
+    "python": {
+      "cyclomatic_avg": 10.0,
+      "cyclomatic_max": 10,
+      "wmc": 10,
+      "maintainability_index": 77.64102008979522,
+      "max_nesting_depth": 7,
+      "halstead_volume": 0,
+      "lloc": 19,
+      "loc": 44
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 6,
+      "lisp_rules": 1,
+      "lisp_token_count": 99
+    }
+  }
+}

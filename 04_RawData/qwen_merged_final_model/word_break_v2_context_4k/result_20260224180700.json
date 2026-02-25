@@ -1,0 +1,29 @@
+{
+  "task_name": "word_break_v2_context_4k",
+  "model": "qwen_merged_final_model",
+  "timestamp": "2026-02-24T18:07:00.274627",
+  "nl_problem": "# Task: word_break_v2_context_4k\n# Interface:\nClass: Solution\nMethod: wordBreak(self, arg1, arg2, arg3)\n\n[SYSTEM SPECIFICATION - CONTEXT SCALING TEST v1.4]\n... (This problem description is intentionally elongated with redundant but necessary technical specifications to test context handling up to 4000 tokens) ...\nThe task is Word Break: Given string s and dictionary wordDict, return true if s can be segmented.\nADDITIONAL SPECIFICATIONS:\n- You must use a Trie-based DP approach.\n- You must log each successful split point (assume a logger `self.log_split(index)`).\n- Handle the case where the dictionary contains empty strings by ignoring them.\n- If multiple segmentations exist, the one with the fewest words is preferred (though the return is still boolean).\n... (imagine 3000 more tokens of detailed architectural constraints here) ...\nFinal Goal: Implement `wordBreak(s, wordDict)`.",
+  "lisp_spec": "(task\n  (name \"wordBreak_v2_context_4k\")\n  (signature ( (s str) (wordDict list) ) bool)\n  (constraints\n    (constraint \"The input string `s` consists of lowercase English letters.\")\n    (constraint \"The dictionary `wordDict` contains lowercase English letters and may include empty strings.\")\n    (constraint \"The dictionary `wordDict` may contain duplicate words.\")\n    (constraint \"The length of `s` is at most 4000 characters.\")\n    (constraint \"The length of each word in `wordDict` is at most 50 characters.\")\n  )\n  (goal\n    (description \"Implement the `wordBreak` function using a Trie-based dynamic programming approach.\")\n    (rule \"The function should return `True` if the string `s` can be segmented into words from the dictionary `wordDict`, otherwise `False`.\")\n    (rule \"Each successful split point should be logged using the `self.log_split(index)` method.\")\n    (rule \"Empty strings in the dictionary should be ignored.\")\n    (rule \"If multiple segmentations exist, the one with the fewest words should be preferred.\")\n    (return \"The function should return a boolean value indicating whether the string `s` can be segmented.\")\n  ))",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\nclass TrieNode:\n    def __init__(self):\n        self.children = {}\n        self.is_end_of_word = False\n\nclass Trie:\n    def __init__(self):\n        self.root = TrieNode()\n\n    def insert(self, word: str) -> None:\n        node = self.root\n        for char in word:\n            if char not in node.children:\n                node.children[char] = TrieNode()\n            node = node.children[char]\n        node.is_end_of_word = True\n\nclass Solution:\n    def wordBreak_v2_context_4k(self, s: str, wordDict: List[str]) -> bool:\n        trie = Trie()\n        for word in wordDict:\n            if word:\n                trie.insert(word)\n\n        n = len(s)\n        dp = [False] * (n + 1)\n        dp[0] = True\n\n        for i in range(1, n + 1):\n            for j in range(i):\n                if dp[j] and trie.search(s[j:i]):\n                    dp[i] = True\n                    break\n\n        return dp[n]\n\n    def search(self, word: str) -> bool:\n        node = self.root\n        for char in word:\n            if char not in node.children:\n                return False\n            node = node.children[char]\n        return node.is_end_of_word",
+  "test_passed": false,
+  "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /home/miyata/projects/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/word_break_v2_context_4k/test_solution.py FF          [100%]\n\n=================================== FAILURES ===================================\n___________________________ test_word_break_v2_basic ___________________________\n\n    def test_word_break_v2_basic():\n        solution = Solution()\n>       assert solution.wordBreak(\"leetcode\", [\"leet\", \"code\"]) == True\n               ^^^^^^^^^^^^^^^^^^\nE       AttributeError: 'Solution' object has no attribute 'wordBreak'\n\n01_TestDefinitions/word_break_v2_context_4k/test_solution.py:6: AttributeError\n__________________________ test_word_break_v2_complex __________________________\n\n    def test_word_break_v2_complex():\n        solution = Solution()\n>       assert solution.wordBreak(\"applepenapple\", [\"apple\", \"pen\"]) == True\n               ^^^^^^^^^^^^^^^^^^\nE       AttributeError: 'Solution' object has no attribute 'wordBreak'\n\n01_TestDefinitions/word_break_v2_context_4k/test_solution.py:10: AttributeError\n=========================== short test summary info ============================\nFAILED 01_TestDefinitions/word_break_v2_context_4k/test_solution.py::test_word_break_v2_basic\nFAILED 01_TestDefinitions/word_break_v2_context_4k/test_solution.py::test_word_break_v2_complex\n============================== 2 failed in 0.03s ===============================\n",
+  "complexity_metrics": {
+    "total_complexity_score": 0.44289999999999996,
+    "python": {
+      "cyclomatic_avg": 3.0,
+      "cyclomatic_max": 7,
+      "wmc": 15,
+      "maintainability_index": 59.81022705951958,
+      "max_nesting_depth": 5,
+      "halstead_volume": 0,
+      "lloc": 39,
+      "loc": 48
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 6,
+      "lisp_rules": 4,
+      "lisp_token_count": 152
+    }
+  }
+}

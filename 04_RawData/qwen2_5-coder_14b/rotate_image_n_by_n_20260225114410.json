@@ -1,0 +1,30 @@
+{
+  "task_name": "rotate_image_n_by_n",
+  "model": "qwen2.5-coder:14b",
+  "timestamp": "2026-02-25T11:44:10.165028",
+  "nl_problem": "# Task: rotate_image_n_by_n\n# Interface:\nClass: Solution\nMethod: rotate(self, arg1)\n\nYou are given an n x n 2D matrix representing an image, rotate the image by 90 degrees (clockwise).\nYou have to rotate the image in-place, which means you have to modify the input 2D matrix directly. DO NOT allocate another 2D matrix and do the rotation.\n\nConstraints:\n- n == matrix.length == matrix[i].length\n- 1 <= n <= 20\n- -1000 <= matrix[i][j] <= 1000",
+  "lisp_spec": "(task\n  (name \"rotate\")\n  (signature ( (matrix (list (list int))) ) void)\n  (constraints\n    (constraint \"The input matrix is an n x n 2D matrix where n == matrix.length == matrix[i].length.\")\n    (constraint \"1 <= n <= 20\")\n    (constraint \"-1000 <= matrix[i][j] <= 1000\")\n  )\n  (goal\n    (description \"Rotate the given n x n 2D matrix by 90 degrees clockwise in-place.\")\n    (rule \"Modify the input matrix directly without allocating another 2D matrix.\")\n    (return \"The function does not return any value; it modifies the input matrix in-place.\")\n  )\n)",
+  "generated_code": "class Solution:\n    def rotate(self, matrix: List[List[int]]) -> None:\n        \"\"\"\n        Rotates the given n x n 2D matrix by 90 degrees clockwise in-place.\n        \n        :param matrix: List[List[int]] - The input matrix to be rotated.\n        \"\"\"\n        n = len(matrix)\n        \n        # Transpose the matrix\n        for i in range(n):\n            for j in range(i, n):\n                matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]\n        \n        # Reverse each row\n        for i in range(n):\n            matrix[i].reverse()",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/rotate_image_n_by_n/test_solution.py ..               [100%]\n\n============================== 2 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.26680000000000004,
+    "python": {
+      "cyclomatic_avg": 4.0,
+      "cyclomatic_max": 4,
+      "wmc": 4,
+      "maintainability_index": 100.0,
+      "max_nesting_depth": 4,
+      "halstead_volume": 0,
+      "lloc": 9,
+      "loc": 17
+    },
+    "lisp": {
+      "lisp_max_depth": 6,
+      "lisp_constraints": 4,
+      "lisp_rules": 1,
+      "lisp_token_count": 84
+    }
+  }
+}

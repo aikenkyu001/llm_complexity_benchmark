@@ -1,0 +1,30 @@
+{
+  "task_name": "boggle_solver",
+  "model": "qwen2.5-coder:14b",
+  "timestamp": "2026-02-25T11:25:54.347488",
+  "nl_problem": "# Task: boggle_solver\n# Interface:\nClass: Solution\nMethod: findWords(self, arg1, arg2)\n\nGiven an m x n board of characters and a list of strings words, return all words on the board.\nEach word must be constructed from letters of sequentially adjacent cells, where adjacent cells are horizontally or vertically neighboring. The same letter cell may not be used more than once in a word.\n\nConstraints:\n- m == board.length\n- n == board[i].length\n- 1 <= m, n <= 12\n- 1 <= words.length <= 3 * 10^4\n- 1 <= words[i].length <= 10\n- board and words consist of lowercase English letters.\n- All strings in words are unique.",
+  "lisp_spec": "(task\n  (name \"findWords\")\n  (signature ((board (list (list char))) (words (list string))) (list string))\n  (constraints\n    (constraint \"m == board.length\")\n    (constraint \"n == board[i].length\")\n    (constraint \"1 <= m, n <= 12\")\n    (constraint \"1 <= words.length <= 3 * 10^4\")\n    (constraint \"1 <= words[i].length <= 10\")\n    (constraint \"board and words consist of lowercase English letters.\")\n    (constraint \"All strings in words are unique.\")\n  )\n  (goal\n    (description \"Return all words from the list 'words' that can be formed by sequentially adjacent cells on the board.\")\n    (rule \"Words must be constructed using letters from horizontally or vertically neighboring cells.\")\n    (rule \"The same letter cell may not be used more than once in a word.\")\n    (return \"A list of strings containing all valid words found on the board.\")\n  )\n)",
+  "generated_code": "from typing import List\n\nclass TrieNode:\n    def __init__(self):\n        self.children = {}\n        self.is_end_of_word = False\n\nclass Trie:\n    def __init__(self):\n        self.root = TrieNode()\n    \n    def insert(self, word: str) -> None:\n        node = self.root\n        for char in word:\n            if char not in node.children:\n                node.children[char] = TrieNode()\n            node = node.children[char]\n        node.is_end_of_word = True\n\nclass Solution:\n    def findWords(self, board: List[List[str]], words: List[str]) -> List[str]:\n        # Build the Trie from the list of words\n        trie = Trie()\n        for word in words:\n            trie.insert(word)\n        \n        m, n = len(board), len(board[0])\n        result = set()\n        visited = [[False] * n for _ in range(m)]\n        \n        def dfs(x: int, y: int, node: TrieNode, path: str) -> None:\n            if node.is_end_of_word:\n                result.add(path)\n            \n            # Explore neighbors\n            directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]\n            for dx, dy in directions:\n                nx, ny = x + dx, y + dy\n                if 0 <= nx < m and 0 <= ny < n and not visited[nx][ny]:\n                    char = board[nx][ny]\n                    if char in node.children:\n                        visited[nx][ny] = True\n                        dfs(nx, ny, node.children[char], path + char)\n                        visited[nx][ny] = False\n        \n        # Start DFS from each cell on the board\n        for i in range(m):\n            for j in range(n):\n                if board[i][j] in trie.root.children:\n                    visited[i][j] = True\n                    dfs(i, j, trie.root.children[board[i][j]], board[i][j])\n                    visited[i][j] = False\n        \n        return list(result)",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 3 items\n\n01_TestDefinitions/boggle_solver/test_solution.py ...                    [100%]\n\n============================== 3 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.4496,
+    "python": {
+      "cyclomatic_avg": 2.75,
+      "cyclomatic_max": 6,
+      "wmc": 11,
+      "maintainability_index": 62.16705868170913,
+      "max_nesting_depth": 6,
+      "halstead_volume": 0,
+      "lloc": 42,
+      "loc": 54
+    },
+    "lisp": {
+      "lisp_max_depth": 6,
+      "lisp_constraints": 8,
+      "lisp_rules": 2,
+      "lisp_token_count": 123
+    }
+  }
+}

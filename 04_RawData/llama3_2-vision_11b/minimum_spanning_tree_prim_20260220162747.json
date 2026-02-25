@@ -1,0 +1,30 @@
+{
+  "task_name": "minimum_spanning_tree_prim",
+  "model": "llama3.2-vision:11b",
+  "timestamp": "2026-02-20T16:27:47.452522",
+  "nl_problem": "# Task: minimum_spanning_tree_prim\n# Interface:\nClass: Solution\nMethod: primMST(self, graph: Dict[int, List[Tuple[int, int]]], n: int) -> int\n\nGiven a weighted, undirected connected graph with n vertices (labeled 0 to n-1), find the sum of the weights of the edges in its Minimum Spanning Tree using Prim's algorithm.\nThe graph is represented as an adjacency list: `graph[u] = [(v, weight), ...]` where u is the source node, v is the destination, and weight is the edge weight.\n\n# Important:\nThe function MUST accept TWO arguments: `graph` and `n`.\n\n# Implementation Hint:\nUse a priority queue (min-heap) to store edges or nodes. Initialize a `visited` array or set of size `n`. \nStart by marking node 0 as visited and adding its neighbors to the heap.\n\nConstraints:\n- 1 <= n <= 1000\n- 1 <= weight <= 1000",
+  "lisp_spec": "(task\n  (name \"primMST\")\n  (signature\n    ( (graph (dict int (list tuple))) (n int) ) int)\n  (constraints\n    (constraint \"1 <= n <= 1000\")\n    (constraint \"1 <= weight <= 1000\")\n  )\n  (goal\n    (description \"Find the sum of the weights of the edges in its Minimum Spanning Tree using Prim's algorithm.\")\n    (rule \"Use a priority queue (min-heap) to store edges or nodes.\")\n    (rule \"Initialize a visited array or set of size n.\")\n    (rule \"Start by marking node 0 as visited and adding its neighbors to the heap.\")\n    (return \"The sum of the weights of the edges in its Minimum Spanning Tree.\")\n  )\n)",
+  "generated_code": "from typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\nclass Solution:\n    def primMST(self, graph: Dict[int, List[tuple]], n: int) -> int:\n        # Initialize a visited array to keep track of visited nodes\n        visited: Set[int] = set()\n        \n        # Initialize a priority queue (min-heap) to store edges or nodes\n        pq: List[tuple] = []\n        \n        # Start by marking node 0 as visited and adding its neighbors to the heap\n        visited.add(0)\n        for neighbor, weight in graph[0]:\n            heapq.heappush(pq, (weight, 0, neighbor))\n        \n        # Initialize the sum of the weights of the edges in the MST\n        mst_sum: int = 0\n        \n        # While there are still nodes to visit\n        while len(visited) < n:\n            # Extract the node with the minimum weight from the heap\n            weight, node, neighbor = heapq.heappop(pq)\n            \n            # If the neighbor has not been visited yet\n            if neighbor not in visited:\n                # Mark the neighbor as visited\n                visited.add(neighbor)\n                \n                # Add the neighbor's neighbors to the heap\n                for neighbor2, weight2 in graph[neighbor]:\n                    if neighbor2 not in visited:\n                        heapq.heappush(pq, (weight2, neighbor, neighbor2))\n                \n                # Add the weight of the edge to the MST sum\n                mst_sum += weight\n        \n        # Return the sum of the weights of the edges in the MST\n        return mst_sum",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/minimum_spanning_tree_prim/test_solution.py ..        [100%]\n\n============================== 2 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.3648,
+    "python": {
+      "cyclomatic_avg": 6.0,
+      "cyclomatic_max": 6,
+      "wmc": 6,
+      "maintainability_index": 87.3693409041436,
+      "max_nesting_depth": 6,
+      "halstead_volume": 0,
+      "lloc": 23,
+      "loc": 40
+    },
+    "lisp": {
+      "lisp_max_depth": 6,
+      "lisp_constraints": 3,
+      "lisp_rules": 3,
+      "lisp_token_count": 99
+    }
+  }
+}

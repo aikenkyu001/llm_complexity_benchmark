@@ -1,0 +1,29 @@
+{
+  "task_name": "kth_largest_element",
+  "model": "qwen_merged_final_model",
+  "timestamp": "2026-02-24T17:43:05.238945",
+  "nl_problem": "# Task: kth_largest_element\n# Interface:\nClass: Solution\nMethod: findKthLargest(self, arg1, arg2, arg3, arg4, arg5, arg6, arg7)\n\nGiven an integer array nums and an integer k, return the kth largest element in the array.\nNote that it is the kth largest element in the sorted order, not the kth distinct element.\nCan you solve it without sorting the entire array? (e.g., using a heap or quickselect).\n\nConstraints:\n- 1 <= k <= nums.length <= 10^5\n- -10^4 <= nums[i] <= 10^4",
+  "lisp_spec": "(task\n  (name \"findKthLargest\")\n  (signature ( (nums list) (k int) ) int)\n  (constraints\n    (constraint \"1 <= k <= nums.length <= 10^5\")\n    (constraint \"-10^4 <= nums[i] <= 10^4\")\n  )\n  (goal\n    (description \"Return the kth largest element in the array.\")\n    (rule \"The kth largest element is the kth element when the array is sorted in descending order.\")\n    (return \"The kth largest element as an integer.\")\n  ))",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\n# Define any helper classes here if needed\n\nclass Solution:\n    def findKthLargest(self, nums: List[int], k: int) -> int:\n        # Use a min-heap to keep track of the k largest elements seen so far\n        min_heap = []\n        \n        for num in nums:\n            # Add the current number to the heap\n            heapq.heappush(min_heap, num)\n            \n            # If the heap size exceeds k, remove the smallest element\n            if len(min_heap) > k:\n                heapq.heappop(min_heap)\n        \n        # The root of the heap is the kth largest element\n        return min_heap[0]",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /home/miyata/projects/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/kth_largest_element/test_solution.py ..               [100%]\n\n============================== 2 passed in 0.03s ===============================\n",
+  "complexity_metrics": {
+    "total_complexity_score": 0.23010000000000003,
+    "python": {
+      "cyclomatic_avg": 3.0,
+      "cyclomatic_max": 3,
+      "wmc": 3,
+      "maintainability_index": 100.0,
+      "max_nesting_depth": 4,
+      "halstead_volume": 0,
+      "lloc": 11,
+      "loc": 22
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 3,
+      "lisp_rules": 1,
+      "lisp_token_count": 63
+    }
+  }
+}

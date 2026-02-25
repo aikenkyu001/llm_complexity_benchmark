@@ -1,0 +1,30 @@
+{
+  "task_name": "minimum_spanning_tree_prim",
+  "model": "qwen2.5-coder:3b",
+  "timestamp": "2026-02-22T18:25:01.540622",
+  "nl_problem": "# Task: minimum_spanning_tree_prim\n# Interface:\nClass: Solution\nMethod: primMST(self, graph: Dict[int, List[Tuple[int, int]]], n: int) -> int\n\nGiven a weighted, undirected connected graph with n vertices (labeled 0 to n-1), find the sum of the weights of the edges in its Minimum Spanning Tree using Prim's algorithm.\nThe graph is represented as an adjacency list: `graph[u] = [(v, weight), ...]` where u is the source node, v is the destination, and weight is the edge weight.\n\n# Important:\nThe function MUST accept TWO arguments: `graph` and `n`.\n\n# Implementation Hint:\nUse a priority queue (min-heap) to store edges or nodes. Initialize a `visited` array or set of size `n`. \nStart by marking node 0 as visited and adding its neighbors to the heap.\n\nConstraints:\n- 1 <= n <= 1000\n- 1 <= weight <= 1000",
+  "lisp_spec": "(task\n  (name \"prim_mst_prim\")\n  (signature ( (graph dict int (list tuple)) (n int) ) int)\n  (constraints\n    (constraint \"The graph is represented as an adjacency list where `graph[u]` contains tuples of the form `(v, weight)`.\")\n    (constraint \"1 <= n <= 1000\")\n    (constraint \"1 <= weight <= 1000\")\n  )\n  (goal\n    (description \"Find the sum of the weights of the edges in the Minimum Spanning Tree using Prim's algorithm.\")\n    (rule \"Initialize a priority queue to store edges and a visited array or set.\")\n    (rule \"Start by marking node 0 as visited and adding its neighbors to the heap.\")\n    (return \"The total weight of the edges in the Minimum Spanning Tree.\")\n  )\n)",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\nclass Solution:\n    def prim_mst_prim(self, graph: Dict[int, List[tuple]], n: int) -> int:\n        # Initialize a priority queue to store edges and a visited array\n        pq = []\n        visited = set()\n        \n        # Start with node 0\n        for neighbor, weight in graph[0]:\n            heapq.heappush(pq, (weight, 0, neighbor))\n        \n        total_weight = 0\n        \n        while pq:\n            weight, u, v = heapq.heappop(pq)\n            \n            if v not in visited:\n                visited.add(v)\n                total_weight += weight\n                \n                # Add the neighbors of v to the priority queue\n                for neighbor, weight in graph[v]:\n                    heapq.heappush(pq, (weight, v, neighbor))\n        \n        return total_weight\n\n# Example usage:\n# graph = {0: [(1, 2), (2, 3)], 1: [(0, 2), (2, 4)], 2: [(0, 3), (1, 4)]}\n# n = 3\n# print(Solution().prim_mst_prim(graph, n))  # Output will depend on the graph structure",
+  "test_passed": false,
+  "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-8.3.5, pluggy-1.6.0\nrootdir: /media/developer/USB480G/Project/llm_complexity_benchmark\nplugins: cov-7.0.0, langsmith-0.4.41, anyio-4.11.0\ncollected 2 items\n\n01_TestDefinitions/minimum_spanning_tree_prim/test_solution.py FF        [100%]\n\n=================================== FAILURES ===================================\n_______________________________ test_prim_basic ________________________________\n\n    def test_prim_basic():\n        solution = Solution()\n        # graph[u] = [(v, weight), ...]\n        graph = {\n            0: [(1, 2), (3, 6)],\n            1: [(0, 2), (2, 3), (3, 8), (4, 5)],\n            2: [(1, 3), (4, 7)],\n            3: [(0, 6), (1, 8), (4, 9)],\n            4: [(1, 5), (2, 7), (3, 9)]\n        }\n        # MST Edges: (0,1,2), (1,2,3), (1,4,5), (0,3,6) -> Sum = 16\n>       assert solution.primMST(graph, 5) == 16\nE       AttributeError: 'Solution' object has no attribute 'primMST'\n\n01_TestDefinitions/minimum_spanning_tree_prim/test_solution.py:15: AttributeError\n_______________________________ test_prim_simple _______________________________\n\n    def test_prim_simple():\n        solution = Solution()\n        graph = {\n            0: [(1, 10)],\n            1: [(0, 10)]\n        }\n>       assert solution.primMST(graph, 2) == 10\nE       AttributeError: 'Solution' object has no attribute 'primMST'\n\n01_TestDefinitions/minimum_spanning_tree_prim/test_solution.py:23: AttributeError\n=========================== short test summary info ============================\nFAILED 01_TestDefinitions/minimum_spanning_tree_prim/test_solution.py::test_prim_basic\nFAILED 01_TestDefinitions/minimum_spanning_tree_prim/test_solution.py::test_prim_simple\n============================== 2 failed in 0.08s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.3291,
+    "python": {
+      "cyclomatic_avg": 5.0,
+      "cyclomatic_max": 5,
+      "wmc": 5,
+      "maintainability_index": 92.19070198339054,
+      "max_nesting_depth": 5,
+      "halstead_volume": 0,
+      "lloc": 18,
+      "loc": 34
+    },
+    "lisp": {
+      "lisp_max_depth": 5,
+      "lisp_constraints": 4,
+      "lisp_rules": 2,
+      "lisp_token_count": 108
+    }
+  }
+}

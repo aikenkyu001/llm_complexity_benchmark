@@ -1,0 +1,30 @@
+{
+  "task_name": "synthetic_constraints_n2",
+  "model": "qwen2.5-coder:7b",
+  "timestamp": "2026-02-23T10:20:36.030397",
+  "nl_problem": "# Task: Multi-Constraint Check (Density 2)\n# Interface:\nClass: Solution\nMethod: isValid(self, n: int) -> bool\n\n# Objective:\nReturn True if the integer `n` satisfies ALL of the following 2 independent constraints:\n1. n is greater than 2\n2. n is not equal to 104",
+  "lisp_spec": "(task\n  (name \"isValid\")\n  (signature ( (n int) ) bool)\n  (constraints\n    (constraint \"n > 2\")\n    (constraint \"n != 104\")\n  )\n  (goal\n    (description \"Check if the integer n satisfies both constraints.\")\n    (rule \"Return True if both constraints are met, otherwise return False.\")\n    (return \"Boolean value indicating whether n is valid based on the given constraints.\")\n  )\n)",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\n\nclass Solution:\n    def isValid(self, n: int) -> bool:\n        \"\"\"\n        Check if the integer n satisfies both constraints.\n        \n        Args:\n        n (int): The integer to check.\n        \n        Returns:\n        bool: True if both constraints are met, otherwise False.\n        \"\"\"\n        return n > 2 and n != 104",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-8.3.5, pluggy-1.6.0\nrootdir: /media/developer/USB480G/Project/llm_complexity_benchmark\nplugins: cov-7.0.0, langsmith-0.4.41, anyio-4.11.0\ncollected 2 items\n\n01_TestDefinitions/synthetic_constraints_n2/test_solution.py ..          [100%]\n\n============================== 2 passed in 0.04s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.166,
+    "python": {
+      "cyclomatic_avg": 2.0,
+      "cyclomatic_max": 2,
+      "wmc": 2,
+      "maintainability_index": 80.45727183366175,
+      "max_nesting_depth": 2,
+      "halstead_volume": 0,
+      "lloc": 5,
+      "loc": 15
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 3,
+      "lisp_rules": 1,
+      "lisp_token_count": 55
+    }
+  }
+}

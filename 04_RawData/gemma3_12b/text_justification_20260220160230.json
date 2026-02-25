@@ -1,0 +1,30 @@
+{
+  "task_name": "text_justification",
+  "model": "gemma3:12b",
+  "timestamp": "2026-02-20T16:02:30.181937",
+  "nl_problem": "# Task: text_justification\n# Interface:\nClass: Solution\nMethod: fullJustify(self, arg1, arg2)\n\nGiven an array of strings words and a width maxWidth, format the text such that each line has exactly maxWidth characters and is fully (left and right) justified.\nYou should pack your words in a greedy approach; that is, pack as many words as you can in each line. Pad extra spaces ' ' when necessary so that each line has exactly maxWidth characters.\nExtra spaces between words should be distributed as evenly as possible. If the number of spaces on a line does not divide evenly between words, the empty slots on the left will be assigned more spaces than the slots on the right.\nFor the last line of text, it should be left-justified, and no extra space is inserted between words.\n\nConstraints:\n- 1 <= words.length <= 300\n- 1 <= words[i].length <= 20\n- words[i] consists of only English letters and symbols.\n- 1 <= maxWidth <= 100\n- words[i].length <= maxWidth",
+  "lisp_spec": "(task\n  (name \"fullJustify\")\n  (signature ( (words (list string)) (maxWidth int) ) (list string))\n  (constraints\n    (constraint \"The input list 'words' contains at least one string.\")\n    (constraint \"Each string in 'words' consists only of English letters and symbols.\")\n    (constraint \"The maximum width of a line is 'maxWidth'.\")\n    (constraint \"The length of each word in 'words' is less than or equal to 'maxWidth'.\")\n    (constraint \"The number of words in 'words' is between 1 and 300.\")\n    (constraint \"maxWidth is between 1 and 100.\")\n  )\n  (goal\n    (description \"Format the input list of strings 'words' into a list of justified strings, where each line has exactly 'maxWidth' characters.\")\n    (rule \"Pack as many words as possible onto each line, greedily.\")\n    (rule \"Distribute extra spaces evenly between words on each line, except for the last line.\")\n    (rule \"If the number of spaces is not divisible by the number of slots, add extra spaces to the left side of the words.\")\n    (rule \"The last line should be left-justified, with no extra spaces between words.\")\n    (return \"Return a list of strings, where each string represents a justified line of text. The length of each string in the returned list must be exactly 'maxWidth'.\")\n  )\n)",
+  "generated_code": "from typing import List\n\nclass Solution:\n    def fullJustify(self, words: List[str], maxWidth: int) -> List[str]:\n        \"\"\"\n        Justifies a list of words into lines of a specified maximum width.\n\n        Args:\n            words: A list of strings representing the words to justify.\n            maxWidth: The maximum width of each line.\n\n        Returns:\n            A list of strings, where each string represents a justified line of text.\n        \"\"\"\n        result = []\n        current_line = []\n        current_length = 0\n\n        for word in words:\n            if current_length + len(word) + len(current_line) > maxWidth:\n                # Line is full, justify it\n                if len(current_line) == 1:\n                    result.append(current_line[0] + \" \" * (maxWidth - current_length))\n                else:\n                    spaces_needed = maxWidth - current_length\n                    spaces_per_gap = spaces_needed // (len(current_line) - 1)\n                    extra_spaces = spaces_needed % (len(current_line) - 1)\n\n                    justified_line = \"\"\n                    for i in range(len(current_line) - 1):\n                        justified_line += current_line[i] + \" \" * spaces_per_gap\n                        if i < extra_spaces:\n                            justified_line += \" \"\n                    justified_line += current_line[-1]\n                    result.append(justified_line)\n\n                current_line = [word]\n                current_length = len(word)\n            else:\n                current_line.append(word)\n                current_length += len(word)\n\n        # Last line: left-justified\n        last_line = \" \".join(current_line)\n        last_line += \" \" * (maxWidth - len(last_line))\n        result.append(last_line)\n\n        return result",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/text_justification/test_solution.py ..                [100%]\n\n============================== 2 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.509,
+    "python": {
+      "cyclomatic_avg": 6.0,
+      "cyclomatic_max": 6,
+      "wmc": 6,
+      "maintainability_index": 75.69286738322928,
+      "max_nesting_depth": 7,
+      "halstead_volume": 0,
+      "lloc": 31,
+      "loc": 48
+    },
+    "lisp": {
+      "lisp_max_depth": 5,
+      "lisp_constraints": 7,
+      "lisp_rules": 4,
+      "lisp_token_count": 195
+    }
+  }
+}

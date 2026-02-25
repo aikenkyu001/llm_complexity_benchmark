@@ -1,0 +1,30 @@
+{
+  "task_name": "BitmaskGrouper",
+  "model": "qwen2.5-coder:3b",
+  "timestamp": "2026-02-22T18:20:12.772487",
+  "nl_problem": "# Task: BitmaskGrouper\n# Interface:\nClass: Solution\nMethod: groupNums(self, arg1)\n\nGiven an array of integers `nums`, group the elements into the smallest number of groups such that each group contains elements whose bitwise AND is non-zero.\nReturn the groups as a list of lists. (If multiple groupings exist with the same minimum number, any one is acceptable).\n\nConstraints:\n- 1 <= nums.length <= 1000\n- 0 <= nums[i] <= 10^9",
+  "lisp_spec": "(task\n  (name \"groupNums\")\n  (signature ( (nums list) ) (list list))\n  (constraints\n    (constraint \"1 <= nums.length <= 1000\")\n    (constraint \"0 <= nums[i] <= 10^9\")\n  )\n  (goal\n    (description \"Group the elements into the smallest number of groups such that each group contains elements whose bitwise AND is non-zero.\")\n    (rule \"Elements in a group must have a non-zero bitwise AND result.\")\n    (return \"A list of lists, where each sublist represents a group of numbers with a non-zero bitwise AND.\")\n  )\n)",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\nclass Solution:\n    def groupNums(self, nums: List[int]) -> List[List[int]]:\n        if not nums:\n            return []\n\n        # Create a dictionary to store the groups based on bitwise AND results\n        groups = collections.defaultdict(list)\n\n        for num in nums:\n            # Find the smallest number that has a non-zero bitwise AND with 'num'\n            min_group = None\n            for group in groups.values():\n                if any(num & x == 0 for x in group):\n                    continue\n                if min_group is None or len(group) < len(min_group):\n                    min_group = group\n\n            # If no suitable group was found, create a new one\n            if min_group is None:\n                min_group = [num]\n            else:\n                min_group.append(num)\n\n            # Add the number to the appropriate group\n            groups[min_group[0]].append(num)\n\n        # Convert the dictionary values to a list of lists\n        return list(groups.values())",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-8.3.5, pluggy-1.6.0\nrootdir: /media/developer/USB480G/Project/llm_complexity_benchmark\nplugins: cov-7.0.0, langsmith-0.4.41, anyio-4.11.0\ncollected 2 items\n\n01_TestDefinitions/BitmaskGrouper/test_solution.py ..                    [100%]\n\n============================== 2 passed in 0.05s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.3331,
+    "python": {
+      "cyclomatic_avg": 9.0,
+      "cyclomatic_max": 9,
+      "wmc": 9,
+      "maintainability_index": 82.57927255784944,
+      "max_nesting_depth": 5,
+      "halstead_volume": 0,
+      "lloc": 21,
+      "loc": 33
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 3,
+      "lisp_rules": 1,
+      "lisp_token_count": 78
+    }
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "qwen2_5-coder_7b": {
+    "pass_rate": 64.40677966101694,
+    "passed": 38,
+    "total": 59,
+    "avg_complexity": 0.3035864406779661
+  },
+  "gemma3_12b": {
+    "pass_rate": 74.57627118644068,
+    "passed": 44,
+    "total": 59,
+    "avg_complexity": 0.3351474576271186
+  },
+  "qwen2_5-coder_3b": {
+    "pass_rate": 30.508474576271187,
+    "passed": 18,
+    "total": 59,
+    "avg_complexity": 0.28463389830508473
+  },
+  "phi3_14b": {
+    "pass_rate": 30.508474576271187,
+    "passed": 18,
+    "total": 59,
+    "avg_complexity": 0.22083050847457628
+  },
+  "llama3_2-vision_11b": {
+    "pass_rate": 64.40677966101694,
+    "passed": 38,
+    "total": 59,
+    "avg_complexity": 0.2938118644067797
+  },
+  "qwen2_5-coder_14b": {
+    "pass_rate": 76.27118644067797,
+    "passed": 45,
+    "total": 59,
+    "avg_complexity": 0.32126271186440675
+  },
+  "falcon3_10b": {
+    "pass_rate": 59.32203389830508,
+    "passed": 35,
+    "total": 59,
+    "avg_complexity": 0.2801983050847458
+  },
+  "qwen_merged_final_model": {
+    "pass_rate": 58.620689655172406,
+    "passed": 34,
+    "total": 58,
+    "avg_complexity": 0.3007379310344827
+  }
+}

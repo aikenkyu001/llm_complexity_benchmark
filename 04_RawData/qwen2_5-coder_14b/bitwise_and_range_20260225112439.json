@@ -1,0 +1,30 @@
+{
+  "task_name": "bitwise_and_range",
+  "model": "qwen2.5-coder:14b",
+  "timestamp": "2026-02-25T11:24:39.235005",
+  "nl_problem": "# Task: bitwise_and_range\n# Interface:\nClass: Solution\nMethod: rangeBitwiseAnd(self, arg1, arg2)\n\nGiven two integers left and right that represent the range [left, right], return the bitwise AND of all numbers in this range, inclusive.\n\nConstraints:\n- 0 <= left <= right <= 2^31 - 1",
+  "lisp_spec": "(task\n  (name \"rangeBitwiseAnd\")\n  (signature ((self Solution) (arg1 int) (arg2 int)) int)\n  (constraints\n    (constraint \"0 <= arg1 <= arg2 <= 2^31 - 1\")\n  )\n  (goal\n    (description \"Compute the bitwise AND of all numbers in the inclusive range [arg1, arg2].\")\n    (rule \"The function should return the result of performing a bitwise AND operation on every number from arg1 to arg2.\")\n    (return \"The result of the bitwise AND operation. If the range is such that no common bits are set across all numbers, the result will be 0.\")\n  )\n)",
+  "generated_code": "class Solution:\n    def rangeBitwiseAnd(self, arg1: int, arg2: int) -> int:\n        shift = 0\n        # Find the common prefix bits\n        while arg1 != arg2:\n            arg1 >>= 1\n            arg2 >>= 1\n            shift += 1\n        # Append zeros to the right\n        return arg1 << shift",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 3 items\n\n01_TestDefinitions/bitwise_and_range/test_solution.py ...                [100%]\n\n============================== 3 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.1774,
+    "python": {
+      "cyclomatic_avg": 2.0,
+      "cyclomatic_max": 2,
+      "wmc": 2,
+      "maintainability_index": 93.47837829301338,
+      "max_nesting_depth": 3,
+      "halstead_volume": 0,
+      "lloc": 8,
+      "loc": 10
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 2,
+      "lisp_rules": 1,
+      "lisp_token_count": 87
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "task_name": "kth_largest_element",
+  "model": "qwen2.5-coder:7b",
+  "timestamp": "2026-02-23T10:12:27.976299",
+  "nl_problem": "# Task: kth_largest_element\n# Interface:\nClass: Solution\nMethod: findKthLargest(self, arg1, arg2, arg3, arg4, arg5, arg6, arg7)\n\nGiven an integer array nums and an integer k, return the kth largest element in the array.\nNote that it is the kth largest element in the sorted order, not the kth distinct element.\nCan you solve it without sorting the entire array? (e.g., using a heap or quickselect).\n\nConstraints:\n- 1 <= k <= nums.length <= 10^5\n- -10^4 <= nums[i] <= 10^4",
+  "lisp_spec": "(task\n  (name \"findKthLargest\")\n  (signature ( (nums list) (k int) ) int)\n  (constraints\n    (constraint \"1 <= k <= length of nums\")\n    (constraint \"-10^4 <= elements in nums <= 10^4\")\n  )\n  (goal\n    (description \"Return the kth largest element in the array nums.\")\n    (rule \"The function should not sort the entire array. Consider using a heap or quickselect algorithm.\")\n    (return \"The kth largest element in the sorted order of nums.\")\n  )\n)",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\nclass Solution:\n    def findKthLargest(self, nums: List[int], k: int) -> int:\n        \"\"\"\n        Return the kth largest element in the array nums.\n        \n        :param nums: List of integers.\n        :param k: The kth position to find the largest element for.\n        :return: The kth largest element in the sorted order of nums.\n        \"\"\"\n        # Using a min-heap to keep track of the k largest elements\n        min_heap = []\n        \n        for num in nums:\n            heapq.heappush(min_heap, num)\n            if len(min_heap) > k:\n                heapq.heappop(min_heap)\n        \n        return min_heap[0]",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-8.3.5, pluggy-1.6.0\nrootdir: /media/developer/USB480G/Project/llm_complexity_benchmark\nplugins: cov-7.0.0, langsmith-0.4.41, anyio-4.11.0\ncollected 2 items\n\n01_TestDefinitions/kth_largest_element/test_solution.py ..               [100%]\n\n============================== 2 passed in 0.03s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.2313,
+    "python": {
+      "cyclomatic_avg": 3.0,
+      "cyclomatic_max": 3,
+      "wmc": 3,
+      "maintainability_index": 99.85776105486426,
+      "max_nesting_depth": 4,
+      "halstead_volume": 0,
+      "lloc": 12,
+      "loc": 23
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 3,
+      "lisp_rules": 1,
+      "lisp_token_count": 69
+    }
+  }
+}

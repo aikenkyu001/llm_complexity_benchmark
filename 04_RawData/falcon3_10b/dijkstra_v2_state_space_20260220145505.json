@@ -1,0 +1,30 @@
+{
+  "task_name": "dijkstra_v2_state_space",
+  "model": "falcon3:10b",
+  "timestamp": "2026-02-20T14:55:05.744008",
+  "nl_problem": "# Task: Dijkstra V2 (State Space)\n# Interface:\nClass: Solution\nMethod: find_min_cost(self, start: Tuple[int, int], target: Tuple[int, int]) -> int\n\nFind the minimum cost to travel from a start coordinate to a target coordinate in a 2D grid where moving from (x, y) to (x+1, y) or (x, y+1) has a cost that depends on the coordinates.\nCost formula: `cost = (x + y) % 5 + 1`.\n\n# Implementation Hint:\nUse Dijkstra's algorithm where the priority queue stores the tuple `(total_cost, x, y)`.\nThe state space is a 2D grid, but logically it could be an infinite plane. Use a dictionary or a set to track visited states and their minimum costs.\n\nConstraints:\n- 0 <= x, y <= 100\n- Cost is always positive.",
+  "lisp_spec": "(task\n (name \"find_min_cost\")\n (signature ( (start (tuple int int)) (target (tuple int int)) ) int)\n (constraints\n   (constraint \"0 <= start[0], start[1] <= 100\")\n   (constraint \"0 <= target[0], target[1] <= 100\")\n )\n (goal\n   (description \"Find the minimum cost to travel from start to target in a 2D grid.\")\n   (rule \"The cost to move from (x, y) to (x+1, y) or (x, y+1) is given by (x + y) % 5 + 1.\")\n   (return \"The minimum cost to reach the target coordinate from the start coordinate.\")\n )\n)",
+  "generated_code": "from typing import Tuple\n\nclass Solution:\n    def find_min_cost(self, start: Tuple[int, int], target: Tuple[int, int]) -> int:\n        x1, y1 = start\n        x2, y2 = target\n        queue = [(0, x1, y1)]  # (cost, x, y)\n        visited = set()\n        \n        while queue:\n            cost, x, y = heapq.heappop(queue)\n            if (x, y) == (x2, y2):\n                return cost\n            if (x, y) in visited:\n                continue\n            visited.add((x, y))\n            \n            # Move right\n            if x + 1 <= x2:\n                heapq.heappush(queue, (cost + (x + y) % 5 + 1, x + 1, y))\n            # Move down\n            if y + 1 <= y2:\n                heapq.heappush(queue, (cost + (x + y) % 5 + 1, x, y + 1))",
+  "test_passed": false,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 1 item\n\n01_TestDefinitions/dijkstra_v2_state_space/test_solution.py F            [100%]\n\n=================================== FAILURES ===================================\n____________________________ test_dijkstra_v2_basic ____________________________\n\n    def test_dijkstra_v2_basic():\n        solution = Solution()\n        # Simple state transition: (0,0) -> (1,0) [cost 1], (1,0) -> (1,1) [cost 2] ...\n        # We'll represent this as a function to generate neighbors for the LLM to implement.\n        start = (0, 0)\n        target = (1, 1)\n        # The LLM should implement the logic to find the path.\n        # In this test, we provide a mock environment if needed, or check the result.\n        # For simplicity, assume the solution class has a 'find_min_cost(start, target)'\n>       assert solution.find_min_cost(start, target) >= 0\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\n01_TestDefinitions/dijkstra_v2_state_space/test_solution.py:13: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <solution.Solution object at 0x105ef30e0>, start = (0, 0)\ntarget = (1, 1)\n\n    def find_min_cost(self, start: Tuple[int, int], target: Tuple[int, int]) -> int:\n        x1, y1 = start\n        x2, y2 = target\n        queue = [(0, x1, y1)]  # (cost, x, y)\n        visited = set()\n    \n        while queue:\n>           cost, x, y = heapq.heappop(queue)\n                         ^^^^^\nE           NameError: name 'heapq' is not defined. Did you forget to import 'heapq'?\n\n01_TestDefinitions/dijkstra_v2_state_space/solution.py:11: NameError\n=========================== short test summary info ============================\nFAILED 01_TestDefinitions/dijkstra_v2_state_space/test_solution.py::test_dijkstra_v2_basic\n============================== 1 failed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.2722,
+    "python": {
+      "cyclomatic_avg": 6.0,
+      "cyclomatic_max": 6,
+      "wmc": 6,
+      "maintainability_index": 77.161650783845,
+      "max_nesting_depth": 4,
+      "halstead_volume": 0,
+      "lloc": 18,
+      "loc": 23
+    },
+    "lisp": {
+      "lisp_max_depth": 5,
+      "lisp_constraints": 3,
+      "lisp_rules": 1,
+      "lisp_token_count": 86
+    }
+  }
+}

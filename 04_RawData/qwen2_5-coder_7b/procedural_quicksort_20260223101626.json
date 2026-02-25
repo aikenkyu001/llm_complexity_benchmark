@@ -1,0 +1,30 @@
+{
+  "task_name": "procedural_quicksort",
+  "model": "qwen2.5-coder:7b",
+  "timestamp": "2026-02-23T10:16:26.240344",
+  "nl_problem": "# Task: procedural_quicksort\n# Interface:\nClass: Solution\nMethod: quickSort(self, arg1)\n\nImplement the QuickSort algorithm procedurally. The function should take an array of integers and sort it in ascending order in-place.\nYou should use a partition scheme (e.g., Lomuto or Hoare partition).\nNote: The problem is focused on the correct implementation of the sorting logic, not just using built-in `.sort()`.\n\nConstraints:\n- 1 <= arr.length <= 10^5\n- -10^9 <= arr[i] <= 10^9",
+  "lisp_spec": "(task\n  (name \"quickSort\")\n  (signature ( (arr (list int)) ) (list int))\n  (constraints\n    (constraint \"Array length must be between 1 and 10^5.\")\n    (constraint \"Each element in the array must be between -10^9 and 10^9.\")\n  )\n  (goal\n    (description \"Sort an array of integers in ascending order using the QuickSort algorithm.\")\n    (rule \"Implement the sorting logic procedurally, not using built-in sort functions.\")\n    (rule \"Use a partition scheme such as Lomuto or Hoare for partitioning.\")\n    (return \"The sorted array in ascending order.\")\n  )\n)",
+  "generated_code": "# solution.py\nfrom typing import List\n\nclass Solution:\n    def quickSort(self, arr: List[int]) -> List[int]:\n        if len(arr) <= 1:\n            return arr\n        \n        pivot = arr[len(arr) // 2]\n        left = [x for x in arr if x < pivot]\n        middle = [x for x in arr if x == pivot]\n        right = [x for x in arr if x > pivot]\n        \n        return self.quickSort(left) + middle + self.quickSort(right)",
+  "test_passed": false,
+  "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-8.3.5, pluggy-1.6.0\nrootdir: /media/developer/USB480G/Project/llm_complexity_benchmark\nplugins: cov-7.0.0, langsmith-0.4.41, anyio-4.11.0\ncollected 3 items\n\n01_TestDefinitions/procedural_quicksort/test_solution.py F.F             [100%]\n\n=================================== FAILURES ===================================\n_____________________________ test_quicksort_basic _____________________________\n\n    def test_quicksort_basic():\n        solution = Solution()\n        arr = [10, 7, 8, 9, 1, 5]\n        solution.quickSort(arr)\n>       assert arr == [1, 5, 7, 8, 9, 10]\nE       assert [10, 7, 8, 9, 1, 5] == [1, 5, 7, 8, 9, 10]\nE         \nE         At index 0 diff: 10 != 1\nE         Use -v to get more diff\n\n01_TestDefinitions/procedural_quicksort/test_solution.py:8: AssertionError\n__________________________ test_quicksort_duplicates ___________________________\n\n    def test_quicksort_duplicates():\n        solution = Solution()\n        arr = [3, 1, 4, 1, 5, 9, 2, 6, 5]\n        solution.quickSort(arr)\n>       assert arr == [1, 1, 2, 3, 4, 5, 5, 6, 9]\nE       assert [3, 1, 4, 1, 5, 9, ...] == [1, 1, 2, 3, 4, 5, ...]\nE         \nE         At index 0 diff: 3 != 1\nE         Use -v to get more diff\n\n01_TestDefinitions/procedural_quicksort/test_solution.py:20: AssertionError\n=========================== short test summary info ============================\nFAILED 01_TestDefinitions/procedural_quicksort/test_solution.py::test_quicksort_basic\nFAILED 01_TestDefinitions/procedural_quicksort/test_solution.py::test_quicksort_duplicates\n========================= 2 failed, 1 passed in 2.85s ==========================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.291,
+    "python": {
+      "cyclomatic_avg": 8.0,
+      "cyclomatic_max": 8,
+      "wmc": 8,
+      "maintainability_index": 81.3191234290162,
+      "max_nesting_depth": 3,
+      "halstead_volume": 0,
+      "lloc": 10,
+      "loc": 14
+    },
+    "lisp": {
+      "lisp_max_depth": 5,
+      "lisp_constraints": 3,
+      "lisp_rules": 2,
+      "lisp_token_count": 80
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "task_name": "permutations_with_duplicates",
+  "model": "qwen_merged_final_model",
+  "timestamp": "2026-02-24T17:49:13.341936",
+  "nl_problem": "# Task: permutations_with_duplicates\n# Interface:\nClass: Solution\nMethod: permuteUnique(self, arg1)\n\nGiven a collection of numbers, nums, that might contain duplicates, return all possible unique permutations in any order.\n\nConstraints:\n- 1 <= nums.length <= 8\n- -10 <= nums[i] <= 10",
+  "lisp_spec": "(task\n  (name \"permuteUnique\")\n  (signature ( (nums list) ) (list list))\n  (constraints\n    (constraint \"1 <= nums.length <= 8\")\n    (constraint \"-10 <= nums[i] <= 10\")\n  )\n  (goal\n    (description \"Return all possible unique permutations of the given list of numbers.\")\n    (rule \"Each permutation should be a list of unique elements.\")\n    (return \"A list of lists, where each inner list is a unique permutation of the input list.\")\n  ))",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\n# Define any helper classes here if needed\n\nclass Solution:\n    def permuteUnique(self, nums: List[int]) -> List[List[int]]:\n        result = []\n        nums.sort()\n        \n        def backtrack(path, remaining):\n            if not remaining:\n                result.append(path[:])\n                return\n            \n            for i in range(len(remaining)):\n                if i > 0 and remaining[i] == remaining[i - 1]:\n                    continue\n                \n                path.append(remaining[i])\n                backtrack(path, remaining[:i] + remaining[i+1:])\n                path.pop()\n        \n        backtrack([], nums)\n        return result",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /home/miyata/projects/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/permutations_with_duplicates/test_solution.py ..      [100%]\n\n============================== 2 passed in 0.03s ===============================\n",
+  "complexity_metrics": {
+    "total_complexity_score": 0.23050000000000004,
+    "python": {
+      "cyclomatic_avg": 1.0,
+      "cyclomatic_max": 1,
+      "wmc": 1,
+      "maintainability_index": 75.77217756748998,
+      "max_nesting_depth": 5,
+      "halstead_volume": 0,
+      "lloc": 21,
+      "loc": 27
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 3,
+      "lisp_rules": 1,
+      "lisp_token_count": 65
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "task_name": "merge_sort_in_place",
+  "model": "llama3.2-vision:11b",
+  "timestamp": "2026-02-20T16:26:51.464201",
+  "nl_problem": "# Task: merge_sort_in_place\n# Interface:\nClass: Solution\nMethod: sortList(self, arg1)\n\nGiven the head of a linked list, return the list after sorting it in ascending order using merge sort.\nThe sorting must be done in-place (i.e., modifying the links, not creating new nodes where possible) and achieve O(n log n) time complexity.\nThe linked list node is:\n```python\nclass ListNode:\n    def __init__(self, val=0, next=None):\n        self.val = val\n        self.next = next\n```\n\nConstraints:\n- The number of nodes in the list is in the range [0, 5 * 10^4].\n- -10^5 <= Node.val <= 10^5",
+  "lisp_spec": "(task\n  (name \"sortList\")\n  (signature ( (self Solution) (arg1 (list (struct ListNode))) ) (list (struct ListNode)))\n  (constraints\n    (constraint \"The number of nodes in the list is in the range [0, 5 * 10^4].\")\n    (constraint \"-10^5 <= Node.val <= 10^5\")\n  )\n  (goal\n    (description \"Return the list after sorting it in ascending order using merge sort.\")\n    (rule \"The sorting must be done in-place (i.e., modifying the links, not creating new nodes where possible) and achieve O(n log n) time complexity.\")\n    (return \"The sorted linked list.\")\n  ))\n)",
+  "generated_code": "# solution.py\nfrom typing import List\n\n# Definition for singly-linked list.\nclass ListNode:\n    def __init__(self, val=0, next=None):\n        self.val = val\n        self.next = next\n\nclass Solution:\n    def sortList(self, head: ListNode) -> ListNode:\n        if not head or not head.next:\n            return head\n\n        # Split the list into two halves\n        first_half, second_half = self.split_list(head)\n\n        # Recursively sort both halves\n        first_half = self.sortList(first_half)\n        second_half = self.sortList(second_half)\n\n        # Merge the sorted halves\n        return self.merge_sorted_lists(first_half, second_half)\n\n    def split_list(self, head: ListNode) -> (ListNode, ListNode):\n        # Find the middle of the list\n        slow, fast = head, head\n        while fast.next and fast.next.next:\n            slow = slow.next\n            fast = fast.next.next\n\n        # Split the list into two halves\n        mid = slow.next\n        slow.next = None\n        return head, mid\n\n    def merge_sorted_lists(self, first_half: ListNode, second_half: ListNode) -> ListNode:\n        # Create a dummy node to simplify the merge process\n        dummy = ListNode()\n        current = dummy\n\n        # Merge the two sorted lists\n        while first_half and second_half:\n            if first_half.val < second_half.val:\n                current.next = first_half\n                first_half = first_half.next\n            else:\n                current.next = second_half\n                second_half = second_half.next\n            current = current.next\n\n        # Append the remaining nodes (if any)\n        if first_half:\n            current.next = first_half\n        elif second_half:\n            current.next = second_half\n\n        return dummy.next",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/merge_sort_in_place/test_solution.py ..               [100%]\n\n============================== 2 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.2718,
+    "python": {
+      "cyclomatic_avg": 3.25,
+      "cyclomatic_max": 6,
+      "wmc": 13,
+      "maintainability_index": 77.34435146412146,
+      "max_nesting_depth": 4,
+      "halstead_volume": 0,
+      "lloc": 37,
+      "loc": 58
+    },
+    "lisp": {
+      "lisp_max_depth": 6,
+      "lisp_constraints": 3,
+      "lisp_rules": 1,
+      "lisp_token_count": 84
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "task_name": "activity_selection",
+  "model": "qwen2.5-coder:14b",
+  "timestamp": "2026-02-25T11:22:20.172397",
+  "nl_problem": "# Task: activity_selection\n# Interface:\nClass: Solution\nMethod: maxActivities(self, arg1)\n\nYou are given n activities with their start and finish times. Select the maximum number of activities that can be performed by a single person, assuming that a person can only work on a single activity at a time.\nInput is a list of pairs `(start, finish)`.\n\nConstraints:\n- 1 <= n <= 10^5\n- 0 <= start < finish <= 10^9",
+  "lisp_spec": "(task\n  (name \"maxActivities\")\n  (signature ( (arg1 (list tuple))) int)\n  (constraints\n    (constraint \"The number of activities, n, must satisfy 1 <= n <= 10^5.\")\n    (constraint \"Each activity's start time must be less than its finish time: 0 <= start < finish <= 10^9.\")\n  )\n  (goal\n    (description \"Select the maximum number of non-overlapping activities that can be performed by a single person.\")\n    (rule \"An activity can only be started if there is no other activity running at the same time.\")\n    (return \"Return the maximum number of activities that can be selected. If no activities are provided, return 0.\")\n  )\n)",
+  "generated_code": "# solution.py\nfrom typing import List, Tuple\n\nclass Solution:\n    def maxActivities(self, activities: List[Tuple[int, int]]) -> int:\n        \"\"\"\n        Select the maximum number of non-overlapping activities that can be performed by a single person.\n\n        :param activities: A list of tuples where each tuple represents an activity with a start and end time.\n        :return: The maximum number of activities that can be selected.\n        \"\"\"\n        if not activities:\n            return 0\n\n        # Sort activities based on their finish times\n        activities.sort(key=lambda x: x[1])\n\n        # Initialize the count of activities and the end time of the last selected activity\n        max_count = 1\n        end_time = activities[0][1]\n\n        # Iterate through the sorted activities\n        for start, finish in activities[1:]:\n            if start >= end_time:\n                max_count += 1\n                end_time = finish\n\n        return max_count",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/activity_selection/test_solution.py ..                [100%]\n\n============================== 2 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.24960000000000004,
+    "python": {
+      "cyclomatic_avg": 4.0,
+      "cyclomatic_max": 4,
+      "wmc": 4,
+      "maintainability_index": 92.90497506339462,
+      "max_nesting_depth": 4,
+      "halstead_volume": 0,
+      "lloc": 15,
+      "loc": 28
+    },
+    "lisp": {
+      "lisp_max_depth": 5,
+      "lisp_constraints": 3,
+      "lisp_rules": 1,
+      "lisp_token_count": 98
+    }
+  }
+}

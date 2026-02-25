@@ -1,0 +1,30 @@
+{
+  "task_name": "valid_parentheses_complex",
+  "model": "falcon3:10b",
+  "timestamp": "2026-02-20T15:06:58.247366",
+  "nl_problem": "# Task: valid_parentheses_complex\n# Interface:\nClass: Solution\nMethod: isValid(self, arg1)\n\nGiven a string containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.\nAn input string is valid if:\n1. Open brackets must be closed by the same type of brackets.\n2. Open brackets must be closed in the correct order.\n3. Every close bracket has a corresponding open bracket of the same type.\nInclude support for nested and complex structures.\n\nConstraints:\n- 1 <= s.length <= 10^4\n- s consists of parentheses only '()[]{}'.",
+  "lisp_spec": "(task\n (name \"valid_parentheses_complex\")\n (signature ( (s str) ) bool)\n (constraints\n   (constraint \"1 <= s.length <= 10^4\")\n   (constraint \"s consists of parentheses only '()[]{}'\")\n )\n (goal\n   (description \"Determine if the input string is valid based on the rules of parentheses matching.\")\n   (rule \"Open brackets must be closed by the same type of brackets, in the correct order, and every close bracket has a corresponding open bracket.\")\n   (return \"True if the string is valid, False otherwise.\")\n )\n)",
+  "generated_code": "class Solution:\n    def valid_parentheses_complex(self, s: str) -> bool:\n        stack = []\n        mapping = {\")\": \"(\", \"}\": \"{\", \"]\": \"[\"}\n        \n        for char in s:\n            if char in mapping.values():\n                stack.append(char)\n            elif char in mapping.keys():\n                if not stack or mapping[char] != stack.pop():\n                    return False\n        \n        return not stack",
+  "test_passed": false,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 3 items\n\n01_TestDefinitions/valid_parentheses_complex/test_solution.py FFF        [100%]\n\n=================================== FAILURES ===================================\n_________________________ test_valid_parentheses_basic _________________________\n\n    def test_valid_parentheses_basic():\n        solution = Solution()\n>       assert solution.isValid(\"()\") == True\n               ^^^^^^^^^^^^^^^^\nE       AttributeError: 'Solution' object has no attribute 'isValid'\n\n01_TestDefinitions/valid_parentheses_complex/test_solution.py:6: AttributeError\n________________________ test_valid_parentheses_nested _________________________\n\n    def test_valid_parentheses_nested():\n        solution = Solution()\n>       assert solution.isValid(\"([{}])\") == True\n               ^^^^^^^^^^^^^^^^\nE       AttributeError: 'Solution' object has no attribute 'isValid'\n\n01_TestDefinitions/valid_parentheses_complex/test_solution.py:12: AttributeError\n_____________________ test_valid_parentheses_complex_fail ______________________\n\n    def test_valid_parentheses_complex_fail():\n        solution = Solution()\n>       assert solution.isValid(\"({[)]})\") == False\n               ^^^^^^^^^^^^^^^^\nE       AttributeError: 'Solution' object has no attribute 'isValid'\n\n01_TestDefinitions/valid_parentheses_complex/test_solution.py:17: AttributeError\n=========================== short test summary info ============================\nFAILED 01_TestDefinitions/valid_parentheses_complex/test_solution.py::test_valid_parentheses_basic\nFAILED 01_TestDefinitions/valid_parentheses_complex/test_solution.py::test_valid_parentheses_nested\nFAILED 01_TestDefinitions/valid_parentheses_complex/test_solution.py::test_valid_parentheses_complex_fail\n============================== 3 failed in 0.03s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.3202,
+    "python": {
+      "cyclomatic_avg": 6.0,
+      "cyclomatic_max": 6,
+      "wmc": 6,
+      "maintainability_index": 63.20348610834104,
+      "max_nesting_depth": 6,
+      "halstead_volume": 0,
+      "lloc": 12,
+      "loc": 13
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 3,
+      "lisp_rules": 1,
+      "lisp_token_count": 76
+    }
+  }
+}

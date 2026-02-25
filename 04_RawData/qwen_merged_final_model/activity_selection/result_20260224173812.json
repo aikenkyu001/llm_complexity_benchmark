@@ -1,0 +1,29 @@
+{
+  "task_name": "activity_selection",
+  "model": "qwen_merged_final_model",
+  "timestamp": "2026-02-24T17:38:12.939511",
+  "nl_problem": "# Task: activity_selection\n# Interface:\nClass: Solution\nMethod: maxActivities(self, arg1)\n\nYou are given n activities with their start and finish times. Select the maximum number of activities that can be performed by a single person, assuming that a person can only work on a single activity at a time.\nInput is a list of pairs `(start, finish)`.\n\nConstraints:\n- 1 <= n <= 10^5\n- 0 <= start < finish <= 10^9",
+  "lisp_spec": "(task\n  (name \"maxActivities\")\n  (signature ( (activities (list (tuple int int)))) int)\n  (constraints\n    (constraint \"1 <= n <= 10^5\")\n    (constraint \"0 <= start < finish <= 10^9\")\n  )\n  (goal\n    (description \"Select the maximum number of activities that can be performed by a single person.\")\n    (rule \"Activities must be selected such that no two activities overlap.\")\n    (return \"The number of activities that can be selected.\")\n  ))",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\n# Define any helper classes here if needed\n\nclass Solution:\n    def maxActivities(self, activities: List[List[int]]) -> int:\n        \"\"\"\n        Select the maximum number of activities that can be performed by a single person.\n        \n        Activities must be selected such that no two activities overlap.\n        \n        Parameters:\n        activities (List[List[int]]): A list of lists where each sublist contains two integers [start, finish].\n        \n        Returns:\n        int: The number of activities that can be selected.\n        \"\"\"\n        # Sort activities by their finish time\n        activities.sort(key=lambda x: x[1])\n        \n        # Initialize a heap to keep track of the end times of selected activities\n        heap = []\n        \n        # Iterate through each activity\n        for start, finish in activities:\n            # If the heap is empty or the current activity starts after the earliest ending activity ends\n            if not heap or start >= heap[0]:\n                # Add the finish time of the current activity to the heap\n                heapq.heappush(heap, finish)\n            else:\n                # Remove the earliest ending activity from the heap\n                heapq.heappop(heap)\n        \n        # The size of the heap is the number of non-overlapping activities\n        return len(heap)",
+  "test_passed": false,
+  "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /home/miyata/projects/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/activity_selection/test_solution.py F.                [100%]\n\n=================================== FAILURES ===================================\n________________________ test_activity_selection_basic _________________________\n\n    def test_activity_selection_basic():\n        solution = Solution()\n        activities = [(1, 4), (3, 5), (0, 6), (5, 7), (3, 8), (5, 9), (6, 10), (8, 11), (8, 12), (2, 13), (12, 14)]\n        # Max activities: (1,4), (5,7), (8,11), (12,14) -> 4\n>       assert solution.maxActivities(activities) == 4\nE       assert 1 == 4\nE        +  where 1 = maxActivities([(1, 4), (3, 5), (0, 6), (5, 7), (3, 8), (5, 9), ...])\nE        +    where maxActivities = <solution.Solution object at 0x797d85fbfef0>.maxActivities\n\n01_TestDefinitions/activity_selection/test_solution.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED 01_TestDefinitions/activity_selection/test_solution.py::test_activity_selection_basic\n========================= 1 failed, 1 passed in 0.04s ==========================\n",
+  "complexity_metrics": {
+    "total_complexity_score": 0.24280000000000002,
+    "python": {
+      "cyclomatic_avg": 4.0,
+      "cyclomatic_max": 4,
+      "wmc": 4,
+      "maintainability_index": 84.40646675031743,
+      "max_nesting_depth": 4,
+      "halstead_volume": 0,
+      "lloc": 15,
+      "loc": 38
+    },
+    "lisp": {
+      "lisp_max_depth": 6,
+      "lisp_constraints": 3,
+      "lisp_rules": 1,
+      "lisp_token_count": 64
+    }
+  }
+}

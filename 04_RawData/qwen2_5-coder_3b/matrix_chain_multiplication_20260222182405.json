@@ -1,0 +1,30 @@
+{
+  "task_name": "matrix_chain_multiplication",
+  "model": "qwen2.5-coder:3b",
+  "timestamp": "2026-02-22T18:24:05.682143",
+  "nl_problem": "# Task: matrix_chain_multiplication\n# Interface:\nClass: Solution\nMethod: matrixChainOrder(self, arg1)\n\nGiven a list of matrix dimensions, find the minimum number of scalar multiplications needed to multiply the sequence of matrices.\nIf the sequence of matrices is A1, A2, ..., An, where Ai has dimensions `p[i-1] x p[i]`, the input is the list `p = [p0, p1, ..., pn]`.\n\nConstraints:\n- 2 <= p.length <= 100\n- 1 <= p[i] <= 100",
+  "lisp_spec": "(task\n  (name \"matrix_chain_order\")\n  (signature ( (arg1 list) ) int)\n  (constraints\n    (constraint \"The input is a list of integers representing the dimensions of matrices.\")\n    (constraint \"2 <= p.length <= 100\")\n    (constraint \"1 <= p[i] <= 100\")\n  )\n  (goal\n    (description \"Find the minimum number of scalar multiplications needed to multiply the sequence of matrices.\")\n    (rule \"The input list `arg1` contains the dimensions of the matrices in order.\")\n    (return \"An integer representing the minimum number of scalar multiplications required.\")\n  )\n)",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\nclass Solution:\n    def matrix_chain_order(self, arg1: List[int]) -> int:\n        n = len(arg1)\n        \n        # Initialize the DP table with infinity values\n        dp = [[float('inf')] * n for _ in range(n)]\n        \n        # Base case: single matrix multiplication takes no operations\n        for i in range(n):\n            dp[i][i] = 0\n        \n        # Fill the DP table\n        for length in range(2, n + 1):\n            for i in range(n - length + 1):\n                j = i + length - 1\n                for k in range(i, j):\n                    cost = dp[i][k] + dp[k+1][j] + arg1[i-1] * arg1[k] * arg1[j]\n                    if cost < dp[i][j]:\n                        dp[i][j] = cost\n        \n        # The result is the minimum number of multiplications for the entire sequence\n        return dp[0][n-1]",
+  "test_passed": false,
+  "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-8.3.5, pluggy-1.6.0\nrootdir: /media/developer/USB480G/Project/llm_complexity_benchmark\nplugins: cov-7.0.0, langsmith-0.4.41, anyio-4.11.0\ncollected 2 items\n\n01_TestDefinitions/matrix_chain_multiplication/test_solution.py FF       [100%]\n\n=================================== FAILURES ===================================\n___________________________ test_matrix_chain_basic ____________________________\n\n    def test_matrix_chain_basic():\n        solution = Solution()\n        # Matrices: 10x30, 30x5, 5x60\n        p = [10, 30, 5, 60]\n        # (10*30*5) + (10*5*60) = 1500 + 3000 = 4500\n>       assert solution.matrixChainOrder(p) == 4500\nE       AttributeError: 'Solution' object has no attribute 'matrixChainOrder'. Did you mean: 'matrix_chain_order'?\n\n01_TestDefinitions/matrix_chain_multiplication/test_solution.py:9: AttributeError\n___________________________ test_matrix_chain_longer ___________________________\n\n    def test_matrix_chain_longer():\n        solution = Solution()\n        p = [40, 20, 30, 10, 30]\n        # Optimal: (40*20*30) + (40*30*10) + (40*10*30) = 24000+12000+12000 = 48000\n        # or others... minimum is 26000\n>       assert solution.matrixChainOrder(p) == 26000\nE       AttributeError: 'Solution' object has no attribute 'matrixChainOrder'. Did you mean: 'matrix_chain_order'?\n\n01_TestDefinitions/matrix_chain_multiplication/test_solution.py:16: AttributeError\n=========================== short test summary info ============================\nFAILED 01_TestDefinitions/matrix_chain_multiplication/test_solution.py::test_matrix_chain_basic\nFAILED 01_TestDefinitions/matrix_chain_multiplication/test_solution.py::test_matrix_chain_longer\n============================== 2 failed in 0.06s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.35309999999999997,
+    "python": {
+      "cyclomatic_avg": 7.0,
+      "cyclomatic_max": 7,
+      "wmc": 7,
+      "maintainability_index": 82.5369492658439,
+      "max_nesting_depth": 6,
+      "halstead_volume": 0,
+      "lloc": 17,
+      "loc": 27
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 4,
+      "lisp_rules": 1,
+      "lisp_token_count": 78
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "task_name": "minimum_spanning_tree_prim",
+  "model": "gemma3:12b",
+  "timestamp": "2026-02-20T15:33:21.200270",
+  "nl_problem": "# Task: minimum_spanning_tree_prim\n# Interface:\nClass: Solution\nMethod: primMST(self, graph: Dict[int, List[Tuple[int, int]]], n: int) -> int\n\nGiven a weighted, undirected connected graph with n vertices (labeled 0 to n-1), find the sum of the weights of the edges in its Minimum Spanning Tree using Prim's algorithm.\nThe graph is represented as an adjacency list: `graph[u] = [(v, weight), ...]` where u is the source node, v is the destination, and weight is the edge weight.\n\n# Important:\nThe function MUST accept TWO arguments: `graph` and `n`.\n\n# Implementation Hint:\nUse a priority queue (min-heap) to store edges or nodes. Initialize a `visited` array or set of size `n`. \nStart by marking node 0 as visited and adding its neighbors to the heap.\n\nConstraints:\n- 1 <= n <= 1000\n- 1 <= weight <= 1000",
+  "lisp_spec": "(task\n  (name \"primMST\")\n  (signature ( (graph (dict int (list tuple))) (n int) ) int)\n  (constraints\n    (constraint \"The graph is a weighted, undirected connected graph.\")\n    (constraint \"n represents the number of vertices in the graph, labeled 0 to n-1.\")\n    (constraint \"The graph is represented as an adjacency list: graph[u] = [(v, weight), ...]\")\n    (constraint \"1 <= n <= 1000\")\n    (constraint \"1 <= weight <= 1000\")\n  )\n  (goal\n    (description \"Calculate the sum of the weights of the edges in the Minimum Spanning Tree (MST) of the given graph using Prim's algorithm.\")\n    (rule \"Initialize a visited set/array of size n.\")\n    (rule \"Mark node 0 as visited.\")\n    (rule \"Add the neighbors of node 0 to a priority queue (min-heap).\")\n    (rule \"While the priority queue is not empty, extract the edge with the minimum weight.\")\n    (rule \"If the destination node of the extracted edge is not visited:\")\n      (description \"Mark the destination node as visited.\")\n      (description \"Add the neighbors of the destination node to the priority queue.\")\n      (description \"Add the weight of the extracted edge to the total MST weight.\")\n    (rule \"The function should return the total weight of the MST.\")\n    (return \"The return value is an integer representing the sum of the weights of the edges in the MST. If the graph is empty or invalid, the function should return 0.\")\n  )\n)",
+  "generated_code": "from typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\nclass Solution:\n    def primMST(self, graph: Dict[int, List[tuple]], n: int) -> int:\n        \"\"\"\n        Calculates the sum of the weights of the edges in the Minimum Spanning Tree (MST)\n        of the given graph using Prim's algorithm.\n\n        Args:\n            graph: A dictionary representing the graph as an adjacency list.\n                   graph[u] = [(v, weight), ...]\n            n: The number of vertices in the graph, labeled 0 to n-1.\n\n        Returns:\n            The sum of the weights of the edges in the MST.\n            Returns 0 if the graph is empty or invalid.\n        \"\"\"\n\n        if not graph or n <= 0:\n            return 0\n\n        visited: Set[int] = set()\n        mst_weight: int = 0\n        priority_queue: List[tuple] = []  # (weight, node)\n\n        # Start from node 0\n        visited.add(0)\n        for neighbor, weight in graph.get(0, []):\n            heapq.heappush(priority_queue, (weight, neighbor))\n\n        while priority_queue:\n            weight, node = heapq.heappop(priority_queue)\n\n            if node not in visited:\n                visited.add(node)\n                mst_weight += weight\n\n                for neighbor, w in graph.get(node, []):\n                    if neighbor not in visited:\n                        heapq.heappush(priority_queue, (w, neighbor))\n\n        return mst_weight",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/minimum_spanning_tree_prim/test_solution.py ..        [100%]\n\n============================== 2 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.5336,
+    "python": {
+      "cyclomatic_avg": 8.0,
+      "cyclomatic_max": 8,
+      "wmc": 8,
+      "maintainability_index": 84.39634164533271,
+      "max_nesting_depth": 6,
+      "halstead_volume": 0,
+      "lloc": 26,
+      "loc": 44
+    },
+    "lisp": {
+      "lisp_max_depth": 6,
+      "lisp_constraints": 6,
+      "lisp_rules": 6,
+      "lisp_token_count": 218
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "task_name": "trapping_rain_water_ii",
+  "model": "gemma3:12b",
+  "timestamp": "2026-02-20T16:03:29.575831",
+  "nl_problem": "# Task: trapping_rain_water_ii\n# Interface:\nClass: Solution\nMethod: trapRainWater(self, arg1)\n\nGiven an m x n integer matrix heightMap representing the height of each unit cell in a 2D elevation map, return the volume of water it can trap after raining.\n\nConstraints:\n- m == heightMap.length\n- n == heightMap[i].length\n- 1 <= m, n <= 200\n- 0 <= heightMap[i][j] <= 2 * 10^4",
+  "lisp_spec": "(task\n  (name \"trapRainWater\")\n  (signature ( (heightMap (list (list int))) ) int)\n  (constraints\n    (constraint \"m == heightMap.length\")\n    (constraint \"n == heightMap[i].length\")\n    (constraint \"1 <= m, n <= 200\")\n    (constraint \"0 <= heightMap[i][j] <= 2 * 10^4\")\n  )\n  (goal\n    (description \"Calculate the total volume of water trapped between rows and columns in a 2D elevation map.\")\n    (rule \"The water trapped at a cell is the minimum of the highest boundary cells to the left, right, top, and bottom, minus the height of the cell itself.\")\n    (return \"Return the total trapped water volume as an integer.  Handle edge cases where no water can be trapped (return 0).\")\n  )\n)",
+  "generated_code": "from typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\nclass Solution:\n    def trapRainWater(self, heightMap: List[List[int]]) -> int:\n        \"\"\"\n        Calculates the total volume of water trapped between rows and columns in a 2D elevation map.\n\n        Args:\n            heightMap: A 2D list of integers representing the elevation map.\n\n        Returns:\n            The total trapped water volume as an integer.\n        \"\"\"\n        if not heightMap or not heightMap[0]:\n            return 0\n\n        m, n = len(heightMap), len(heightMap[0])\n        visited = [[False] * n for _ in range(m)]\n        heap = []\n\n        # Add boundary cells to the heap\n        for i in range(m):\n            for j in range(n):\n                if i == 0 or i == m - 1 or j == 0 or j == n - 1:\n                    heapq.heappush(heap, (heightMap[i][j], i, j))\n                    visited[i][j] = True\n\n        water = 0\n        directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]\n\n        while heap:\n            height, row, col = heapq.heappop(heap)\n\n            for dx, dy in directions:\n                new_row, new_col = row + dx, col + dy\n\n                if 0 <= new_row < m and 0 <= new_col < n and not visited[new_row][new_col]:\n                    visited[new_row][new_col] = True\n                    water += max(0, height - heightMap[new_row][new_col])\n                    heapq.heappush(heap, (max(height, heightMap[new_row][new_col]), new_row, new_col))\n\n        return water",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/trapping_rain_water_ii/test_solution.py ..            [100%]\n\n============================== 2 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.4537,
+    "python": {
+      "cyclomatic_avg": 15.0,
+      "cyclomatic_max": 15,
+      "wmc": 15,
+      "maintainability_index": 75.5075828919532,
+      "max_nesting_depth": 5,
+      "halstead_volume": 0,
+      "lloc": 27,
+      "loc": 44
+    },
+    "lisp": {
+      "lisp_max_depth": 6,
+      "lisp_constraints": 5,
+      "lisp_rules": 1,
+      "lisp_token_count": 106
+    }
+  }
+}

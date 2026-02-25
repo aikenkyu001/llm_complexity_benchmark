@@ -1,0 +1,30 @@
+{
+  "task_name": "autocomplete_trie",
+  "model": "gemma3:12b",
+  "timestamp": "2026-02-20T15:19:48.986256",
+  "nl_problem": "# Task: Autocomplete System\n# Interface:\nClass: Solution\nMethod: initAutocomplete(self, sentences: List[str], times: List[int]) -> None\nMethod: query(self, prefix: str) -> List[str]\n\nDesign an autocomplete system that returns the top 3 historical sentences that start with the same prefix.\nThe system is initialized with a list of sentences and their respective search counts (times).\n- `initAutocomplete(sentences, times)`: Initializes the system.\n- `query(prefix)`: Returns the top 3 hot sentences starting with the prefix. If multiple sentences have the same frequency, return them in lexicographical order.\n\n# Implementation Hint:\nUse a Trie to store sentences. Each node in the Trie can store the historical sentences and their frequencies passing through that node.\nFor the `query` method, navigate to the node representing the prefix and retrieve the top results.\n\nConstraints:\n- Sentences contain only lowercase English letters and spaces.\n- Up to 100 historical sentences.",
+  "lisp_spec": "(task\n  (name \"initAutocomplete\")\n  (signature ( (sentences (list string)) (times (list int)) ) void)\n  (constraints\n    (constraint \"Sentences contain only lowercase English letters and spaces.\")\n    (constraint \"Maximum 100 historical sentences.\")\n  )\n  (goal\n    (description \"Initializes the autocomplete system with a list of sentences and their search counts.\")\n    (rule \"The system should store the sentences and their corresponding times for later retrieval.\")\n    (return \"No explicit return value; the system's internal state is updated.\")\n  )\n)\n\n(task\n  (name \"query\")\n  (signature ( (prefix string) ) (list string))\n  (constraints\n    (constraint \"Prefix contains only lowercase English letters and spaces.\")\n  )\n  (goal\n    (description \"Returns the top 3 historical sentences starting with the given prefix.\")\n    (rule \"Navigate the Trie to the node representing the prefix.\")\n    (rule \"Retrieve all sentences under that node.\")\n    (rule \"Sort the sentences first by frequency (descending) and then lexicographically (ascending).\")\n    (rule \"Return the top 3 sentences.\")\n    (return \"If fewer than 3 sentences start with the prefix, return all available sentences. If no sentences start with the prefix, return an empty list.\")\n  )\n)",
+  "generated_code": "from typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\nclass TrieNode:\n    def __init__(self):\n        self.children: Dict[str, TrieNode] = {}\n        self.sentences: List[str] = []\n\nclass Trie:\n    def __init__(self):\n        self.root: TrieNode = TrieNode()\n\n    def insert(self, sentence: str, time: int):\n        node = self.root\n        for char in sentence:\n            if char not in node.children:\n                node.children[char] = TrieNode()\n            node = node.children[char]\n        node.sentences.append((sentence for sentence in [sentence]))\n        node.sentences[0] = (sentence, time)\n\n    def search(self, prefix: str) -> List[str]:\n        node = self.root\n        for char in prefix:\n            if char not in node.children:\n                return []\n            node = node.children[char]\n        \n        sentences_with_times = []\n        for sentence, time in node.sentences:\n            sentences_with_times.append((time, sentence))\n        \n        sentences_with_times.sort(key=lambda x: (-x[0], x[1]))\n        \n        return [sentence for _, sentence in sentences_with_times[:3]]\n\nclass Solution:\n    def __init__(self, sentences: List[str], times: List[int]):\n        self.trie = Trie()\n        for i in range(len(sentences)):\n            self.trie.insert(sentences[i], times[i])\n\n    def initAutocomplete(self, sentences: List[str], times: List[int]) -> None:\n        self.trie = Trie()\n        for i in range(len(sentences)):\n            self.trie.insert(sentences[i], times[i])\n\n    def query(self, prefix: str) -> List[str]:\n        return self.trie.search(prefix)",
+  "test_passed": false,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 1 item\n\n01_TestDefinitions/autocomplete_trie/test_solution.py F                  [100%]\n\n=================================== FAILURES ===================================\n___________________________ test_autocomplete_basic ____________________________\n\n    def test_autocomplete_basic():\n        sentences = [\"i love you\", \"island\", \"ironman\", \"i love leetcode\"]\n        times = [5, 3, 2, 2]\n        # In a real scenario, this might be a class. Let's assume a class AutocompleteSystem.\n        # For this task, we will simplify it to a method.\n>       solution = Solution()\n                   ^^^^^^^^^^\nE       TypeError: Solution.__init__() missing 2 required positional arguments: 'sentences' and 'times'\n\n01_TestDefinitions/autocomplete_trie/test_solution.py:9: TypeError\n=========================== short test summary info ============================\nFAILED 01_TestDefinitions/autocomplete_trie/test_solution.py::test_autocomplete_basic\n============================== 1 failed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.39590000000000003,
+    "python": {
+      "cyclomatic_avg": 2.2857142857142856,
+      "cyclomatic_max": 5,
+      "wmc": 16,
+      "maintainability_index": 52.1879002613766,
+      "max_nesting_depth": 4,
+      "halstead_volume": 0,
+      "lloc": 45,
+      "loc": 50
+    },
+    "lisp": {
+      "lisp_max_depth": 5,
+      "lisp_constraints": 5,
+      "lisp_rules": 5,
+      "lisp_token_count": 167
+    }
+  }
+}

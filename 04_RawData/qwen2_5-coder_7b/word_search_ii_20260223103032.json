@@ -1,0 +1,30 @@
+{
+  "task_name": "word_search_ii",
+  "model": "qwen2.5-coder:7b",
+  "timestamp": "2026-02-23T10:30:32.488287",
+  "nl_problem": "# Task: word_search_ii\n# Interface:\nClass: Solution\nMethod: findWords(self, arg1, arg2)\n\nGiven an m x n board of characters and a list of strings words, return all words on the board.\nEach word must be constructed from letters of sequentially adjacent cells, where adjacent cells are horizontally or vertically neighboring. The same letter cell may not be used more than once in a word.\nYou should use a Trie data structure to optimize the search.\n\nConstraints:\n- m == board.length\n- n == board[i].length\n- 1 <= m, n <= 12\n- board and words consist of lowercase English letters.\n- 1 <= words.length <= 3 * 10^4\n- All strings in words are unique.",
+  "lisp_spec": "(task\n  (name \"findWords\")\n  (signature ( (board (list (list char))) (words (list string)) ) (list string))\n  (constraints\n    (constraint \"m == board.length\")\n    (constraint \"n == board[i].length\")\n    (constraint \"1 <= m, n <= 12\")\n    (constraint \"board and words consist of lowercase English letters.\")\n    (constraint \"1 <= words.length <= 3 * 10^4\")\n    (constraint \"All strings in words are unique.\")\n  )\n  (goal\n    (description \"Return all words on the board that can be constructed from sequentially adjacent cells.\")\n    (rule \"Each word must be formed using letters from horizontally or vertically neighboring cells, and no cell can be used more than once per word.\")\n    (rule \"Use a Trie data structure to optimize the search.\")\n    (return \"A list of all words found on the board that match the given list of words.\")\n  )\n)",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\nclass TrieNode:\n    def __init__(self):\n        self.children: Dict[str, 'TrieNode'] = {}\n        self.is_word = False\n        self.word = None\n\nclass Solution:\n    def findWords(self, board: List[List[str]], words: List[str]) -> List[str]:\n        root = TrieNode()\n        for word in words:\n            node = root\n            for char in word:\n                if char not in node.children:\n                    node.children[char] = TrieNode()\n                node = node.children[char]\n            node.is_word = True\n            node.word = word\n        \n        def dfs(board, i, j, node):\n            if i < 0 or i >= len(board) or j < 0 or j >= len(board[0]) or board[i][j] == '#' or board[i][j] not in node.children:\n                return\n            char = board[i][j]\n            next_node = node.children[char]\n            if next_node.is_word:\n                result.add(next_node.word)\n            temp, board[i][j] = board[i][j], '#'\n            dfs(board, i + 1, j, next_node)\n            dfs(board, i - 1, j, next_node)\n            dfs(board, i, j + 1, next_node)\n            dfs(board, i, j - 1, next_node)\n            board[i][j] = temp\n        \n        result: Set[str] = set()\n        for i in range(len(board)):\n            for j in range(len(board[0])):\n                dfs(board, i, j, root)\n        \n        return list(result)",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-8.3.5, pluggy-1.6.0\nrootdir: /media/developer/USB480G/Project/llm_complexity_benchmark\nplugins: cov-7.0.0, langsmith-0.4.41, anyio-4.11.0\ncollected 2 items\n\n01_TestDefinitions/word_search_ii/test_solution.py ..                    [100%]\n\n============================== 2 passed in 0.11s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.4052,
+    "python": {
+      "cyclomatic_avg": 3.5,
+      "cyclomatic_max": 6,
+      "wmc": 7,
+      "maintainability_index": 58.09834661962983,
+      "max_nesting_depth": 5,
+      "halstead_volume": 0,
+      "lloc": 39,
+      "loc": 43
+    },
+    "lisp": {
+      "lisp_max_depth": 6,
+      "lisp_constraints": 7,
+      "lisp_rules": 2,
+      "lisp_token_count": 126
+    }
+  }
+}

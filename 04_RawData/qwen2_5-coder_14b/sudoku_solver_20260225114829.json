@@ -1,0 +1,30 @@
+{
+  "task_name": "sudoku_solver",
+  "model": "qwen2.5-coder:14b",
+  "timestamp": "2026-02-25T11:48:29.699786",
+  "nl_problem": "# Task: Sudoku Solver\n# Interface:\nClass: Solution\nMethod: solveSudoku(self, board: List[List[str]]) -> None\n\n# Objective:\nWrite a program to solve a Sudoku puzzle by filling the empty cells.\nModify the board in-place. The function does not need to return anything.\n\n# Constraints:\n1. Each of the digits 1-9 must occur exactly once in each row.\n2. Each of the digits 1-9 must occur exactly once in each column.\n3. Each of the digits 1-9 must occur exactly once in each of the 9 3x3 sub-boxes of the grid.\n4. The '.' character indicates empty cells.\n5. The board size is always 9x9.\n6. You may assume that the given Sudoku puzzle will have a single unique solution.",
+  "lisp_spec": "(task\n  (name \"solveSudoku\")\n  (signature ( (board (list (list str))) ) None)\n  (constraints\n    (constraint \"Each of the digits 1-9 must occur exactly once in each row.\")\n    (constraint \"Each of the digits 1-9 must occur exactly once in each column.\")\n    (constraint \"Each of the digits 1-9 must occur exactly once in each of the 9 3x3 sub-boxes of the grid.\")\n    (constraint \"The '.' character indicates empty cells.\")\n    (constraint \"The board size is always 9x9.\")\n    (constraint \"You may assume that the given Sudoku puzzle will have a single unique solution.\")\n  )\n  (goal\n    (description \"Solve a Sudoku puzzle by filling the empty cells.\")\n    (rule \"Modify the board in-place.\")\n    (return \"The function does not need to return anything. The board should be modified with the correct digits filled in.\")\n  )\n)",
+  "generated_code": "from typing import List\n\nclass Solution:\n    def solveSudoku(self, board: List[List[str]]) -> None:\n        \"\"\"\n        Do not return anything, modify board in-place instead.\n        \"\"\"\n        \n        def is_valid(board, row, col, num):\n            # Check if the number is not in the current row\n            for i in range(9):\n                if board[row][i] == num:\n                    return False\n            \n            # Check if the number is not in the current column\n            for i in range(9):\n                if board[i][col] == num:\n                    return False\n            \n            # Check if the number is not in the current 3x3 sub-box\n            start_row, start_col = 3 * (row // 3), 3 * (col // 3)\n            for i in range(3):\n                for j in range(3):\n                    if board[i + start_row][j + start_col] == num:\n                        return False\n            \n            return True\n        \n        def solve():\n            for row in range(9):\n                for col in range(9):\n                    if board[row][col] == '.':\n                        for num in '123456789':\n                            if is_valid(board, row, col, num):\n                                board[row][col] = num\n                                if solve():\n                                    return True\n                                board[row][col] = '.'\n                        return False\n            return True\n        \n        solve()",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 3 items\n\n01_TestDefinitions/sudoku_solver/test_solution.py ...                    [100%]\n\n============================== 3 passed in 0.04s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.4227000000000001,
+    "python": {
+      "cyclomatic_avg": 1.0,
+      "cyclomatic_max": 1,
+      "wmc": 1,
+      "maintainability_index": 76.423702878004,
+      "max_nesting_depth": 9,
+      "halstead_volume": 0,
+      "lloc": 30,
+      "loc": 42
+    },
+    "lisp": {
+      "lisp_max_depth": 6,
+      "lisp_constraints": 7,
+      "lisp_rules": 1,
+      "lisp_token_count": 126
+    }
+  }
+}

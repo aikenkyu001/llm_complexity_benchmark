@@ -1,0 +1,30 @@
+{
+  "task_name": "sudoku_solver",
+  "model": "qwen2.5-coder:3b",
+  "timestamp": "2026-02-22T18:27:53.326393",
+  "nl_problem": "# Task: Sudoku Solver\n# Interface:\nClass: Solution\nMethod: solveSudoku(self, board: List[List[str]]) -> None\n\n# Objective:\nWrite a program to solve a Sudoku puzzle by filling the empty cells.\nModify the board in-place. The function does not need to return anything.\n\n# Constraints:\n1. Each of the digits 1-9 must occur exactly once in each row.\n2. Each of the digits 1-9 must occur exactly once in each column.\n3. Each of the digits 1-9 must occur exactly once in each of the 9 3x3 sub-boxes of the grid.\n4. The '.' character indicates empty cells.\n5. The board size is always 9x9.\n6. You may assume that the given Sudoku puzzle will have a single unique solution.",
+  "lisp_spec": "(task\n  (name \"solve_sudoku\")\n  (signature ( (board list) ) void)\n  (constraints\n    (constraint \"Each of the digits 1-9 must occur exactly once in each row.\")\n    (constraint \"Each of the digits 1-9 must occur exactly once in each column.\")\n    (constraint \"Each of the digits 1-9 must occur exactly once in each of the 9 3x3 sub-boxes of the grid.\")\n    (constraint \"'.' character indicates empty cells.\")\n    (constraint \"The board size is always 9x9.\")\n    (constraint \"You may assume that the given Sudoku puzzle will have a single unique solution.\")\n  )\n  (goal\n    (description \"Solve a Sudoku puzzle by filling the empty cells in-place.\")\n    (rule \"Modify the board in-place without returning anything.\")\n  )\n)",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\nclass Solution:\n    def solveSudoku(self, board: List[List[str]]) -> None:\n        \"\"\"\n        Do not return anything, modify board in-place instead.\n        \n        :param board: A 9x9 list of strings representing the Sudoku puzzle.\n        \"\"\"\n        rows = [set() for _ in range(9)]\n        cols = [set() for _ in range(9)]\n        boxes = [[set() for _ in range(3)] for _ in range(3)]\n\n        # Initialize sets with numbers 1-9\n        for i in range(9):\n            for j in range(9):\n                if board[i][j] != '.':\n                    num = int(board[i][j])\n                    rows[i].add(num)\n                    cols[j].add(num)\n                    boxes[i // 3][j // 3].add(num)\n\n        def is_valid(row: int, col: int, num: int) -> bool:\n            return (num not in rows[row] and\n                   num not in cols[col] and\n                   num not in boxes[row // 3][col // 3])\n\n        def backtrack() -> bool:\n            empty = [(i, j) for i in range(9) for j in range(9) if board[i][j] == '.']\n            if not empty:\n                return True\n\n            row, col = heapq.heappop(empty)\n            for num in range(1, 10):\n                if is_valid(row, col, num):\n                    board[row][col] = str(num)\n                    rows[row].add(num)\n                    cols[col].add(num)\n                    boxes[row // 3][col // 3].add(num)\n\n                    if backtrack():\n                        return True\n\n                    board[row][col] = '.'\n                    rows[row].remove(num)\n                    cols[col].remove(num)\n                    boxes[row // 3][col // 3].remove(num)\n\n            heapq.heappush(empty, (row, col))\n            return False\n\n        backtrack()",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-8.3.5, pluggy-1.6.0\nrootdir: /media/developer/USB480G/Project/llm_complexity_benchmark\nplugins: cov-7.0.0, langsmith-0.4.41, anyio-4.11.0\ncollected 3 items\n\n01_TestDefinitions/sudoku_solver/test_solution.py ...                    [100%]\n\n============================== 3 passed in 0.07s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.4314,
+    "python": {
+      "cyclomatic_avg": 8.0,
+      "cyclomatic_max": 8,
+      "wmc": 8,
+      "maintainability_index": 69.24404087388362,
+      "max_nesting_depth": 6,
+      "halstead_volume": 0,
+      "lloc": 38,
+      "loc": 55
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 7,
+      "lisp_rules": 1,
+      "lisp_token_count": 107
+    }
+  }
+}

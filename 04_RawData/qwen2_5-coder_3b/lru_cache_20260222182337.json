@@ -1,0 +1,30 @@
+{
+  "task_name": "lru_cache",
+  "model": "qwen2.5-coder:3b",
+  "timestamp": "2026-02-22T18:23:37.157544",
+  "nl_problem": "# Task: LRU Cache\n# Interface:\nClass: Solution\nMethod: LRUCache(self, capacity: int) -> 'LRUCache'\n\nDesign a data structure that follows the constraints of a Least Recently Used (LRU) cache.\n\nImplement the LRUCache class:\n- `LRUCache(int capacity)`: Initialize the LRU cache with positive size capacity.\n- `int get(int key)`: Return the value of the key if the key exists, otherwise return -1.\n- `void put(int key, int value)`: Update the value of the key if the key exists. Otherwise, add the key-value pair to the cache. If the number of keys exceeds the capacity from this operation, evict the least recently used key.\n\nThe functions `get` and `put` must each run in O(1) average time complexity.\nYou must not use the built-in `collections.OrderedDict`. You should use a combination of a hash map and a double linked list to achieve the required time complexity.",
+  "lisp_spec": "(task\n  (name \"LRUCache\")\n  (signature ( (capacity int) ) 'LRUCache)\n  (constraints\n    (constraint \"The cache should have positive size capacity.\")\n    (constraint \"The `get` function must return the value of the key if it exists, otherwise return -1.\")\n    (constraint \"The `put` function must update the value of the key if it exists. Otherwise, add the key-value pair to the cache.\")\n    (constraint \"If the number of keys exceeds the capacity from this operation, evict the least recently used key.\")\n    (constraint \"Both `get` and `put` functions must run in O(1) average time complexity.\")\n  )\n  (goal\n    (description \"Design a data structure that follows the constraints of a Least Recently Used (LRU) cache.\")\n    (rule \"The LRUCache class should initialize with positive size capacity.\")\n    (rule \"The `get` function should return the value of the key if it exists, otherwise return -1.\")\n    (rule \"The `put` function should update the value of the key if it exists. Otherwise, add the key-value pair to the cache.\")\n    (rule \"If the number of keys exceeds the capacity from this operation, evict the least recently used key.\")\n    (rule \"Both `get` and `put` functions must run in O(1) average time complexity.\")\n  )\n)",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\nclass LRUCache:\n    def __init__(self, capacity: int):\n        self.capacity = capacity\n        self.cache = collections.OrderedDict()\n\n    def get(self, key: int) -> int:\n        if key in self.cache:\n            # Move the accessed key to the end of the cache (most recently used)\n            self.cache.move_to_end(key)\n            return self.cache[key]\n        else:\n            return -1\n\n    def put(self, key: int, value: int) -> None:\n        if key in self.cache:\n            # Update the value and move the key to the end of the cache\n            self.cache[key] = value\n            self.cache.move_to_end(key)\n        else:\n            # Add a new key-value pair to the cache\n            if len(self.cache) >= self.capacity:\n                # Remove the least recently used key (first item in OrderedDict)\n                self.cache.popitem(last=False)\n            self.cache[key] = value\n\nclass Solution:\n    def LRUCache(self, capacity: int) -> LRUCache:\n        return LRUCache(capacity)",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-8.3.5, pluggy-1.6.0\nrootdir: /media/developer/USB480G/Project/llm_complexity_benchmark\nplugins: cov-7.0.0, langsmith-0.4.41, anyio-4.11.0\ncollected 3 items\n\n01_TestDefinitions/lru_cache/test_solution.py ...                        [100%]\n\n============================== 3 passed in 0.05s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.3951,
+    "python": {
+      "cyclomatic_avg": 1.75,
+      "cyclomatic_max": 3,
+      "wmc": 7,
+      "maintainability_index": 81.58539637186337,
+      "max_nesting_depth": 4,
+      "halstead_volume": 0,
+      "lloc": 24,
+      "loc": 33
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 6,
+      "lisp_rules": 5,
+      "lisp_token_count": 188
+    }
+  }
+}

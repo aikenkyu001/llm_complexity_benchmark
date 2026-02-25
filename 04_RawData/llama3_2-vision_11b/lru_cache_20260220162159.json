@@ -1,0 +1,30 @@
+{
+  "task_name": "lru_cache",
+  "model": "llama3.2-vision:11b",
+  "timestamp": "2026-02-20T16:21:59.004447",
+  "nl_problem": "# Task: LRU Cache\n# Interface:\nClass: Solution\nMethod: LRUCache(self, capacity: int) -> 'LRUCache'\n\nDesign a data structure that follows the constraints of a Least Recently Used (LRU) cache.\n\nImplement the LRUCache class:\n- `LRUCache(int capacity)`: Initialize the LRU cache with positive size capacity.\n- `int get(int key)`: Return the value of the key if the key exists, otherwise return -1.\n- `void put(int key, int value)`: Update the value of the key if the key exists. Otherwise, add the key-value pair to the cache. If the number of keys exceeds the capacity from this operation, evict the least recently used key.\n\nThe functions `get` and `put` must each run in O(1) average time complexity.\nYou must not use the built-in `collections.OrderedDict`. You should use a combination of a hash map and a double linked list to achieve the required time complexity.",
+  "lisp_spec": "(task\n  (name \"LRUCache\")\n  (signature\n    ( (capacity int) )\n    ( (key int) (value int) )\n    ( (key int) int )\n  )\n  (constraints\n    (constraint \"Capacity must be a positive integer.\")\n    (constraint \"Key and value must be integers.\")\n  )\n  (goal\n    (description \"Implement an LRU cache with the given capacity.\")\n    (rule \"Use a combination of a hash map and a double linked list to achieve O(1) average time complexity.\")\n    (return \"Return the value of the key if it exists, otherwise return -1 for get. Update the value of the key if it exists, otherwise add the key-value pair to the cache for put.\")\n  ))",
+  "generated_code": "from typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\nclass Node:\n    def __init__(self, key: int, value: int):\n        self.key = key\n        self.value = value\n        self.prev = None\n        self.next = None\n\nclass LRUCache:\n    def __init__(self, capacity: int):\n        self.capacity = capacity\n        self.cache = collections.OrderedDict()\n        self.head = Node(0, 0)\n        self.tail = Node(0, 0)\n        self.head.next = self.tail\n        self.tail.prev = self.head\n\n    def _remove(self, node: Node):\n        prev_node = node.prev\n        next_node = node.next\n        prev_node.next = next_node\n        next_node.prev = prev_node\n\n    def _add(self, node: Node):\n        prev_node = self.tail.prev\n        prev_node.next = node\n        self.tail.prev = node\n        node.prev = prev_node\n        node.next = self.tail\n\n    def get(self, key: int) -> int:\n        if key in self.cache:\n            node = self.cache[key]\n            self._remove(node)\n            self._add(node)\n            return node.value\n        return -1\n\n    def put(self, key: int, value: int) -> None:\n        if key in self.cache:\n            self._remove(self.cache[key])\n        node = Node(key, value)\n        self._add(node)\n        self.cache[key] = node\n        if len(self.cache) > self.capacity:\n            lru_node = self.head.next\n            self._remove(lru_node)\n            del self.cache[lru_node.key]\n\nclass Solution:\n    def LRUCache(self, capacity: int) -> LRUCache:\n        return LRUCache(capacity)",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 3 items\n\n01_TestDefinitions/lru_cache/test_solution.py ...                        [100%]\n\n============================== 3 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.21250000000000002,
+    "python": {
+      "cyclomatic_avg": 1.4285714285714286,
+      "cyclomatic_max": 3,
+      "wmc": 10,
+      "maintainability_index": 50.903305440015565,
+      "max_nesting_depth": 3,
+      "halstead_volume": 0,
+      "lloc": 48,
+      "loc": 55
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 3,
+      "lisp_rules": 1,
+      "lisp_token_count": 100
+    }
+  }
+}

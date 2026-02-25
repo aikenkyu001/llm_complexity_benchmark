@@ -1,0 +1,30 @@
+{
+  "task_name": "regex_matcher",
+  "model": "gemma3:12b",
+  "timestamp": "2026-02-20T15:38:06.101887",
+  "nl_problem": "# Task: regex_matcher\n# Interface:\nClass: Solution\nMethod: isMatch(self, arg1, arg2)\n\nGiven an input string s and a pattern p, implement regular expression matching with support for '.' and '*' where:\n- '.' Matches any single character.\u200b\u200b\u200b\u200b\n- '*' Matches zero or more of the preceding element.\nThe matching should cover the entire input string (not partial).\n\nConstraints:\n- 1 <= s.length <= 20\n- 1 <= p.length <= 20\n- s contains only lowercase English letters.\n- p contains only lowercase English letters, '.', and '*'.\n- It is guaranteed for each appearance of the character '*', there will be a previous valid character to match.",
+  "lisp_spec": "(task\n  (name \"isMatch\")\n  (signature ( (s string) (p string) ) bool)\n  (constraints\n    (constraint \"The input string 's' has a length between 1 and 20 (inclusive).\")\n    (constraint \"The pattern string 'p' has a length between 1 and 20 (inclusive).\")\n    (constraint \"The input string 's' contains only lowercase English letters.\")\n    (constraint \"The pattern string 'p' contains only lowercase English letters, '.', and '*'.\")\n    (constraint \"For each '*' in the pattern, there is a preceding character.\")\n  )\n  (goal\n    (description \"Determine if the input string 's' matches the pattern 'p' according to the regular expression rules.\")\n    (rule \"'.' matches any single character.\")\n    (rule \"*' matches zero or more occurrences of the preceding character.\")\n    (rule \"The matching must cover the entire input string 's'.\")\n    (return \"Return 'true' if the entire input string 's' matches the pattern 'p', and 'false' otherwise.\")\n  )\n)",
+  "generated_code": "from typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\nclass Solution:\n    def isMatch(self, s: str, p: str) -> bool:\n        \"\"\"\n        Determine if the input string 's' matches the pattern 'p' according to the regular expression rules.\n\n        Args:\n            s: The input string.\n            p: The pattern string.\n\n        Returns:\n            True if the entire input string 's' matches the pattern 'p', and False otherwise.\n        \"\"\"\n        m, n = len(s), len(p)\n        dp = [[False] * (n + 1) for _ in range(m + 1)]\n        dp[0][0] = True\n\n        for j in range(1, n + 1):\n            if p[j - 1] == '*':\n                dp[0][j] = dp[0][j - 2]\n\n        for i in range(1, m + 1):\n            for j in range(1, n + 1):\n                if p[j - 1] == '.' or p[j - 1] == s[i - 1]:\n                    dp[i][j] = dp[i - 1][j - 1]\n                elif p[j - 1] == '*':\n                    dp[i][j] = dp[i][j - 2]\n                    if p[j - 2] == '.' or p[j - 2] == s[i - 1]:\n                        dp[i][j] = dp[i][j] or dp[i - 1][j]\n                else:\n                    dp[i][j] = False\n\n        return dp[m][n]",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/regex_matcher/test_solution.py ..                     [100%]\n\n============================== 2 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.5324,
+    "python": {
+      "cyclomatic_avg": 12.0,
+      "cyclomatic_max": 12,
+      "wmc": 12,
+      "maintainability_index": 78.00994973821606,
+      "max_nesting_depth": 7,
+      "halstead_volume": 0,
+      "lloc": 23,
+      "loc": 36
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 6,
+      "lisp_rules": 3,
+      "lisp_token_count": 137
+    }
+  }
+}

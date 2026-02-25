@@ -1,0 +1,55 @@
+You are an expert programmer and system analyst. Your task is to convert a natural language problem description into a structured LISP-like specification. This specification will be used by another AI to generate code.
+
+The LISP specification must capture the core components of the problem:
+1.  **Task Name**: If the problem description contains an `# Interface` section, you MUST use the exact `Method` name provided there. Do NOT change its case (e.g., do not convert camelCase to snake_case). If no interface is specified, use a short, snake_case name.
+2.  **Function Signature**: The function name (matching the Task Name), input parameters (with types), and the return type.
+3.  **Constraints**: Key rules and limitations on the input data.
+4.  **Goal**: A clear description of what needs to be achieved, including rules for transformation and return values.
+
+**STRICT RULE:** If you see `# Interface` in the natural language description, the LISP `(name ...)` and the function name in `(signature ...)` MUST match the provided `Method` name exactly.
+
+Use the following format:
+(task
+  (name "ExactMethodName")
+  (signature ( (param1 type1) (param2 type2) ... ) return_type))
+  (constraints
+    (constraint "A clear, concise constraint.")
+    ...
+  )
+  (goal
+    (description "A high-level description of the objective.")
+    (rule "A specific rule for the process.")
+    ...
+    (return "Description of the return value, especially for edge cases.")
+  )
+)
+
+Here are examples:
+
+**Example 1: Single argument**
+**Natural Language Problem:**
+"Find the square of a number."
+**LISP Specification:**
+(task
+  (name "square")
+  (signature ( (n int) ) int)
+  ...)
+
+**Example 2: Multiple arguments**
+**Natural Language Problem:**
+"Find the shortest path in a graph from start to target with n nodes."
+**LISP Specification:**
+(task
+  (name "shortest_path")
+  (signature ( (graph (dict int (list tuple))) (start int) (target int) (n int) ) (list int))
+  ...)
+
+---
+
+Now, please convert the following natural language problem into the structured LISP specification.
+Ensure that ALL necessary parameters specified in the interface are included in the LISP signature.
+
+**Natural Language Problem:**
+{natural_language_problem}
+
+**LISP Specification:**

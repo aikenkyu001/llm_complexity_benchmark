@@ -1,0 +1,30 @@
+{
+  "task_name": "merge_k_sorted_lists",
+  "model": "gemma3:12b",
+  "timestamp": "2026-02-20T15:31:12.595247",
+  "nl_problem": "# Task: merge_k_sorted_lists\n# Interface:\nClass: Solution\nMethod: mergeKLists(self, arg1)\n\nYou are given an array of k linked-lists, each linked-list is sorted in ascending order. Merge all the linked-lists into one sorted linked-list and return it.\nThe linked list node is:\n```python\nclass ListNode:\n    def __init__(self, val=0, next=None):\n        self.val = val\n        self.next = next\n```\n\nConstraints:\n- k == lists.length\n- 0 <= k <= 10^4\n- 0 <= lists[i].length <= 500\n- -10^4 <= lists[i].val <= 10^4\n- lists[i] is sorted in ascending order.\n- The total sum of lists[i].length will not exceed 10^4.",
+  "lisp_spec": "(task\n  (name \"mergeKLists\")\n  (signature ( (lists (list (list int))) ) (list int))\n  (constraints\n    (constraint \"k == length of lists\")\n    (constraint \"0 <= k <= 10^4\")\n    (constraint \"0 <= length of each list <= 500\")\n    (constraint \"-10^4 <= value of each node <= 10^4\")\n    (constraint \"Each list is sorted in ascending order\")\n    (constraint \"Total length of all lists does not exceed 10^4\")\n  )\n  (goal\n    (description \"Merge k sorted linked lists into a single sorted linked list.\")\n    (rule \"Iterate through all linked lists and merge them into a single sorted list.\")\n    (return \"Return the head of the merged sorted linked list. If the input list of lists is empty, return an empty list.\")\n  )\n)",
+  "generated_code": "from typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\nclass ListNode:\n    def __init__(self, val=0, next=None):\n        self.val = val\n        self.next = next\n\nclass Solution:\n    def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:\n        \"\"\"\n        Merges k sorted linked lists into a single sorted linked list.\n\n        Args:\n            lists: A list of k sorted linked lists.\n\n        Returns:\n            The head of the merged sorted linked list.\n        \"\"\"\n        heap = []\n        for i, head in enumerate(lists):\n            if head:\n                heapq.heappush(heap, (head.val, i, head))\n\n        dummy = ListNode(0)\n        curr = dummy\n\n        while heap:\n            val, idx, node = heapq.heappop(heap)\n            curr.next = node\n            curr = curr.next\n\n            if node.next:\n                heapq.heappush(heap, (node.next.val, idx, node.next))\n\n        return dummy.next",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/merge_k_sorted_lists/test_solution.py ..              [100%]\n\n============================== 2 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.3451,
+    "python": {
+      "cyclomatic_avg": 3.0,
+      "cyclomatic_max": 5,
+      "wmc": 6,
+      "maintainability_index": 100.0,
+      "max_nesting_depth": 4,
+      "halstead_volume": 0,
+      "lloc": 23,
+      "loc": 37
+    },
+    "lisp": {
+      "lisp_max_depth": 6,
+      "lisp_constraints": 7,
+      "lisp_rules": 1,
+      "lisp_token_count": 113
+    }
+  }
+}

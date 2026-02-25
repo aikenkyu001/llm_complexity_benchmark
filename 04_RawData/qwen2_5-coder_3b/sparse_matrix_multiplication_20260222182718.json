@@ -1,0 +1,30 @@
+{
+  "task_name": "sparse_matrix_multiplication",
+  "model": "qwen2.5-coder:3b",
+  "timestamp": "2026-02-22T18:27:18.368273",
+  "nl_problem": "# Task: sparse_matrix_multiplication\n# Interface:\nClass: Solution\nMethod: multiply(self, arg1, arg2)\n\nGiven two sparse matrices mat1 of size m x k and mat2 of size k x n, return the result of mat1 x mat2.\nA matrix is sparse if most of its elements are 0. You should optimize the multiplication for sparse matrices.\n\nConstraints:\n- m == mat1.length\n- k == mat1[i].length == mat2.length\n- n == mat2[i].length\n- 1 <= m, n, k <= 100\n- -100 <= mat1[i][j], mat2[i][j] <= 100",
+  "lisp_spec": "(task\n  (name \"sparse_matrix_multiplication\")\n  (signature ( (mat1 list) (mat2 list) ) list)\n  (constraints\n    (constraint \"m == mat1.length\")\n    (constraint \"k == mat1[i].length == mat2.length\")\n    (constraint \"n == mat2[i].length\")\n    (constraint \"1 <= m, n, k <= 100\")\n    (constraint \"-100 <= mat1[i][j], mat2[i][j] <= 100\")\n  )\n  (goal\n    (description \"Multiply two sparse matrices and return the result.\")\n    (rule \"The multiplication should be optimized for sparse matrices.\")\n    (return \"A list of lists representing the product matrix.\")\n  )\n)",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\n\nclass Solution:\n    def sparse_matrix_multiplication(self, mat1: List[List[int]], mat2: List[List[int]]) -> List[List[int]]:\n        m, k = len(mat1), len(mat1[0])\n        n = len(mat2[0])\n\n        # Initialize the result matrix with zeros\n        result = [[0] * n for _ in range(m)]\n\n        # Preprocess mat1 to store non-zero elements and their indices\n        non_zero_mat1: Dict[int, List[List[int]]] = {}\n        for i in range(m):\n            for j in range(k):\n                if mat1[i][j] != 0:\n                    if i not in non_zero_mat1:\n                        non_zero_mat1[i] = []\n                    non_zero_mat1[i].append([j, mat1[i][j]])\n\n        # Preprocess mat2 to store non-zero elements and their indices\n        non_zero_mat2: Dict[int, List[List[int]]] = {}\n        for i in range(k):\n            for j in range(n):\n                if mat2[i][j] != 0:\n                    if i not in non_zero_mat2:\n                        non_zero_mat2[i] = []\n                    non_zero_mat2[i].append([j, mat2[i][j]])\n\n        # Perform matrix multiplication\n        for i in range(m):\n            for j in range(n):\n                if i in non_zero_mat1 and j in non_zero_mat2:\n                    for k1, val1 in non_zero_mat1[i]:\n                        for k2, val2 in non_zero_mat2[j]:\n                            result[i][j] += val1 * val2\n\n        return result",
+  "test_passed": false,
+  "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-8.3.5, pluggy-1.6.0\nrootdir: /media/developer/USB480G/Project/llm_complexity_benchmark\nplugins: cov-7.0.0, langsmith-0.4.41, anyio-4.11.0\ncollected 2 items\n\n01_TestDefinitions/sparse_matrix_multiplication/test_solution.py FF      [100%]\n\n=================================== FAILURES ===================================\n___________________________ test_sparse_matrix_basic ___________________________\n\n    def test_sparse_matrix_basic():\n        solution = Solution()\n        mat1 = [[1,0,0],[-1,0,3]]\n        mat2 = [[7,0,0],[0,0,0],[0,0,1]]\n        expected = [[7,0,0],[-7,0,3]]\n>       assert solution.multiply(mat1, mat2) == expected\nE       AttributeError: 'Solution' object has no attribute 'multiply'\n\n01_TestDefinitions/sparse_matrix_multiplication/test_solution.py:9: AttributeError\n___________________________ test_sparse_matrix_zero ____________________________\n\n    def test_sparse_matrix_zero():\n        solution = Solution()\n        mat1 = [[0]]\n        mat2 = [[0]]\n>       assert solution.multiply(mat1, mat2) == [[0]]\nE       AttributeError: 'Solution' object has no attribute 'multiply'\n\n01_TestDefinitions/sparse_matrix_multiplication/test_solution.py:15: AttributeError\n=========================== short test summary info ============================\nFAILED 01_TestDefinitions/sparse_matrix_multiplication/test_solution.py::test_sparse_matrix_basic\nFAILED 01_TestDefinitions/sparse_matrix_multiplication/test_solution.py::test_sparse_matrix_zero\n============================== 2 failed in 0.07s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.5294,
+    "python": {
+      "cyclomatic_avg": 16.0,
+      "cyclomatic_max": 16,
+      "wmc": 16,
+      "maintainability_index": 73.72207568604726,
+      "max_nesting_depth": 7,
+      "halstead_volume": 0,
+      "lloc": 29,
+      "loc": 38
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 6,
+      "lisp_rules": 1,
+      "lisp_token_count": 72
+    }
+  }
+}

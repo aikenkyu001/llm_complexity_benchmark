@@ -1,0 +1,30 @@
+{
+  "task_name": "matrix_chain_multiplication",
+  "model": "llama3.2-vision:11b",
+  "timestamp": "2026-02-20T16:24:57.533186",
+  "nl_problem": "# Task: matrix_chain_multiplication\n# Interface:\nClass: Solution\nMethod: matrixChainOrder(self, arg1)\n\nGiven a list of matrix dimensions, find the minimum number of scalar multiplications needed to multiply the sequence of matrices.\nIf the sequence of matrices is A1, A2, ..., An, where Ai has dimensions `p[i-1] x p[i]`, the input is the list `p = [p0, p1, ..., pn]`.\n\nConstraints:\n- 2 <= p.length <= 100\n- 1 <= p[i] <= 100",
+  "lisp_spec": "(task\n  (name \"matrixChainOrder\")\n  (signature ( (self Solution) (arg1 (list int)) ) int)\n  (constraints\n    (constraint \"2 <= p.length <= 100\")\n    (constraint \"1 <= p[i] <= 100\")\n  )\n  (goal\n    (description \"Find the minimum number of scalar multiplications needed to multiply the sequence of matrices.\")\n    (rule \"The input is the list p = [p0, p1, ..., pn] where Ai has dimensions p[i-1] x p[i].\")\n    (return \"The minimum number of scalar multiplications needed.\")\n  ))",
+  "generated_code": "from typing import List\n\nclass Solution:\n    def matrixChainOrder(self, p: List[int]) -> int:\n        n = len(p) - 1\n        dp = [[0] * n for _ in range(n)]\n        \n        for chain_length in range(2, n + 1):\n            for i in range(n - chain_length + 1):\n                j = i + chain_length - 1\n                dp[i][j] = float('inf')\n                for k in range(i, j):\n                    dp[i][j] = min(dp[i][j], dp[i][k] + dp[k + 1][j] + p[i] * p[k + 1] * p[j + 1])\n        \n        return dp[0][n - 1]",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/matrix_chain_multiplication/test_solution.py ..       [100%]\n\n============================== 2 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.28150000000000003,
+    "python": {
+      "cyclomatic_avg": 5.0,
+      "cyclomatic_max": 5,
+      "wmc": 5,
+      "maintainability_index": 59.575795940942776,
+      "max_nesting_depth": 5,
+      "halstead_volume": 0,
+      "lloc": 12,
+      "loc": 15
+    },
+    "lisp": {
+      "lisp_max_depth": 5,
+      "lisp_constraints": 3,
+      "lisp_rules": 1,
+      "lisp_token_count": 70
+    }
+  }
+}

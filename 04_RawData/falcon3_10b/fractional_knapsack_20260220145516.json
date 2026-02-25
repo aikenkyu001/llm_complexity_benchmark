@@ -1,0 +1,30 @@
+{
+  "task_name": "fractional_knapsack",
+  "model": "falcon3:10b",
+  "timestamp": "2026-02-20T14:55:16.596753",
+  "nl_problem": "# Task: fractional_knapsack\n# Interface:\nClass: Solution\nMethod: fractionalKnapsack(self, arg1, arg2)\n\nGiven a set of items, each with a weight and a value, and a knapsack of a given capacity, find the maximum total value you can carry. In the fractional knapsack problem, you can break items for maximizing the total value.\nItems are given as a list of pairs: `(value, weight)`.\n\nConstraints:\n- 1 <= n <= 10^5\n- 1 <= capacity <= 10^7\n- 1 <= value, weight <= 1000",
+  "lisp_spec": "(task\n (name \"fractionalKnapsack\")\n (signature ( (self) (items (list (tuple int int))) (capacity int) ) float)\n (constraints\n   (constraint \"1 <= n <= 10^5\")\n   (constraint \"1 <= capacity <= 10^7\")\n   (constraint \"1 <= value, weight <= 1000\")\n )\n (goal\n   (description \"Find the maximum total value that can be carried in a knapsack of given capacity, allowing items to be broken.\")\n   (rule \"Calculate the total value by selecting items based on their value-to-weight ratio until the knapsack is full or all items are considered.\")\n   (return \"The maximum total value that can be achieved, which may include fractional parts of items.\")\n )\n)",
+  "generated_code": "from typing import List, Tuple\n\nclass Solution:\n    def fractionalKnapsack(self, items: List[Tuple[int, int]], capacity: int) -> float:\n        # Sort items by value-to-weight ratio in descending order\n        items.sort(key=lambda x: x[0] / x[1], reverse=True)\n        \n        total_value = 0.0\n        remaining_capacity = capacity\n        \n        for item_value, item_weight in items:\n            if remaining_capacity == 0:\n                break\n            elif item_weight <= remaining_capacity:\n                # Add the entire item\n                total_value += item_value\n                remaining_capacity -= item_weight\n            else:\n                # Add a fraction of the item\n                total_value += item_value * (remaining_capacity / item_weight)\n                remaining_capacity = 0\n        \n        return total_value",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/fractional_knapsack/test_solution.py ..               [100%]\n\n============================== 2 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.2948,
+    "python": {
+      "cyclomatic_avg": 4.0,
+      "cyclomatic_max": 4,
+      "wmc": 4,
+      "maintainability_index": 81.53222674973698,
+      "max_nesting_depth": 5,
+      "halstead_volume": 0,
+      "lloc": 17,
+      "loc": 23
+    },
+    "lisp": {
+      "lisp_max_depth": 6,
+      "lisp_constraints": 4,
+      "lisp_rules": 1,
+      "lisp_token_count": 99
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "task_name": "regex_matcher",
+  "model": "falcon3:10b",
+  "timestamp": "2026-02-20T14:58:30.900241",
+  "nl_problem": "# Task: regex_matcher\n# Interface:\nClass: Solution\nMethod: isMatch(self, arg1, arg2)\n\nGiven an input string s and a pattern p, implement regular expression matching with support for '.' and '*' where:\n- '.' Matches any single character.\u200b\u200b\u200b\u200b\n- '*' Matches zero or more of the preceding element.\nThe matching should cover the entire input string (not partial).\n\nConstraints:\n- 1 <= s.length <= 20\n- 1 <= p.length <= 20\n- s contains only lowercase English letters.\n- p contains only lowercase English letters, '.', and '*'.\n- It is guaranteed for each appearance of the character '*', there will be a previous valid character to match.",
+  "lisp_spec": "(task\n (name \"regex_matcher\")\n (signature ( (s string) (p string) ) bool)\n (constraints\n   (constraint \"1 <= s.length <= 20\")\n   (constraint \"1 <= p.length <= 20\")\n   (constraint \"s contains only lowercase English letters.\")\n   (constraint \"p contains only lowercase English letters, '.', and '*'.\")\n   (constraint \"It is guaranteed for each appearance of the character '*', there will be a previous valid character to match.\")\n )\n (goal\n   (description \"Implement regular expression matching with support for '.' and '*' where '.' matches any single character and '*' matches zero or more of the preceding element. The matching should cover the entire input string (not partial).\")\n   (rule \"The function should return true if the entire input string s matches the pattern p, otherwise false.\")\n   (return \"A boolean indicating whether the input string s matches the pattern p completely.\")\n )\n)",
+  "generated_code": "class Solution:\n    def regex_matcher(self, s: str, p: str) -> bool:\n        dp = [[False] * (len(p) + 1) for _ in range(len(s) + 1)]\n        dp[0][0] = True\n\n        for j in range(2, len(p) + 1):\n            if p[j - 1] == '*':\n                dp[0][j] = dp[0][j - 2]\n\n        for i in range(1, len(s) + 1):\n            for j in range(1, len(p) + 1):\n                if p[j - 1] == '.' or p[j - 1] == s[i - 1]:\n                    dp[i][j] = dp[i - 1][j - 1]\n                elif p[j - 1] == '*':\n                    dp[i][j] = dp[i][j - 2]\n                    if p[j - 2] == '.' or p[j - 2] == s[i - 1]:\n                        dp[i][j] = dp[i][j] or dp[i - 1][j]\n\n        return dp[len(s)][len(p)]",
+  "test_passed": false,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/regex_matcher/test_solution.py FF                     [100%]\n\n=================================== FAILURES ===================================\n_______________________________ test_regex_basic _______________________________\n\n    def test_regex_basic():\n        solution = Solution()\n>       assert solution.isMatch(\"aa\", \"a\") == False\n               ^^^^^^^^^^^^^^^^\nE       AttributeError: 'Solution' object has no attribute 'isMatch'\n\n01_TestDefinitions/regex_matcher/test_solution.py:6: AttributeError\n______________________________ test_regex_complex ______________________________\n\n    def test_regex_complex():\n        solution = Solution()\n>       assert solution.isMatch(\"aab\", \"c*a*b\") == True\n               ^^^^^^^^^^^^^^^^\nE       AttributeError: 'Solution' object has no attribute 'isMatch'\n\n01_TestDefinitions/regex_matcher/test_solution.py:12: AttributeError\n=========================== short test summary info ============================\nFAILED 01_TestDefinitions/regex_matcher/test_solution.py::test_regex_basic - ...\nFAILED 01_TestDefinitions/regex_matcher/test_solution.py::test_regex_complex\n============================== 2 failed in 0.03s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.4917999999999999,
+    "python": {
+      "cyclomatic_avg": 12.0,
+      "cyclomatic_max": 12,
+      "wmc": 12,
+      "maintainability_index": 53.61680596553976,
+      "max_nesting_depth": 7,
+      "halstead_volume": 0,
+      "lloc": 16,
+      "loc": 19
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 6,
+      "lisp_rules": 1,
+      "lisp_token_count": 134
+    }
+  }
+}

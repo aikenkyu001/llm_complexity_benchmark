@@ -1,0 +1,30 @@
+{
+  "task_name": "synthetic_constraints_n20",
+  "model": "qwen2.5-coder:14b",
+  "timestamp": "2026-02-25T11:52:39.853407",
+  "nl_problem": "# Task: Multi-Constraint Check (Density 20)\n# Interface:\nClass: Solution\nMethod: isValid(self, n: int) -> bool\n\n# Objective:\nReturn True if the integer `n` satisfies ALL of the following 20 independent constraints:\n1. n is greater than 2\n2. n is not equal to 104\n3. n is a multiple of 1\n4. n is greater than 8\n5. n is not equal to 110\n6. n is a multiple of 2\n7. n is greater than 14\n8. n is not equal to 116\n9. n is a multiple of 4\n10. n is greater than 20\n11. n is not equal to 122\n12. n is a multiple of 5\n13. n is greater than 26\n14. n is not equal to 128\n15. n is a multiple of 7\n16. n is greater than 32\n17. n is not equal to 134\n18. n is a multiple of 8\n19. n is greater than 38\n20. n is not equal to 140",
+  "lisp_spec": "(task\n  (name \"isValid\")\n  (signature ((n int)) bool)\n  (constraints\n    (constraint \"n must be greater than 2.\")\n    (constraint \"n must not be equal to 104.\")\n    (constraint \"n must be a multiple of 1.\")\n    (constraint \"n must be greater than 8.\")\n    (constraint \"n must not be equal to 110.\")\n    (constraint \"n must be a multiple of 2.\")\n    (constraint \"n must be greater than 14.\")\n    (constraint \"n must not be equal to 116.\")\n    (constraint \"n must be a multiple of 4.\")\n    (constraint \"n must be greater than 20.\")\n    (constraint \"n must not be equal to 122.\")\n    (constraint \"n must be a multiple of 5.\")\n    (constraint \"n must be greater than 26.\")\n    (constraint \"n must not be equal to 128.\")\n    (constraint \"n must be a multiple of 7.\")\n    (constraint \"n must be greater than 32.\")\n    (constraint \"n must not be equal to 134.\")\n    (constraint \"n must be a multiple of 8.\")\n    (constraint \"n must be greater than 38.\")\n    (constraint \"n must not be equal to 140.\")\n  )\n  (goal\n    (description \"Determine if the integer `n` satisfies all specified constraints.\")\n    (rule \"Check each constraint in sequence and return False immediately if any constraint is violated.\")\n    (return \"Return True if all constraints are satisfied, otherwise return False.\")\n  )\n)",
+  "generated_code": "class Solution:\n    def isValid(self, n: int) -> bool:\n        constraints = [\n            lambda x: x > 2,\n            lambda x: x != 104,\n            lambda x: x % 1 == 0,\n            lambda x: x > 8,\n            lambda x: x != 110,\n            lambda x: x % 2 == 0,\n            lambda x: x > 14,\n            lambda x: x != 116,\n            lambda x: x % 4 == 0,\n            lambda x: x > 20,\n            lambda x: x != 122,\n            lambda x: x % 5 == 0,\n            lambda x: x > 26,\n            lambda x: x != 128,\n            lambda x: x % 7 == 0,\n            lambda x: x > 32,\n            lambda x: x != 134,\n            lambda x: x % 8 == 0,\n            lambda x: x > 38,\n            lambda x: x != 140\n        ]\n        \n        for constraint in constraints:\n            if not constraint(n):\n                return False\n        \n        return True",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/synthetic_constraints_n20/test_solution.py ..         [100%]\n\n============================== 2 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.4777,
+    "python": {
+      "cyclomatic_avg": 3.0,
+      "cyclomatic_max": 3,
+      "wmc": 3,
+      "maintainability_index": 61.54235753206151,
+      "max_nesting_depth": 4,
+      "halstead_volume": 0,
+      "lloc": 8,
+      "loc": 30
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 21,
+      "lisp_rules": 1,
+      "lisp_token_count": 201
+    }
+  }
+}

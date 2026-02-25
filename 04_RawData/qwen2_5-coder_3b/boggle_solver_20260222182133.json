@@ -1,0 +1,30 @@
+{
+  "task_name": "boggle_solver",
+  "model": "qwen2.5-coder:3b",
+  "timestamp": "2026-02-22T18:21:33.756066",
+  "nl_problem": "# Task: boggle_solver\n# Interface:\nClass: Solution\nMethod: findWords(self, arg1, arg2)\n\nGiven an m x n board of characters and a list of strings words, return all words on the board.\nEach word must be constructed from letters of sequentially adjacent cells, where adjacent cells are horizontally or vertically neighboring. The same letter cell may not be used more than once in a word.\n\nConstraints:\n- m == board.length\n- n == board[i].length\n- 1 <= m, n <= 12\n- 1 <= words.length <= 3 * 10^4\n- 1 <= words[i].length <= 10\n- board and words consist of lowercase English letters.\n- All strings in words are unique.",
+  "lisp_spec": "(task\n  (name \"boggle_solver\")\n  (signature ( (board list) (words list) ) list)\n  (constraints\n    (constraint \"m == board.length\")\n    (constraint \"n == board[i].length\")\n    (constraint \"1 <= m, n <= 12\")\n    (constraint \"1 <= words.length <= 3 * 10^4\")\n    (constraint \"1 <= words[i].length <= 10\")\n    (constraint \"board and words consist of lowercase English letters.\")\n    (constraint \"All strings in words are unique.\")\n  )\n  (goal\n    (description \"Return all words on the board that can be formed by sequentially adjacent cells, where adjacent cells are horizontally or vertically neighboring. The same letter cell may not be used more than once in a word.\")\n    (rule \"Each word must be constructed from letters of sequentially adjacent cells.\")\n    (return \"A list of all valid words found on the board.\")\n  )\n)",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\nclass TrieNode:\n    def __init__(self):\n        self.children: Dict[str, 'TrieNode'] = {}\n        self.is_end_of_word: bool = False\n\nclass Trie:\n    def __init__(self):\n        self.root: TrieNode = TrieNode()\n\n    def insert(self, word: str) -> None:\n        node = self.root\n        for char in word:\n            if char not in node.children:\n                node.children[char] = TrieNode()\n            node = node.children[char]\n        node.is_end_of_word = True\n\n    def search(self, word: str) -> bool:\n        node = self.root\n        for char in word:\n            if char not in node.children:\n                return False\n            node = node.children[char]\n        return node.is_end_of_word\n\nclass Solution:\n    def findWords(self, board: List[List[str]], words: List[str]) -> List[str]:\n        trie = Trie()\n        for word in words:\n            trie.insert(word)\n\n        m, n = len(board), len(board[0])\n        directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]\n\n        def dfs(i: int, j: int, node: TrieNode, path: List[str]) -> None:\n            if node.is_end_of_word:\n                result.add(''.join(path))\n                node.is_end_of_word = False\n            board[i][j] = '#'\n            for di, dj in directions:\n                ni, nj = i + di, j + dj\n                if 0 <= ni < m and 0 <= nj < n and board[ni][nj] in node.children:\n                    dfs(ni, nj, node.children[board[ni][nj]], path + [board[ni][nj]])\n            board[i][j] = path[-1]\n\n        result: Set[str] = set()\n        for i in range(m):\n            for j in range(n):\n                if board[i][j] in trie.root.children:\n                    dfs(i, j, trie.root, [board[i][j]])\n\n        return list(result)",
+  "test_passed": false,
+  "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-8.3.5, pluggy-1.6.0\nrootdir: /media/developer/USB480G/Project/llm_complexity_benchmark\nplugins: cov-7.0.0, langsmith-0.4.41, anyio-4.11.0\ncollected 3 items\n\n01_TestDefinitions/boggle_solver/test_solution.py F.F                    [100%]\n\n=================================== FAILURES ===================================\n______________________________ test_boggle_basic _______________________________\n\n    def test_boggle_basic():\n        solution = Solution()\n        board = [[\"o\",\"a\",\"a\",\"n\"],[\"e\",\"t\",\"a\",\"e\"],[\"i\",\"h\",\"k\",\"r\"],[\"i\",\"f\",\"l\",\"v\"]]\n        words = [\"oath\",\"pea\",\"eat\",\"rain\"]\n        result = solution.findWords(board, words)\n>       assert sorted(result) == sorted([\"eat\",\"oath\"])\nE       AssertionError: assert ['eoath', 'reat'] == ['eat', 'oath']\nE         \nE         At index 0 diff: 'eoath' != 'eat'\nE         Use -v to get more diff\n\n01_TestDefinitions/boggle_solver/test_solution.py:9: AssertionError\n_____________________________ test_boggle_overlap ______________________________\n\n    def test_boggle_overlap():\n        solution = Solution()\n        board = [[\"a\",\"b\"],[\"a\",\"a\"]]\n        words = [\"aba\",\"baa\",\"aaa\",\"ab\"]\n        result = solution.findWords(board, words)\n>       assert sorted(result) == sorted([\"aaa\",\"aba\",\"baa\", \"ab\"])\nE       AssertionError: assert ['aab', 'aaba...abaa', 'baaa'] == ['aaa', 'ab', 'aba', 'baa']\nE         \nE         At index 0 diff: 'aab' != 'aaa'\nE         Use -v to get more diff\n\n01_TestDefinitions/boggle_solver/test_solution.py:22: AssertionError\n=========================== short test summary info ============================\nFAILED 01_TestDefinitions/boggle_solver/test_solution.py::test_boggle_basic\nFAILED 01_TestDefinitions/boggle_solver/test_solution.py::test_boggle_overlap\n========================= 2 failed, 1 passed in 0.09s ==========================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.3917,
+    "python": {
+      "cyclomatic_avg": 2.6,
+      "cyclomatic_max": 5,
+      "wmc": 13,
+      "maintainability_index": 53.412735323688935,
+      "max_nesting_depth": 5,
+      "halstead_volume": 0,
+      "lloc": 51,
+      "loc": 57
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 8,
+      "lisp_rules": 1,
+      "lisp_token_count": 121
+    }
+  }
+}

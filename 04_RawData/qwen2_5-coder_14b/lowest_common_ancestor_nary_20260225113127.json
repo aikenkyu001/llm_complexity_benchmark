@@ -1,0 +1,30 @@
+{
+  "task_name": "lowest_common_ancestor_nary",
+  "model": "qwen2.5-coder:14b",
+  "timestamp": "2026-02-25T11:31:27.571782",
+  "nl_problem": "# Task: lowest_common_ancestor_nary\n# Interface:\nClass: Solution\nMethod: lowestCommonAncestor(self, arg1, arg2, arg3)\n\nGiven an n-ary tree, find the lowest common ancestor (LCA) of two given nodes.\nAccording to the definition of LCA on Wikipedia: \"The lowest common ancestor is defined between two nodes p and q as the lowest node in T that has both p and q as descendants (where we allow a node to be a descendant of itself).\"\nThe N-ary tree node is:\n```python\nclass Node:\n    def __init__(self, val=None, children=None):\n        self.val = val\n        self.children = children # List[Node]\n```\n\nConstraints:\n- The number of nodes in the tree is in the range [2, 10^4].\n- -10^9 <= Node.val <= 10^9\n- All Node.val are unique.\n- p != q\n- p and q will exist in the tree.",
+  "lisp_spec": "(task\n  (name \"lowestCommonAncestor\")\n  (signature ((self \"Solution\") (arg1 \"Node\") (arg2 \"Node\") (arg3 \"Node\")) \"Node\")\n  (constraints\n    (constraint \"The number of nodes in the tree is in the range [2, 10^4].\")\n    (constraint \"-10^9 <= Node.val <= 10^9\")\n    (constraint \"All Node.val are unique.\")\n    (constraint \"p != q\")\n    (constraint \"p and q will exist in the tree.\")\n  )\n  (goal\n    (description \"Find the lowest common ancestor (LCA) of two given nodes in an n-ary tree.\")\n    (rule \"The LCA is defined as the lowest node in the tree that has both p and q as descendants.\")\n    (return \"Return the Node object representing the lowest common ancestor. If either p or q is not found, return None.\")\n  )\n)",
+  "generated_code": "# solution.py\nfrom typing import Optional\n\n# Definition for a Node.\nclass Node:\n    def __init__(self, val=None, children=None):\n        self.val = val\n        self.children = children if children is not None else []\n\nclass Solution:\n    def lowestCommonAncestor(self, root: 'Node', p: 'Node', q: 'Node') -> 'Node':\n        # Helper function to perform DFS and find paths to p and q\n        def dfs(node: 'Node', target: 'Node', path: List['Node']) -> bool:\n            if node is None:\n                return False\n            path.append(node)\n            if node == target:\n                return True\n            for child in node.children:\n                if dfs(child, target, path):\n                    return True\n            path.pop()\n            return False\n        \n        # Find paths from root to p and q\n        path_p = []\n        path_q = []\n        \n        dfs(root, p, path_p)\n        dfs(root, q, path_q)\n        \n        # Compare the paths to find the lowest common ancestor\n        i = 0\n        while i < len(path_p) and i < len(path_q) and path_p[i] == path_q[i]:\n            i += 1\n        \n        return path_p[i - 1]",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/lowest_common_ancestor_nary/test_solution.py ..       [100%]\n\n============================== 2 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.33719999999999994,
+    "python": {
+      "cyclomatic_avg": 3.0,
+      "cyclomatic_max": 4,
+      "wmc": 6,
+      "maintainability_index": 76.62008764792401,
+      "max_nesting_depth": 5,
+      "halstead_volume": 0,
+      "lloc": 26,
+      "loc": 37
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 6,
+      "lisp_rules": 1,
+      "lisp_token_count": 111
+    }
+  }
+}

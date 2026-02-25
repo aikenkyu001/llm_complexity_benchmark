@@ -1,0 +1,30 @@
+{
+  "task_name": "word_ladder",
+  "model": "qwen2.5-coder:7b",
+  "timestamp": "2026-02-23T10:29:38.748786",
+  "nl_problem": "# Task: Word Ladder\n# Interface:\nClass: Solution\nMethod: ladderLength(self, beginWord: str, endWord: str, wordList: List[str]) -> int\n\n# Objective:\nA transformation sequence from word `beginWord` to word `endWord` using a dictionary `wordList` is a sequence of words `beginWord -> s1 -> s2 -> ... -> sk` such that:\n- Every adjacent pair of words differs by a single letter.\n- Every `si` for `1 <= i <= sk` is in `wordList`. Note that `beginWord` does not need to be in `wordList`.\n- `sk == endWord`.\nGiven two words, `beginWord` and `endWord`, and a dictionary `wordList`, return the number of words in the shortest transformation sequence from `beginWord` to `endWord`, or 0 if no such sequence exists.\n\n# Strategy Hint:\nUse Breadth-First Search (BFS) to find the shortest path. To efficiently find neighbors, consider pre-processing the word list or checking words with one-letter variations.\n\n# Constraints:\n- 1 <= beginWord.length <= 10\n- endWord.length == beginWord.length\n- 1 <= wordList.length <= 5000\n- wordList[i].length == beginWord.length\n- beginWord, endWord, and wordList[i] consist of lowercase English letters.\n- beginWord != endWord\n- All words in wordList are unique.",
+  "lisp_spec": "(task\n  (name \"ladderLength\")\n  (signature ( (beginWord str) (endWord str) (wordList (list str)) ) int)\n  (constraints\n    (constraint \"1 <= beginWord.length <= 10\")\n    (constraint \"endWord.length == beginWord.length\")\n    (constraint \"1 <= wordList.length <= 5000\")\n    (constraint \"wordList[i].length == beginWord.length\")\n    (constraint \"beginWord, endWord, and wordList[i] consist of lowercase English letters\")\n    (constraint \"beginWord != endWord\")\n    (constraint \"All words in wordList are unique\")\n  )\n  (goal\n    (description \"Find the number of words in the shortest transformation sequence from beginWord to endWord using a dictionary wordList.\")\n    (rule \"Use Breadth-First Search (BFS) to find the shortest path. To efficiently find neighbors, consider pre-processing the word list or checking words with one-letter variations.\")\n    (return \"Return the number of words in the shortest transformation sequence from beginWord to endWord, or 0 if no such sequence exists.\")\n  )\n)",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\nclass Solution:\n    def ladderLength(self, beginWord: str, endWord: str, wordList: List[str]) -> int:\n        if endWord not in wordList:\n            return 0\n        \n        word_set = set(wordList)\n        queue = collections.deque([(beginWord, 1)])\n        visited = set([beginWord])\n        \n        while queue:\n            current_word, level = queue.popleft()\n            \n            for i in range(len(current_word)):\n                for char in 'abcdefghijklmnopqrstuvwxyz':\n                    next_word = current_word[:i] + char + current_word[i+1:]\n                    \n                    if next_word == endWord:\n                        return level + 1\n                    \n                    if next_word in word_set and next_word not in visited:\n                        visited.add(next_word)\n                        queue.append((next_word, level + 1))\n        \n        return 0",
+  "test_passed": false,
+  "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-8.3.5, pluggy-1.6.0\nrootdir: /media/developer/USB480G/Project/llm_complexity_benchmark\nplugins: cov-7.0.0, langsmith-0.4.41, anyio-4.11.0\ncollected 5 items\n\n01_TestDefinitions/word_ladder/test_solution.py ..F..                    [100%]\n\n=================================== FAILURES ===================================\n__________________________ test_word_ladder_same_word __________________________\n\n    def test_word_ladder_same_word():\n        \"\"\"\n        Test a case where begin and end words are the same.\n        \"\"\"\n        solution = Solution()\n        beginWord = \"hit\"\n        endWord = \"hit\"\n        wordList = [\"hot\",\"dot\",\"dog\",\"lot\",\"log\",\"cog\"]\n        expected = 1\n>       assert solution.ladderLength(beginWord, endWord, wordList) == expected\nE       AssertionError: assert 0 == 1\nE        +  where 0 = ladderLength('hit', 'hit', ['hot', 'dot', 'dog', 'lot', 'log', 'cog'])\nE        +    where ladderLength = <solution.Solution object at 0x7b90b6c57680>.ladderLength\n\n01_TestDefinitions/word_ladder/test_solution.py:35: AssertionError\n=========================== short test summary info ============================\nFAILED 01_TestDefinitions/word_ladder/test_solution.py::test_word_ladder_same_word\n========================= 1 failed, 4 passed in 1.91s ==========================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.4552,
+    "python": {
+      "cyclomatic_avg": 8.0,
+      "cyclomatic_max": 8,
+      "wmc": 8,
+      "maintainability_index": 67.53983980945276,
+      "max_nesting_depth": 6,
+      "halstead_volume": 0,
+      "lloc": 22,
+      "loc": 29
+    },
+    "lisp": {
+      "lisp_max_depth": 5,
+      "lisp_constraints": 8,
+      "lisp_rules": 1,
+      "lisp_token_count": 126
+    }
+  }
+}

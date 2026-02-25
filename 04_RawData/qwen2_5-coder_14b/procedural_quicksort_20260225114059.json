@@ -1,0 +1,30 @@
+{
+  "task_name": "procedural_quicksort",
+  "model": "qwen2.5-coder:14b",
+  "timestamp": "2026-02-25T11:40:59.585776",
+  "nl_problem": "# Task: procedural_quicksort\n# Interface:\nClass: Solution\nMethod: quickSort(self, arg1)\n\nImplement the QuickSort algorithm procedurally. The function should take an array of integers and sort it in ascending order in-place.\nYou should use a partition scheme (e.g., Lomuto or Hoare partition).\nNote: The problem is focused on the correct implementation of the sorting logic, not just using built-in `.sort()`.\n\nConstraints:\n- 1 <= arr.length <= 10^5\n- -10^9 <= arr[i] <= 10^9",
+  "lisp_spec": "(task\n  (name \"quickSort\")\n  (signature ((arr (list int))) void)\n  (constraints\n    (constraint \"The length of the array must be between 1 and 10^5.\")\n    (constraint \"Each element in the array must be between -10^9 and 10^9.\")\n  )\n  (goal\n    (description \"Implement the QuickSort algorithm to sort an array of integers in ascending order in-place.\")\n    (rule \"Use a partition scheme such as Lomuto or Hoare partition.\")\n    (return \"The function should not return any value; it should modify the input array in place.\")\n  )\n)",
+  "generated_code": "class Solution:\n    def quickSort(self, arr: List[int]) -> None:\n        \"\"\"\n        Sorts the input array in-place using the QuickSort algorithm.\n        \n        Parameters:\n        arr (List[int]): The list of integers to be sorted.\n        \"\"\"\n        self._quickSortHelper(arr, 0, len(arr) - 1)\n\n    def _quickSortHelper(self, arr: List[int], low: int, high: int) -> None:\n        if low < high:\n            pi = self._partition(arr, low, high)\n            self._quickSortHelper(arr, low, pi - 1)\n            self._quickSortHelper(arr, pi + 1, high)\n\n    def _partition(self, arr: List[int], low: int, high: int) -> int:\n        pivot = arr[high]\n        i = low - 1\n        for j in range(low, high):\n            if arr[j] <= pivot:\n                i += 1\n                arr[i], arr[j] = arr[j], arr[i]\n        arr[i + 1], arr[high] = arr[high], arr[i + 1]\n        return i + 1",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 3 items\n\n01_TestDefinitions/procedural_quicksort/test_solution.py ...             [100%]\n\n============================== 3 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.2333,
+    "python": {
+      "cyclomatic_avg": 2.0,
+      "cyclomatic_max": 3,
+      "wmc": 6,
+      "maintainability_index": 83.55539531859068,
+      "max_nesting_depth": 4,
+      "halstead_volume": 0,
+      "lloc": 18,
+      "loc": 25
+    },
+    "lisp": {
+      "lisp_max_depth": 5,
+      "lisp_constraints": 3,
+      "lisp_rules": 1,
+      "lisp_token_count": 79
+    }
+  }
+}

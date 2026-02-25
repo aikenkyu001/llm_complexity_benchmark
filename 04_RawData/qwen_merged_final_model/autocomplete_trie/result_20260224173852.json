@@ -1,0 +1,29 @@
+{
+  "task_name": "autocomplete_trie",
+  "model": "qwen_merged_final_model",
+  "timestamp": "2026-02-24T17:38:52.408498",
+  "nl_problem": "# Task: Autocomplete System\n# Interface:\nClass: Solution\nMethod: initAutocomplete(self, sentences: List[str], times: List[int]) -> None\nMethod: query(self, prefix: str) -> List[str]\n\nDesign an autocomplete system that returns the top 3 historical sentences that start with the same prefix.\nThe system is initialized with a list of sentences and their respective search counts (times).\n- `initAutocomplete(sentences, times)`: Initializes the system.\n- `query(prefix)`: Returns the top 3 hot sentences starting with the prefix. If multiple sentences have the same frequency, return them in lexicographical order.\n\n# Implementation Hint:\nUse a Trie to store sentences. Each node in the Trie can store the historical sentences and their frequencies passing through that node.\nFor the `query` method, navigate to the node representing the prefix and retrieve the top results.\n\nConstraints:\n- Sentences contain only lowercase English letters and spaces.\n- Up to 100 historical sentences.",
+  "lisp_spec": "(task\n  (name \"initAutocomplete\")\n  (signature ( (sentences list) (times list) ) None)\n  (constraints\n    (constraint \"Sentences contain only lowercase English letters and spaces.\")\n    (constraint \"Up to 100 historical sentences.\")\n  )\n  (goal\n    (description \"Design an autocomplete system that returns the top 3 historical sentences that start with the same prefix.\")\n    (rule \"The system is initialized with a list of sentences and their respective search counts (times).\")\n    (rule \"For the `query` method, navigate to the node representing the prefix and retrieve the top results.\")\n    (return \"Return the top 3 hot sentences starting with the prefix. If multiple sentences have the same frequency, return them in lexicographical order.\")\n  ))",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\n# Define any helper classes here if needed\n\nclass TrieNode:\n    def __init__(self):\n        self.children = {}\n        self.hotness = 0\n        self.sentences = set()\n\nclass Trie:\n    def __init__(self):\n        self.root = TrieNode()\n\n    def insert(self, sentence: str, count: int) -> None:\n        node = self.root\n        for char in sentence:\n            if char not in node.children:\n                node.children[char] = TrieNode()\n            node = node.children[char]\n            node.hotness += count\n            node.sentences.add(sentence)\n\n    def search(self, prefix: str) -> List[str]:\n        node = self.root\n        for char in prefix:\n            if char not in node.children:\n                return []\n            node = node.children[char]\n        return sorted(node.sentences, key=lambda x: (-node.hotness, x))\n\nclass AutocompleteSystem:\n    def __init__(self, sentences: List[str], times: List[int]) -> None:\n        self.trie = Trie()\n        for sentence, count in zip(sentences, times):\n            self.trie.insert(sentence, count)\n        self.current_prefix = \"\"\n\n    def input(self, c: str) -> List[str]:\n        if c == \"#\":\n            self.trie.insert(self.current_prefix, 1)\n            self.current_prefix = \"\"\n            return []\n        self.current_prefix += c\n        return self.trie.search(self.current_prefix)\n\nclass Solution:\n    def initAutocomplete(self, sentences: List[str], times: List[int]) -> AutocompleteSystem:\n        return AutocompleteSystem(sentences, times)",
+  "test_passed": false,
+  "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /home/miyata/projects/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 1 item\n\n01_TestDefinitions/autocomplete_trie/test_solution.py F                  [100%]\n\n=================================== FAILURES ===================================\n___________________________ test_autocomplete_basic ____________________________\n\n    def test_autocomplete_basic():\n        sentences = [\"i love you\", \"island\", \"ironman\", \"i love leetcode\"]\n        times = [5, 3, 2, 2]\n        # In a real scenario, this might be a class. Let's assume a class AutocompleteSystem.\n        # For this task, we will simplify it to a method.\n        solution = Solution()\n        solution.initAutocomplete(sentences, times)\n    \n>       assert solution.query(\"i\") == [\"i love you\", \"island\", \"i love leetcode\"]\n               ^^^^^^^^^^^^^^\nE       AttributeError: 'Solution' object has no attribute 'query'\n\n01_TestDefinitions/autocomplete_trie/test_solution.py:12: AttributeError\n=========================== short test summary info ============================\nFAILED 01_TestDefinitions/autocomplete_trie/test_solution.py::test_autocomplete_basic\n============================== 1 failed in 0.03s ===============================\n",
+  "complexity_metrics": {
+    "total_complexity_score": 0.2583,
+    "python": {
+      "cyclomatic_avg": 1.8571428571428572,
+      "cyclomatic_max": 3,
+      "wmc": 13,
+      "maintainability_index": 62.578637915062366,
+      "max_nesting_depth": 4,
+      "halstead_volume": 0,
+      "lloc": 43,
+      "loc": 52
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 3,
+      "lisp_rules": 2,
+      "lisp_token_count": 104
+    }
+  }
+}

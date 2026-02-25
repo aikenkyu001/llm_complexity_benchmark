@@ -1,0 +1,30 @@
+{
+  "task_name": "synthetic_nesting_d10",
+  "model": "falcon3:10b",
+  "timestamp": "2026-02-20T15:05:38.334752",
+  "nl_problem": "# Task: Nested Logic Test (Depth 10)\n# Interface:\nClass: Solution\nMethod: checkNested(self, x0: int, x1: int, x2: int, x3: int, x4: int, x5: int, x6: int, x7: int, x8: int, x9: int) -> bool\n\n# Objective:\nThis is a test of structural nesting. Return True ONLY if all the following conditions are met:\n1. x0 is greater than 0\n2. x1 is greater than 0\n3. x2 is greater than 0\n4. x3 is greater than 0\n5. x4 is greater than 0\n6. x5 is greater than 0\n7. x6 is greater than 0\n8. x7 is greater than 0\n9. x8 is greater than 0\n10. x9 is greater than 0\n\nEach condition must be checked inside the previous one (nested if statements).",
+  "lisp_spec": "(task\n (name \"checkNested\")\n (signature ( (x0 int) (x1 int) (x2 int) (x3 int) (x4 int) (x5 int) (x6 int) (x7 int) (x8 int) (x9 int) ) bool)\n (constraints\n   (constraint \"All integers must be greater than 0.\")\n )\n (goal\n   (description \"Return True if all integers are greater than 0, checked in nested conditions.\")\n   (rule \"Check each integer in a nested manner, ensuring the previous condition is met.\")\n   (return \"True if all conditions are met, False otherwise.\")\n )\n)",
+  "generated_code": "class Solution:\n    def checkNested(self, x0: int, x1: int, x2: int, x3: int, x4: int, x5: int, x6: int, x7: int, x8: int, x9: int) -> bool:\n        if x0 > 0 and x1 > 0 and x2 > 0 and x3 > 0 and x4 > 0 and x5 > 0 and x6 > 0 and x7 > 0 and x8 > 0 and x9 > 0:\n            return True\n        else:\n            return False",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/synthetic_nesting_d10/test_solution.py ..             [100%]\n\n============================== 2 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.28790000000000004,
+    "python": {
+      "cyclomatic_avg": 11.0,
+      "cyclomatic_max": 11,
+      "wmc": 11,
+      "maintainability_index": 65.52898436952377,
+      "max_nesting_depth": 3,
+      "halstead_volume": 0,
+      "lloc": 6,
+      "loc": 6
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 2,
+      "lisp_rules": 1,
+      "lisp_token_count": 77
+    }
+  }
+}

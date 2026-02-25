@@ -1,0 +1,30 @@
+{
+  "task_name": "word_search_ii",
+  "model": "llama3.2-vision:11b",
+  "timestamp": "2026-02-20T16:57:02.726140",
+  "nl_problem": "# Task: word_search_ii\n# Interface:\nClass: Solution\nMethod: findWords(self, arg1, arg2)\n\nGiven an m x n board of characters and a list of strings words, return all words on the board.\nEach word must be constructed from letters of sequentially adjacent cells, where adjacent cells are horizontally or vertically neighboring. The same letter cell may not be used more than once in a word.\nYou should use a Trie data structure to optimize the search.\n\nConstraints:\n- m == board.length\n- n == board[i].length\n- 1 <= m, n <= 12\n- board and words consist of lowercase English letters.\n- 1 <= words.length <= 3 * 10^4\n- All strings in words are unique.",
+  "lisp_spec": "Here is the LISP specification for the given natural language problem:\n\n(task\n  (name \"findWords\")\n  (signature ( (self Solution) (board (list (list char))) (words (list (list char))) ) (list (list char)))\n  (constraints\n    (constraint \"m == board.length\")\n    (constraint \"n == board[i].length\")\n    (constraint \"1 <= m, n <= 12\")\n    (constraint \"board and words consist of lowercase English letters\")\n    (constraint \"1 <= words.length <= 3 * 10^4\")\n    (constraint \"All strings in words are unique\")\n  )\n  (goal\n    (description \"Return all words on the board constructed from letters of sequentially adjacent cells.\")\n    (rule \"Each word must be constructed from letters of sequentially adjacent cells, where adjacent cells are horizontally or vertically neighboring.\")\n    (rule \"The same letter cell may not be used more than once in a word.\")\n    (return \"A list of all words on the board.\")\n  )\n)",
+  "generated_code": "from typing import List\n\nclass Solution:\n    def findWords(self, board: List[List[str]], words: List[str]) -> List[str]:\n        if not board or not words:\n            return []\n\n        rows, cols = len(board), len(board[0])\n        word_set = set(words)\n        visited = [[False] * cols for _ in range(rows)]\n\n        def dfs(r, c, word):\n            if not word:\n                return True\n            if r < 0 or c < 0 or r >= rows or c >= cols or visited[r][c] or board[r][c] not in word:\n                return False\n            char = board[r][c]\n            if char not in word_set:\n                return False\n            word_set.remove(char)\n            visited[r][c] = True\n            if dfs(r - 1, c, word[1:]) or dfs(r + 1, c, word[1:]) or dfs(r, c - 1, word[1:]) or dfs(r, c + 1, word[1:]):\n                return True\n            word_set.add(char)\n            visited[r][c] = False\n            return False\n\n        res = []\n        for word in words:\n            for r in range(rows):\n                for c in range(cols):\n                    if dfs(r, c, word):\n                        res.append(word)\n                        break\n                if len(res) == len(words):\n                    break\n            if len(res) == len(words):\n                break\n        return res",
+  "test_passed": false,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/word_search_ii/test_solution.py F.                    [100%]\n\n=================================== FAILURES ===================================\n__________________________ test_word_search_ii_basic ___________________________\n\n    def test_word_search_ii_basic():\n        solution = Solution()\n        board = [[\"o\",\"a\",\"a\",\"n\"],[\"e\",\"t\",\"a\",\"e\"],[\"i\",\"h\",\"k\",\"r\"],[\"i\",\"f\",\"l\",\"v\"]]\n        words = [\"oath\",\"pea\",\"eat\",\"rain\"]\n>       assert sorted(solution.findWords(board, words)) == sorted([\"eat\",\"oath\"])\nE       AssertionError: assert [] == ['eat', 'oath']\nE         \nE         Right contains 2 more items, first extra item: 'eat'\nE         Use -v to get more diff\n\n01_TestDefinitions/word_search_ii/test_solution.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED 01_TestDefinitions/word_search_ii/test_solution.py::test_word_search_ii_basic\n========================= 1 failed, 1 passed in 0.03s ==========================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.4814,
+    "python": {
+      "cyclomatic_avg": 10.0,
+      "cyclomatic_max": 10,
+      "wmc": 10,
+      "maintainability_index": 47.324582646213955,
+      "max_nesting_depth": 6,
+      "halstead_volume": 0,
+      "lloc": 35,
+      "loc": 39
+    },
+    "lisp": {
+      "lisp_max_depth": 6,
+      "lisp_constraints": 7,
+      "lisp_rules": 2,
+      "lisp_token_count": 132
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "task_name": "dijkstra_shortest_path",
+  "model": "llama3.2-vision:11b",
+  "timestamp": "2026-02-20T16:16:40.741177",
+  "nl_problem": "# Task: Dijkstra Shortest Path\n# Interface:\nClass: Solution\nMethod: dijkstra(self, graph: Dict[int, List[Tuple[int, int]]], start_node: int, n: int) -> List[float]\n\nGiven a weighted, undirected graph and a starting node, return the shortest distance to all other nodes from the source.\nThe graph is represented as an adjacency list: `graph[u] = [(v, weight), ...]`.\nIf a node is unreachable, the distance should be infinity (represented as a very large integer or float('inf')).\n\nConstraints:\n- The number of nodes is between 1 and 1000.\n- Weights are non-negative.",
+  "lisp_spec": "Here is the LISP specification for the given natural language problem:\n\n(task\n  (name \"dijkstra\")\n  (signature ( (graph (dict int (list tuple))) (start_node int) (n int) ) (list float))\n  (constraints\n    (constraint \"1 <= n <= 1000\")\n    (constraint \"All weights in the graph are non-negative.\")\n  )\n  (goal\n    (description \"Find the shortest distance to all other nodes from the source.\")\n    (rule \"Use Dijkstra's algorithm to find the shortest path.\")\n    (return \"Return a list of distances where the i-th element is the shortest distance from the start node to the i-th node. If a node is unreachable, the distance should be infinity.\")\n  ))\n)",
+  "generated_code": "from typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\nclass Solution:\n    def dijkstra(self, graph: Dict[int, List[tuple]], start_node: int, n: int) -> List[float]:\n        # Initialize distances to all nodes as infinity\n        distances = [float('inf')] * n\n        distances[start_node] = 0  # Distance to start node is 0\n\n        # Create a priority queue to hold nodes to be processed\n        pq = [(0, start_node)]\n\n        # Create a set to hold visited nodes\n        visited = set()\n\n        while pq:\n            # Extract the node with the minimum distance from the priority queue\n            current_distance, current_node = heapq.heappop(pq)\n\n            # If the current node has already been visited, skip it\n            if current_node in visited:\n                continue\n\n            # Mark the current node as visited\n            visited.add(current_node)\n\n            # Update distances of neighboring nodes\n            for neighbor, weight in graph[current_node]:\n                distance = current_distance + weight\n\n                # If a shorter path to the neighbor is found, update its distance\n                if distance < distances[neighbor]:\n                    distances[neighbor] = distance\n                    heapq.heappush(pq, (distance, neighbor))\n\n        return distances",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/dijkstra_shortest_path/test_solution.py ..            [100%]\n\n============================== 2 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.28750000000000003,
+    "python": {
+      "cyclomatic_avg": 5.0,
+      "cyclomatic_max": 5,
+      "wmc": 5,
+      "maintainability_index": 88.13655397646284,
+      "max_nesting_depth": 5,
+      "halstead_volume": 0,
+      "lloc": 20,
+      "loc": 37
+    },
+    "lisp": {
+      "lisp_max_depth": 6,
+      "lisp_constraints": 3,
+      "lisp_rules": 1,
+      "lisp_token_count": 100
+    }
+  }
+}

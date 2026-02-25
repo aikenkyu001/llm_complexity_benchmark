@@ -1,0 +1,30 @@
+{
+  "task_name": "sparse_matrix_multiplication",
+  "model": "llama3.2-vision:11b",
+  "timestamp": "2026-02-20T16:34:17.099395",
+  "nl_problem": "# Task: sparse_matrix_multiplication\n# Interface:\nClass: Solution\nMethod: multiply(self, arg1, arg2)\n\nGiven two sparse matrices mat1 of size m x k and mat2 of size k x n, return the result of mat1 x mat2.\nA matrix is sparse if most of its elements are 0. You should optimize the multiplication for sparse matrices.\n\nConstraints:\n- m == mat1.length\n- k == mat1[i].length == mat2.length\n- n == mat2[i].length\n- 1 <= m, n, k <= 100\n- -100 <= mat1[i][j], mat2[i][j] <= 100",
+  "lisp_spec": "Here is the LISP specification for the given natural language problem:\n\n(task\n  (name \"multiply\")\n  (signature ( (self Solution) (arg1 (list (list int))) (arg2 (list (list int))) ) (list (list int)))\n  (constraints\n    (constraint \"m == mat1.length\")\n    (constraint \"k == mat1[i].length == mat2.length\")\n    (constraint \"n == mat2[i].length\")\n    (constraint \"1 <= m, n, k <= 100\")\n    (constraint \"-100 <= mat1[i][j], mat2[i][j] <= 100\")\n  )\n  (goal\n    (description \"Return the result of mat1 x mat2.\")\n    (rule \"Optimize the multiplication for sparse matrices.\")\n    (return \"The resulting sparse matrix.\")\n  )\n)",
+  "generated_code": "from typing import List\n\nclass Solution:\n    def multiply(self, mat1: List[List[int]], mat2: List[List[int]]) -> List[List[int]]:\n        m, n = len(mat1), len(mat2[0])\n        k = len(mat1[0])\n        \n        # Initialize the result matrix with zeros\n        res = [[0] * n for _ in range(m)]\n        \n        # Perform matrix multiplication\n        for i in range(m):\n            for j in range(n):\n                for l in range(k):\n                    res[i][j] += mat1[i][l] * mat2[l][j]\n        \n        return res",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/sparse_matrix_multiplication/test_solution.py ..      [100%]\n\n============================== 2 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.3443,
+    "python": {
+      "cyclomatic_avg": 5.0,
+      "cyclomatic_max": 5,
+      "wmc": 5,
+      "maintainability_index": 89.0556359533052,
+      "max_nesting_depth": 5,
+      "halstead_volume": 0,
+      "lloc": 11,
+      "loc": 17
+    },
+    "lisp": {
+      "lisp_max_depth": 6,
+      "lisp_constraints": 6,
+      "lisp_rules": 1,
+      "lisp_token_count": 84
+    }
+  }
+}

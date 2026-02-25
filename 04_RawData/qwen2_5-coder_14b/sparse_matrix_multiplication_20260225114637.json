@@ -1,0 +1,30 @@
+{
+  "task_name": "sparse_matrix_multiplication",
+  "model": "qwen2.5-coder:14b",
+  "timestamp": "2026-02-25T11:46:37.012750",
+  "nl_problem": "# Task: sparse_matrix_multiplication\n# Interface:\nClass: Solution\nMethod: multiply(self, arg1, arg2)\n\nGiven two sparse matrices mat1 of size m x k and mat2 of size k x n, return the result of mat1 x mat2.\nA matrix is sparse if most of its elements are 0. You should optimize the multiplication for sparse matrices.\n\nConstraints:\n- m == mat1.length\n- k == mat1[i].length == mat2.length\n- n == mat2[i].length\n- 1 <= m, n, k <= 100\n- -100 <= mat1[i][j], mat2[i][j] <= 100",
+  "lisp_spec": "(task\n  (name \"multiply\")\n  (signature ( (self Solution) (mat1 (list (list int))) (mat2 (list (list int))) ) (list (list int)))\n  (constraints\n    (constraint \"m == mat1.length\")\n    (constraint \"k == mat1[i].length == mat2.length\")\n    (constraint \"n == mat2[i].length\")\n    (constraint \"1 <= m, n, k <= 100\")\n    (constraint \"-100 <= mat1[i][j], mat2[i][j] <= 100\")\n  )\n  (goal\n    (description \"Multiply two sparse matrices mat1 and mat2.\")\n    (rule \"Optimize the multiplication for sparse matrices by taking advantage of the fact that most elements are zero.\")\n    (return \"Return the result of mat1 x mat2 as a new matrix. The dimensions of the resulting matrix will be m x n.\")\n  )\n)",
+  "generated_code": "class Solution:\n    def multiply(self, mat1: List[List[int]], mat2: List[List[int]]) -> List[List[int]]:\n        m = len(mat1)\n        k = len(mat1[0])\n        n = len(mat2[0])\n\n        # Initialize the result matrix with zeros\n        result = [[0] * n for _ in range(m)]\n\n        # Convert mat1 to a dictionary of non-zero elements\n        mat1_dict = {}\n        for i in range(m):\n            for j in range(k):\n                if mat1[i][j] != 0:\n                    if i not in mat1_dict:\n                        mat1_dict[i] = []\n                    mat1_dict[i].append((j, mat1[i][j]))\n\n        # Convert mat2 to a dictionary of non-zero elements\n        mat2_dict = {}\n        for j in range(k):\n            for l in range(n):\n                if mat2[j][l] != 0:\n                    if j not in mat2_dict:\n                        mat2_dict[j] = []\n                    mat2_dict[j].append((l, mat2[j][l]))\n\n        # Perform matrix multiplication\n        for i in range(m):\n            for j in range(k):\n                if j in mat1_dict and i in mat2_dict:\n                    for (col1, val1) in mat1_dict[i]:\n                        for (row2, val2) in mat2_dict[j]:\n                            result[i][row2] += val1 * val2\n\n        return result",
+  "test_passed": false,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/sparse_matrix_multiplication/test_solution.py F.      [100%]\n\n=================================== FAILURES ===================================\n___________________________ test_sparse_matrix_basic ___________________________\n\n    def test_sparse_matrix_basic():\n        solution = Solution()\n        mat1 = [[1,0,0],[-1,0,3]]\n        mat2 = [[7,0,0],[0,0,0],[0,0,1]]\n        expected = [[7,0,0],[-7,0,3]]\n>       assert solution.multiply(mat1, mat2) == expected\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\n01_TestDefinitions/sparse_matrix_multiplication/test_solution.py:9: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <solution.Solution object at 0x104bcf0e0>, mat1 = [[1, 0, 0], [-1, 0, 3]]\nmat2 = [[7, 0, 0], [0, 0, 0], [0, 0, 1]]\n\n    def multiply(self, mat1: List[List[int]], mat2: List[List[int]]) -> List[List[int]]:\n        m = len(mat1)\n        k = len(mat1[0])\n        n = len(mat2[0])\n    \n        # Initialize the result matrix with zeros\n        result = [[0] * n for _ in range(m)]\n    \n        # Convert mat1 to a dictionary of non-zero elements\n        mat1_dict = {}\n        for i in range(m):\n            for j in range(k):\n                if mat1[i][j] != 0:\n                    if i not in mat1_dict:\n                        mat1_dict[i] = []\n                    mat1_dict[i].append((j, mat1[i][j]))\n    \n        # Convert mat2 to a dictionary of non-zero elements\n        mat2_dict = {}\n        for j in range(k):\n            for l in range(n):\n                if mat2[j][l] != 0:\n                    if j not in mat2_dict:\n                        mat2_dict[j] = []\n                    mat2_dict[j].append((l, mat2[j][l]))\n    \n        # Perform matrix multiplication\n        for i in range(m):\n            for j in range(k):\n                if j in mat1_dict and i in mat2_dict:\n                    for (col1, val1) in mat1_dict[i]:\n>                       for (row2, val2) in mat2_dict[j]:\n                                            ^^^^^^^^^^^^\nE                       KeyError: 1\n\n01_TestDefinitions/sparse_matrix_multiplication/solution.py:33: KeyError\n=========================== short test summary info ============================\nFAILED 01_TestDefinitions/sparse_matrix_multiplication/test_solution.py::test_sparse_matrix_basic\n========================= 1 failed, 1 passed in 0.03s ==========================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.5354,
+    "python": {
+      "cyclomatic_avg": 16.0,
+      "cyclomatic_max": 16,
+      "wmc": 16,
+      "maintainability_index": 72.57197758576795,
+      "max_nesting_depth": 7,
+      "halstead_volume": 0,
+      "lloc": 27,
+      "loc": 36
+    },
+    "lisp": {
+      "lisp_max_depth": 6,
+      "lisp_constraints": 6,
+      "lisp_rules": 1,
+      "lisp_token_count": 102
+    }
+  }
+}

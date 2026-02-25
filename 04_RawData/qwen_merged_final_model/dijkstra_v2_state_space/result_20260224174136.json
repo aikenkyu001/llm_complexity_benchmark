@@ -1,0 +1,29 @@
+{
+  "task_name": "dijkstra_v2_state_space",
+  "model": "qwen_merged_final_model",
+  "timestamp": "2026-02-24T17:41:36.739399",
+  "nl_problem": "# Task: Dijkstra V2 (State Space)\n# Interface:\nClass: Solution\nMethod: find_min_cost(self, start: Tuple[int, int], target: Tuple[int, int]) -> int\n\nFind the minimum cost to travel from a start coordinate to a target coordinate in a 2D grid where moving from (x, y) to (x+1, y) or (x, y+1) has a cost that depends on the coordinates.\nCost formula: `cost = (x + y) % 5 + 1`.\n\n# Implementation Hint:\nUse Dijkstra's algorithm where the priority queue stores the tuple `(total_cost, x, y)`.\nThe state space is a 2D grid, but logically it could be an infinite plane. Use a dictionary or a set to track visited states and their minimum costs.\n\nConstraints:\n- 0 <= x, y <= 100\n- Cost is always positive.",
+  "lisp_spec": "(task\n  (name \"find_min_cost\")\n  (signature ( (start tuple) (target tuple) ) int)\n  (constraints\n    (constraint \"0 <= x, y <= 100\")\n    (constraint \"Cost is always positive.\")\n  )\n  (goal\n    (description \"Find the minimum cost to travel from a start coordinate to a target coordinate in a 2D grid.\")\n    (rule \"Use Dijkstra's algorithm with a priority queue to explore states.\")\n    (rule \"The priority queue should store tuples `(total_cost, x, y)`.\")\n    (rule \"Track visited states and their minimum costs using a dictionary or a set.\")\n    (return \"Return the minimum cost to reach the target coordinate. If no path exists, return -1.\")\n  ))",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\n# Define any helper classes here if needed\n\nclass Solution:\n    def find_min_cost(self, start: Tuple[int, int], target: Tuple[int, int]) -> int:\n        # Implement Dijkstra's algorithm with a priority queue\n        # Use a dictionary to track visited states and their minimum costs\n        # Return the minimum cost to reach the target coordinate, or -1 if no path exists\n        pass",
+  "test_passed": false,
+  "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /home/miyata/projects/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 0 items / 1 error\n\n==================================== ERRORS ====================================\n_ ERROR collecting 01_TestDefinitions/dijkstra_v2_state_space/test_solution.py _\n01_TestDefinitions/dijkstra_v2_state_space/test_solution.py:2: in <module>\n    from solution import Solution\n01_TestDefinitions/dijkstra_v2_state_space/solution.py:8: in <module>\n    class Solution:\n01_TestDefinitions/dijkstra_v2_state_space/solution.py:9: in Solution\n    def find_min_cost(self, start: Tuple[int, int], target: Tuple[int, int]) -> int:\n                                   ^^^^^\nE   NameError: name 'Tuple' is not defined\n=========================== short test summary info ============================\nERROR 01_TestDefinitions/dijkstra_v2_state_space/test_solution.py - NameError...\n!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!\n=============================== 1 error in 0.09s ===============================\n",
+  "complexity_metrics": {
+    "total_complexity_score": 0.2019,
+    "python": {
+      "cyclomatic_avg": 1.0,
+      "cyclomatic_max": 1,
+      "wmc": 1,
+      "maintainability_index": 100.0,
+      "max_nesting_depth": 2,
+      "halstead_volume": 0,
+      "lloc": 6,
+      "loc": 13
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 3,
+      "lisp_rules": 3,
+      "lisp_token_count": 97
+    }
+  }
+}

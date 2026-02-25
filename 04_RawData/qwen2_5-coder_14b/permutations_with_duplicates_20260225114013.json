@@ -1,0 +1,30 @@
+{
+  "task_name": "permutations_with_duplicates",
+  "model": "qwen2.5-coder:14b",
+  "timestamp": "2026-02-25T11:40:13.672629",
+  "nl_problem": "# Task: permutations_with_duplicates\n# Interface:\nClass: Solution\nMethod: permuteUnique(self, arg1)\n\nGiven a collection of numbers, nums, that might contain duplicates, return all possible unique permutations in any order.\n\nConstraints:\n- 1 <= nums.length <= 8\n- -10 <= nums[i] <= 10",
+  "lisp_spec": "(task\n  (name \"permuteUnique\")\n  (signature ( (nums (list int)) ) (list (list int)))\n  (constraints\n    (constraint \"The length of nums is between 1 and 8, inclusive.\")\n    (constraint \"Each element in nums is an integer between -10 and 10, inclusive.\")\n  )\n  (goal\n    (description \"Generate all unique permutations of the input list nums.\")\n    (rule \"Permutations must be unique; duplicates are not allowed.\")\n    (return \"A list of lists, where each inner list is a unique permutation of nums.\")\n  )\n)",
+  "generated_code": "from typing import List\nfrom itertools import permutations\n\nclass Solution:\n    def permuteUnique(self, nums: List[int]) -> List[List[int]]:\n        # Generate all unique permutations using a set to filter duplicates\n        unique_perms = set(permutations(nums))\n        # Convert the set back to a list of lists and return\n        return [list(perm) for perm in unique_perms]",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/permutations_with_duplicates/test_solution.py ..      [100%]\n\n============================== 2 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.17,
+    "python": {
+      "cyclomatic_avg": 2.0,
+      "cyclomatic_max": 2,
+      "wmc": 2,
+      "maintainability_index": 100.0,
+      "max_nesting_depth": 2,
+      "halstead_volume": 0,
+      "lloc": 6,
+      "loc": 9
+    },
+    "lisp": {
+      "lisp_max_depth": 5,
+      "lisp_constraints": 3,
+      "lisp_rules": 1,
+      "lisp_token_count": 75
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "task_name": "lru_cache_v2_concurrency",
+  "model": "qwen_merged_final_model",
+  "timestamp": "2026-02-24T17:45:49.229474",
+  "nl_problem": "# Task: lru_cache_v2_concurrency\n# Interface:\nClass: Solution\nMethod: LRUCache(self)\n\nImplement an LRU Cache that is thread-safe. While the main benchmark is single-threaded, the implementation must use synchronization primitives (like threading.Lock) to ensure internal consistency as if it were in a concurrent environment.\n- LRUCache(capacity)\n- get(key)\n- put(key, value)\nConstraints:\n- O(1) average time complexity for both get and put.\n- Use a Lock for every state-modifying operation.\n- Do not use OrderedDict.",
+  "lisp_spec": "(task\n  (name \"LRUCache_v2_concurrency\")\n  (signature ( (capacity int) ) (class LRUCache))\n  (constraints\n    (constraint \"O(1) average time complexity for both get and put.\")\n    (constraint \"Use a Lock for every state-modifying operation.\")\n    (constraint \"Do not use OrderedDict.\")\n  )\n  (goal\n    (description \"Implement an LRU Cache that is thread-safe.\")\n    (rule \"The cache should support the following operations:\")\n    (rule \"- LRUCache(capacity)\")\n    (rule \"- get(key)\")\n    (rule \"- put(key, value)\")\n    (rule \"The cache should maintain the following properties:\")\n    (rule \"  - O(1) average time complexity for both get and put.\")\n    (rule \"  - Use a Lock for every state-modifying operation.\")\n    (rule \"  - Do not use OrderedDict.\")\n    (return \"The LRUCache class should implement the specified methods.\")\n  ))",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\nimport threading\n\nclass Node:\n    def __init__(self, key: int, value: int):\n        self.key = key\n        self.value = value\n        self.prev = None\n        self.next = None\n\nclass LRUCache_v2_concurrency:\n    def __init__(self, capacity: int):\n        self.capacity = capacity\n        self.cache = {}\n        self.head = Node(0, 0)\n        self.tail = Node(0, 0)\n        self.head.next = self.tail\n        self.tail.prev = self.head\n        self.lock = threading.Lock()\n\n    def get(self, key: int) -> int:\n        with self.lock:\n            if key not in self.cache:\n                return -1\n            node = self.cache[key]\n            self._remove(node)\n            self._add(node)\n            return node.value\n\n    def put(self, key: int, value: int) -> None:\n        with self.lock:\n            if key in self.cache:\n                node = self.cache[key]\n                node.value = value\n                self._remove(node)\n                self._add(node)\n            else:\n                if len(self.cache) == self.capacity:\n                    node_to_remove = self.tail.prev\n                    self._remove(node_to_remove)\n                    del self.cache[node_to_remove.key]\n                new_node = Node(key, value)\n                self.cache[key] = new_node\n                self._add(new_node)\n\n    def _remove(self, node: Node) -> None:\n        prev = node.prev\n        next = node.next\n        prev.next = next\n        next.prev = prev\n\n    def _add(self, node: Node) -> None:\n        prev = self.head\n        next = self.head.next\n        prev.next = node\n        node.prev = prev\n        node.next = next\n        next.prev = node\n\n# The Solution class must remain the primary interface for the tests\nclass Solution:\n    def LRUCache_v2_concurrency(self, capacity: int) -> LRUCache_v2_concurrency:\n        return LRUCache_v2_concurrency(capacity)",
+  "test_passed": false,
+  "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /home/miyata/projects/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/lru_cache_v2_concurrency/test_solution.py FF          [100%]\n\n=================================== FAILURES ===================================\n______________________________ test_lru_v2_basic _______________________________\n\n    def test_lru_v2_basic():\n>       lru = Solution().LRUCache(2)\n              ^^^^^^^^^^^^^^^^^^^\nE       AttributeError: 'Solution' object has no attribute 'LRUCache'\n\n01_TestDefinitions/lru_cache_v2_concurrency/test_solution.py:5: AttributeError\n________________________ test_lru_v2_concurrency_logic _________________________\n\n    def test_lru_v2_concurrency_logic():\n        # Test if basic logic still holds with locks added\n>       lru = Solution().LRUCache(1)\n              ^^^^^^^^^^^^^^^^^^^\nE       AttributeError: 'Solution' object has no attribute 'LRUCache'\n\n01_TestDefinitions/lru_cache_v2_concurrency/test_solution.py:14: AttributeError\n=========================== short test summary info ============================\nFAILED 01_TestDefinitions/lru_cache_v2_concurrency/test_solution.py::test_lru_v2_basic\nFAILED 01_TestDefinitions/lru_cache_v2_concurrency/test_solution.py::test_lru_v2_concurrency_logic\n============================== 2 failed in 0.04s ===============================\n",
+  "complexity_metrics": {
+    "total_complexity_score": 0.4243,
+    "python": {
+      "cyclomatic_avg": 1.4285714285714286,
+      "cyclomatic_max": 3,
+      "wmc": 10,
+      "maintainability_index": 60.74550208764196,
+      "max_nesting_depth": 5,
+      "halstead_volume": 0,
+      "lloc": 55,
+      "loc": 64
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 4,
+      "lisp_rules": 8,
+      "lisp_token_count": 109
+    }
+  }
+}

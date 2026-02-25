@@ -1,0 +1,30 @@
+{
+  "task_name": "minimum_spanning_tree_prim",
+  "model": "qwen2.5-coder:14b",
+  "timestamp": "2026-02-25T11:38:30.565391",
+  "nl_problem": "# Task: minimum_spanning_tree_prim\n# Interface:\nClass: Solution\nMethod: primMST(self, graph: Dict[int, List[Tuple[int, int]]], n: int) -> int\n\nGiven a weighted, undirected connected graph with n vertices (labeled 0 to n-1), find the sum of the weights of the edges in its Minimum Spanning Tree using Prim's algorithm.\nThe graph is represented as an adjacency list: `graph[u] = [(v, weight), ...]` where u is the source node, v is the destination, and weight is the edge weight.\n\n# Important:\nThe function MUST accept TWO arguments: `graph` and `n`.\n\n# Implementation Hint:\nUse a priority queue (min-heap) to store edges or nodes. Initialize a `visited` array or set of size `n`. \nStart by marking node 0 as visited and adding its neighbors to the heap.\n\nConstraints:\n- 1 <= n <= 1000\n- 1 <= weight <= 1000",
+  "lisp_spec": "(task\n  (name \"primMST\")\n  (signature ( (graph (dict int (list tuple))) (n int) ) int)\n  (constraints\n    (constraint \"The graph is represented as an adjacency list where each key is a node and the value is a list of tuples representing connected nodes and their weights.\")\n    (constraint \"1 <= n <= 1000\")\n    (constraint \"1 <= weight <= 1000\")\n  )\n  (goal\n    (description \"Find the sum of the weights of the edges in the Minimum Spanning Tree (MST) of a given weighted, undirected connected graph using Prim's algorithm.\")\n    (rule \"Initialize a priority queue and add all edges from the starting node (node 0).\")\n    (rule \"While there are edges in the priority queue, extract the edge with the smallest weight.\")\n    (rule \"If the destination node of this edge has not been visited, mark it as visited and add its edges to the priority queue.\")\n    (rule \"Continue until all nodes are visited.\")\n    (return \"Return the sum of the weights of the edges in the MST. If the graph is empty or invalid, return 0.\")\n  )\n)",
+  "generated_code": "from typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\nclass Solution:\n    def primMST(self, graph: Dict[int, List[tuple]], n: int) -> int:\n        if not graph or n <= 0:\n            return 0\n        \n        # Priority queue to store edges with their weights\n        pq = []\n        # Set to keep track of visited nodes\n        visited = set()\n        # Start from node 0\n        start_node = 0\n        # Add all edges from the starting node to the priority queue\n        for neighbor, weight in graph.get(start_node, []):\n            heapq.heappush(pq, (weight, start_node, neighbor))\n        \n        mst_weight = 0\n        visited.add(start_node)\n        \n        while pq:\n            weight, u, v = heapq.heappop(pq)\n            \n            # If the destination node has not been visited, add it to the MST\n            if v not in visited:\n                mst_weight += weight\n                visited.add(v)\n                \n                # Add all edges from the newly added node to the priority queue\n                for neighbor, weight in graph.get(v, []):\n                    if neighbor not in visited:\n                        heapq.heappush(pq, (weight, v, neighbor))\n        \n        # If we have visited all nodes, return the MST weight\n        if len(visited) == n:\n            return mst_weight\n        \n        # If the graph is not fully connected, return 0\n        return 0",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/minimum_spanning_tree_prim/test_solution.py ..        [100%]\n\n============================== 2 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.4565,
+    "python": {
+      "cyclomatic_avg": 9.0,
+      "cyclomatic_max": 9,
+      "wmc": 9,
+      "maintainability_index": 81.71605760330735,
+      "max_nesting_depth": 6,
+      "halstead_volume": 0,
+      "lloc": 25,
+      "loc": 41
+    },
+    "lisp": {
+      "lisp_max_depth": 6,
+      "lisp_constraints": 4,
+      "lisp_rules": 4,
+      "lisp_token_count": 170
+    }
+  }
+}

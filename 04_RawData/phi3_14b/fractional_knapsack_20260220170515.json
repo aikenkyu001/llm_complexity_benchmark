@@ -1,0 +1,30 @@
+{
+  "task_name": "fractional_knapsack",
+  "model": "phi3:14b",
+  "timestamp": "2026-02-20T17:05:15.213451",
+  "nl_problem": "# Task: fractional_knapsack\n# Interface:\nClass: Solution\nMethod: fractionalKnapsack(self, arg1, arg2)\n\nGiven a set of items, each with a weight and a value, and a knapsack of a given capacity, find the maximum total value you can carry. In the fractional knapsack problem, you can break items for maximizing the total value.\nItems are given as a list of pairs: `(value, weight)`.\n\nConstraints:\n- 1 <= n <= 10^5\n- 1 <= capacity <= 10^7\n- 1 <= value, weight <= 1000",
+  "lisp_spec": "(task\n  (name \"fractionalKnapsack\")\n  (signature ( (items 'list ((int int))) (capacity int) ) (tuple))\n  (constraints\n    (constraint \"1 <= n <= 10^5\")\n    (constraint \"1 <= capacity <= 10^7\")\n    (constraint \"1 <= value, weight <= 1000\")\n  )\n  (goal\n    (description \"Find the maximum total value you can carry in a knapsack of given capacity.\")\n    (rule \"Items are given as a list of pairs: `(value, weight)`. You may break items for maximizing the total value.\")\n    (return \"(max_value int max_weight int) where max_value is the maximum total value and max_weight is the corresponding total weight.\")\n  )\n)",
+  "generated_code": "# solution.py\nfrom typing import List, Tuple, Dict, Optional, Set, Any\nimport heapq\nimport collections\n\nItem = Tuple[int, int]\n\ndef fractionalKnapsack(items: List[Item], capacity: int) -> Tuple[int, int]:\n    # Sort items by value-to-weight ratio in descending order\n    sorted_items = sorted(items, key=lambda item: -item[0]/item[1])\n    \n    max_value = 0\n    total_weight = 0\n    for value, weight in sorted_items:\n        if capacity >= weight:\n            # If the knapsack can hold the whole item, add it entirely\n            max_value += value\n            total_eight = weight\n            capacity -= weight\n        else:\n            # Otherwise, take a fraction of the item to fill up the remaining space in the knapsack\n            fraction = capacity / weight\n            max_value += value * fraction\n            total_weight += weight * fraction\n            break  # No more items can be added\n    \n    return (max_value, total_weight)\n\nclass Solution:\n    def fractionalKnapsack(self, items: List[Item], capacity: int) -> Tuple[int, int]:\n        return fractionalKnapsack(items, capacity)",
+  "test_passed": false,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/fractional_knapsack/test_solution.py FF               [100%]\n\n=================================== FAILURES ===================================\n________________________ test_fractional_knapsack_basic ________________________\n\n    def test_fractional_knapsack_basic():\n        solution = Solution()\n        items = [(60, 10), (100, 20), (120, 30)]\n        capacity = 50\n        # Items (val/weight): (6,10), (5,20), (4,30)\n        # Take all of item1 (60) and item2 (100) and 2/3 of item3 (80) -> 240\n>       assert solution.fractionalKnapsack(items, capacity) == 240.0\nE       assert (240.0, 20.0) == 240.0\nE        +  where (240.0, 20.0) = fractionalKnapsack([(60, 10), (100, 20), (120, 30)], 50)\nE        +    where fractionalKnapsack = <solution.Solution object at 0x107c930e0>.fractionalKnapsack\n\n01_TestDefinitions/fractional_knapsack/test_solution.py:10: AssertionError\n________________________ test_fractional_knapsack_empty ________________________\n\n    def test_fractional_knapsack_empty():\n        solution = Solution()\n>       assert solution.fractionalKnapsack([], 10) == 0.0\nE       assert (0, 0) == 0.0\nE        +  where (0, 0) = fractionalKnapsack([], 10)\nE        +    where fractionalKnapsack = <solution.Solution object at 0x107cfd310>.fractionalKnapsack\n\n01_TestDefinitions/fractional_knapsack/test_solution.py:14: AssertionError\n=========================== short test summary info ============================\nFAILED 01_TestDefinitions/fractional_knapsack/test_solution.py::test_fractional_knapsack_basic\nFAILED 01_TestDefinitions/fractional_knapsack/test_solution.py::test_fractional_knapsack_empty\n============================== 2 failed in 0.03s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.23069999999999996,
+    "python": {
+      "cyclomatic_avg": 2.0,
+      "cyclomatic_max": 3,
+      "wmc": 4,
+      "maintainability_index": 79.6464159134452,
+      "max_nesting_depth": 3,
+      "halstead_volume": 0,
+      "lloc": 23,
+      "loc": 31
+    },
+    "lisp": {
+      "lisp_max_depth": 6,
+      "lisp_constraints": 4,
+      "lisp_rules": 1,
+      "lisp_token_count": 91
+    }
+  }
+}

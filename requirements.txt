@@ -1,0 +1,16 @@
+radon
+pytest
+numpy
+pandas
+matplotlib
+scikit-learn
+requests
+torch
+transformers
+peft
+bitsandbytes
+trl
+accelerate
+datasets
+scipy
+sentencepiece

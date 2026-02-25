@@ -1,0 +1,30 @@
+{
+  "task_name": "spiral_matrix_ii",
+  "model": "llama3.2-vision:11b",
+  "timestamp": "2026-02-20T16:34:56.020808",
+  "nl_problem": "# Task: spiral_matrix_ii\n# Interface:\nClass: Solution\nMethod: generateMatrix(self, arg1)\n\nGiven a positive integer n, generate an n x n matrix filled with elements from 1 to n^2 in spiral order.\n\nConstraints:\n- 1 <= n <= 20",
+  "lisp_spec": "(task\n  (name \"generateMatrix\")\n  (signature ( (self Solution) (n int) ) (list (list int)))\n  (constraints\n    (constraint \"1 <= n <= 20\")\n  )\n  (goal\n    (description \"Generate an n x n matrix filled with elements from 1 to n^2 in spiral order.\")\n    (rule \"The matrix should be filled in a spiral order, starting from the top-left corner and moving clockwise.\")\n    (return \"A 2D list representing the generated matrix.\")\n  )\n)",
+  "generated_code": "# solution.py\nfrom typing import List\n\nclass Solution:\n    def generateMatrix(self, n: int) -> List[List[int]]:\n        matrix = [[0] * n for _ in range(n)]\n        directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]\n        direction_index = 0\n        row, col = 0, 0\n        for i in range(1, n * n + 1):\n            matrix[row][col] = i\n            next_row, next_col = row + directions[direction_index][0], col + directions[direction_index][1]\n            if 0 <= next_row < n and 0 <= next_col < n and matrix[next_row][next_col] == 0:\n                row, col = next_row, next_col\n            else:\n                direction_index = (direction_index + 1) % 4\n                row, col = row + directions[direction_index][0], col + directions[direction_index][1]\n        return matrix",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/spiral_matrix_ii/test_solution.py ..                  [100%]\n\n============================== 2 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.24839999999999998,
+    "python": {
+      "cyclomatic_avg": 6.0,
+      "cyclomatic_max": 6,
+      "wmc": 6,
+      "maintainability_index": 70.72344005779976,
+      "max_nesting_depth": 4,
+      "halstead_volume": 0,
+      "lloc": 16,
+      "loc": 18
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 2,
+      "lisp_rules": 1,
+      "lisp_token_count": 67
+    }
+  }
+}

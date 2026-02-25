@@ -1,0 +1,30 @@
+{
+  "task_name": "synthetic_nesting_d7",
+  "model": "llama3.2-vision:11b",
+  "timestamp": "2026-02-20T16:49:58.958936",
+  "nl_problem": "# Task: Nested Logic Test (Depth 7)\n# Interface:\nClass: Solution\nMethod: checkNested(self, x0: int, x1: int, x2: int, x3: int, x4: int, x5: int, x6: int) -> bool\n\n# Objective:\nThis is a test of structural nesting. Return True ONLY if all the following conditions are met:\n1. x0 is greater than 0\n2. x1 is greater than 0\n3. x2 is greater than 0\n4. x3 is greater than 0\n5. x4 is greater than 0\n6. x5 is greater than 0\n7. x6 is greater than 0\n\nEach condition must be checked inside the previous one (nested if statements).",
+  "lisp_spec": "Here is the LISP specification for the given natural language problem:\n\n(task\n  (name \"checkNested\")\n  (signature ( (x0 int) (x1 int) (x2 int) (x3 int) (x4 int) (x5 int) (x6 int) ) bool)\n  (constraints\n    (constraint \"All input parameters must be integers.\")\n  )\n  (goal\n    (description \"Return True if all conditions are met, False otherwise.\")\n    (rule \"Nested if statements: each condition must be checked inside the previous one.\")\n    (return \"True if all conditions are met, False otherwise.\")\n  )\n))",
+  "generated_code": "class Solution:\n    def checkNested(self, x0: int, x1: int, x2: int, x3: int, x4: int, x5: int, x6: int) -> bool:\n        if not (isinstance(x0, int) and isinstance(x1, int) and isinstance(x2, int) and isinstance(x3, int) and isinstance(x4, int) and isinstance(x5, int) and isinstance(x6, int)):\n            return False\n\n        conditions = [x0 > 0, x1 > 0, x2 > 0, x3 > 0, x4 > 0, x5 > 0, x6 > 0]\n        for i in range(6, 0, -1):\n            if conditions[i-1]:\n                conditions[i-1] = conditions[i-1] and conditions[i-2]\n            else:\n                conditions[i-1] = conditions[i-1] and conditions[i-2] and conditions[i-3]\n\n        return all(conditions)",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/synthetic_nesting_d7/test_solution.py ..              [100%]\n\n============================== 2 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.3377,
+    "python": {
+      "cyclomatic_avg": 13.0,
+      "cyclomatic_max": 13,
+      "wmc": 13,
+      "maintainability_index": 57.91612523305463,
+      "max_nesting_depth": 4,
+      "halstead_volume": 0,
+      "lloc": 11,
+      "loc": 13
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 2,
+      "lisp_rules": 1,
+      "lisp_token_count": 76
+    }
+  }
+}

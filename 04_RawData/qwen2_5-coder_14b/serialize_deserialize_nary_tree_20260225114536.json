@@ -1,0 +1,30 @@
+{
+  "task_name": "serialize_deserialize_nary_tree",
+  "model": "qwen2.5-coder:14b",
+  "timestamp": "2026-02-25T11:45:36.334441",
+  "nl_problem": "Design an algorithm to serialize and deserialize an N-ary tree. An N-ary tree is a rooted tree in which each node has no more than N children. \nSerialization is the process of converting a data structure or object into a sequence of bits so that it can be stored in a file or memory buffer, or transmitted across a network connection link to be reconstructed later in the same or another computer environment.\nThe N-ary tree node structure is:\n```python\nclass Node:\n    def __init__(self, val=None, children=None):\n        self.val = val\n        self.children = children # List[Node]\n```\n\nConstraints:\n- The total number of nodes is between 0 and 10^4.\n- 0 <= Node.val <= 10^4\n- The height of the N-ary tree is less than or equal to 1000.",
+  "lisp_spec": "(task\n  (name \"serialize_deserialize_n_ary_tree\")\n  (signature ( (data string) ) (list int))\n  (constraints\n    (constraint \"The total number of nodes is between 0 and 10^4.\")\n    (constraint \"0 <= Node.val <= 10^4\")\n    (constraint \"The height of the N-ary tree is less than or equal to 1000.\")\n  )\n  (goal\n    (description \"Design an algorithm to serialize and deserialize an N-ary tree.\")\n    (rule \"Serialization converts a data structure into a sequence of bits for storage or transmission.\")\n    (rule \"Deserialization reconstructs the original N-ary tree from the serialized format.\")\n    (return \"The function should return a list representing the serialized form of the tree, and be able to reconstruct the original tree from this list.\")\n  )\n)",
+  "generated_code": "# solution.py\nfrom typing import List, Optional\n\nclass Node:\n    def __init__(self, val: int = 0, children: Optional[List['Node']] = None):\n        self.val = val\n        self.children = children if children is not None else []\n\nclass Solution:\n    def serialize(self, root: 'Optional[Node]') -> List[int]:\n        \"\"\"Encodes a tree to a single string.\"\"\"\n        serialized_list = []\n        \n        def dfs(node: Optional['Node']):\n            if node is None:\n                return\n            serialized_list.append(node.val)\n            for child in node.children:\n                dfs(child)\n            serialized_list.append(None)  # Marker for end of children\n        \n        dfs(root)\n        return serialized_list\n\n    def deserialize(self, data: List[int]) -> 'Optional[Node]':\n        \"\"\"Decodes your encoded data to tree.\"\"\"\n        if not data:\n            return None\n        \n        root = Node(data[0])\n        stack = [root]\n        \n        for val in data[1:]:\n            if val is None:\n                stack.pop()\n            else:\n                new_node = Node(val)\n                stack[-1].children.append(new_node)\n                stack.append(new_node)\n        \n        return root",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/serialize_deserialize_nary_tree/test_solution.py ..   [100%]\n\n============================== 2 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.2916,
+    "python": {
+      "cyclomatic_avg": 2.3333333333333335,
+      "cyclomatic_max": 4,
+      "wmc": 7,
+      "maintainability_index": 69.31617877121573,
+      "max_nesting_depth": 4,
+      "halstead_volume": 0,
+      "lloc": 32,
+      "loc": 41
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 4,
+      "lisp_rules": 2,
+      "lisp_token_count": 108
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "task_name": "interval_merger",
+  "model": "gemma3:12b",
+  "timestamp": "2026-02-20T15:25:52.690583",
+  "nl_problem": "# Task: interval_merger\n# Interface:\nClass: Solution\nMethod: merge(self, arg1)\n\nGiven an array of intervals where `intervals[i] = [starti, endi]`, merge all overlapping intervals, and return an array of the non-overlapping intervals that cover all the intervals in the input.\n\nConstraints:\n- 1 <= intervals.length <= 10^4\n- intervals[i].length == 2\n- 0 <= starti <= endi <= 10^4",
+  "lisp_spec": "(task\n  (name \"merge\")\n  (signature ( (intervals (list (list int int))) ) (list (list int int)))\n  (constraints\n    (constraint \"The input list 'intervals' contains at least one interval.\")\n    (constraint \"Each interval in 'intervals' is a list of exactly two integers.\")\n    (constraint \"The start value of each interval is less than or equal to its end value.\")\n    (constraint \"The interval values are between 0 and 10000 inclusive.\")\n  )\n  (goal\n    (description \"Merge overlapping intervals in the input list and return a new list of non-overlapping intervals that cover the original intervals.\")\n    (rule \"Sort the intervals based on their start times.\")\n    (rule \"Iterate through the sorted intervals, merging overlapping intervals into a single interval.\")\n    (return \"The return value is a list of non-overlapping intervals.  If the input list is empty, return an empty list.\")\n  )\n)",
+  "generated_code": "from typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\nclass Solution:\n    def merge(self, intervals: List[List[int]]) -> List[List[int]]:\n        \"\"\"\n        Merge overlapping intervals in the input list and return a new list of non-overlapping intervals.\n\n        Args:\n            intervals: A list of intervals, where each interval is a list of two integers [start, end].\n\n        Returns:\n            A new list of non-overlapping intervals that cover the original intervals.\n        \"\"\"\n        if not intervals:\n            return []\n\n        intervals.sort(key=lambda x: x[0])\n        merged = []\n        for interval in intervals:\n            if not merged or interval[0] > merged[-1][1]:\n                merged.append(interval)\n            else:\n                merged[-1][1] = max(merged[-1][1], interval[1])\n        return merged",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 3 items\n\n01_TestDefinitions/interval_merger/test_solution.py ...                  [100%]\n\n============================== 3 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.3287,
+    "python": {
+      "cyclomatic_avg": 5.0,
+      "cyclomatic_max": 5,
+      "wmc": 5,
+      "maintainability_index": 89.03451515591964,
+      "max_nesting_depth": 4,
+      "halstead_volume": 0,
+      "lloc": 17,
+      "loc": 26
+    },
+    "lisp": {
+      "lisp_max_depth": 6,
+      "lisp_constraints": 5,
+      "lisp_rules": 2,
+      "lisp_token_count": 131
+    }
+  }
+}

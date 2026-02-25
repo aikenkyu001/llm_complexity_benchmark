@@ -1,0 +1,30 @@
+{
+  "task_name": "synthetic_context_v500",
+  "model": "llama3.2-vision:11b",
+  "timestamp": "2026-02-20T16:44:07.197473",
+  "nl_problem": "# Task: Contextual Memory Test (Volume 500)\n# Interface:\nClass: Solution\nMethod: findSecret(self, text: str) -> str\n\n# Objective:\nRead the provided text and find the secret word mentioned at the very end. Return only that word.\n\n--- START OF TEXT ---\nThis is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. This is background information that is irrelevant to the core task. \nThe secret word you are looking for is: SIGMA\n--- END OF TEXT ---",
+  "lisp_spec": "Here is the LISP specification for the given natural language problem:\n\n(task\n  (name \"findSecret\")\n  (signature ( (self Solution) (text str) ) str)\n  (constraints\n    (constraint \"The input text is a string containing the secret word at the very end.\")\n  )\n  (goal\n    (description \"Find the secret word mentioned at the very end of the provided text.\")\n    (rule \"Return only the secret word, ignoring any irrelevant background information.\")\n    (return \"The secret word, which is 'SIGMA' in this case.\")\n  )\n)",
+  "generated_code": "# solution.py\nclass Solution:\n    def findSecret(self, text: str) -> str:\n        \"\"\"\n        Finds the secret word mentioned at the very end of the provided text.\n\n        Args:\n        text (str): The input text containing the secret word at the very end.\n\n        Returns:\n        str: The secret word, which is 'SIGMA' in this case.\n        \"\"\"\n        # Remove leading and trailing whitespace\n        text = text.strip()\n        \n        # Find the last space in the text\n        last_space_index = text.rfind(' ')\n        \n        # If no space is found, return the entire text\n        if last_space_index == -1:\n            return text\n        \n        # Return the secret word, which is everything after the last space\n        return text[last_space_index + 1:]",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 1 item\n\n01_TestDefinitions/synthetic_context_v500/test_solution.py .             [100%]\n\n============================== 1 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.1754,
+    "python": {
+      "cyclomatic_avg": 2.0,
+      "cyclomatic_max": 2,
+      "wmc": 2,
+      "maintainability_index": 81.7213342612833,
+      "max_nesting_depth": 3,
+      "halstead_volume": 0,
+      "lloc": 9,
+      "loc": 24
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 2,
+      "lisp_rules": 1,
+      "lisp_token_count": 77
+    }
+  }
+}

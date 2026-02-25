@@ -1,0 +1,30 @@
+{
+  "task_name": "sudoku_solver",
+  "model": "llama3.2-vision:11b",
+  "timestamp": "2026-02-20T16:35:47.843271",
+  "nl_problem": "# Task: Sudoku Solver\n# Interface:\nClass: Solution\nMethod: solveSudoku(self, board: List[List[str]]) -> None\n\n# Objective:\nWrite a program to solve a Sudoku puzzle by filling the empty cells.\nModify the board in-place. The function does not need to return anything.\n\n# Constraints:\n1. Each of the digits 1-9 must occur exactly once in each row.\n2. Each of the digits 1-9 must occur exactly once in each column.\n3. Each of the digits 1-9 must occur exactly once in each of the 9 3x3 sub-boxes of the grid.\n4. The '.' character indicates empty cells.\n5. The board size is always 9x9.\n6. You may assume that the given Sudoku puzzle will have a single unique solution.",
+  "lisp_spec": "Here is the LISP specification for the Sudoku Solver problem:\n\n(task\n  (name \"solveSudoku\")\n  (signature ( (board (list (list str))) ) none)\n  (constraints\n    (constraint \"Each of the digits 1-9 must occur exactly once in each row.\")\n    (constraint \"Each of the digits 1-9 must occur exactly once in each column.\")\n    (constraint \"Each of the digits 1-9 must occur exactly once in each of the 9 3x3 sub-boxes of the grid.\")\n    (constraint \"The '.' character indicates empty cells.\")\n    (constraint \"The board size is always 9x9.\")\n    (constraint \"You may assume that the given Sudoku puzzle will have a single unique solution.\")\n  )\n  (goal\n    (description \"Solve a Sudoku puzzle by filling the empty cells.\")\n    (rule \"Modify the board in-place.\")\n    (return \"The function does not need to return anything.\")\n  ))\n)",
+  "generated_code": "from typing import List\n\nclass Solution:\n    def solveSudoku(self, board: List[List[str]]) -> None:\n        def is_valid(board, row: int, col: int, num: str) -> bool:\n            # Check the row\n            for x in range(9):\n                if board[row][x] == num:\n                    return False\n\n            # Check the column\n            for x in range(9):\n                if board[x][col] == num:\n                    return False\n\n            # Check the box\n            start_row, start_col = row - row % 3, col - col % 3\n            for i in range(3):\n                for j in range(3):\n                    if board[i + start_row][j + start_col] == num:\n                        return False\n            return True\n\n        def solve(board):\n            for i in range(9):\n                for j in range(9):\n                    if board[i][j] == '.':\n                        for num in '123456789':\n                            if is_valid(board, i, j, num):\n                                board[i][j] = num\n                                if solve(board):\n                                    return True\n                                board[i][j] = '.'\n                        return False\n            return True\n\n        solve(board)",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 3 items\n\n01_TestDefinitions/sudoku_solver/test_solution.py ...                    [100%]\n\n============================== 3 passed in 0.04s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.4225,
+    "python": {
+      "cyclomatic_avg": 1.0,
+      "cyclomatic_max": 1,
+      "wmc": 1,
+      "maintainability_index": 71.16498957471508,
+      "max_nesting_depth": 9,
+      "halstead_volume": 0,
+      "lloc": 29,
+      "loc": 37
+    },
+    "lisp": {
+      "lisp_max_depth": 6,
+      "lisp_constraints": 7,
+      "lisp_rules": 1,
+      "lisp_token_count": 125
+    }
+  }
+}

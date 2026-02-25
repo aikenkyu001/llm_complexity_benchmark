@@ -1,0 +1,30 @@
+{
+  "task_name": "lowest_common_ancestor_nary",
+  "model": "gemma3:12b",
+  "timestamp": "2026-02-20T15:28:05.921423",
+  "nl_problem": "# Task: lowest_common_ancestor_nary\n# Interface:\nClass: Solution\nMethod: lowestCommonAncestor(self, arg1, arg2, arg3)\n\nGiven an n-ary tree, find the lowest common ancestor (LCA) of two given nodes.\nAccording to the definition of LCA on Wikipedia: \"The lowest common ancestor is defined between two nodes p and q as the lowest node in T that has both p and q as descendants (where we allow a node to be a descendant of itself).\"\nThe N-ary tree node is:\n```python\nclass Node:\n    def __init__(self, val=None, children=None):\n        self.val = val\n        self.children = children # List[Node]\n```\n\nConstraints:\n- The number of nodes in the tree is in the range [2, 10^4].\n- -10^9 <= Node.val <= 10^9\n- All Node.val are unique.\n- p != q\n- p and q will exist in the tree.",
+  "lisp_spec": "(task\n  (name \"lowestCommonAncestor\")\n  (signature ( (root Node) (p Node) (q Node) ) Node)\n  (constraints\n    (constraint \"The number of nodes in the tree is in the range [2, 10^4].\")\n    (constraint \"The values of the nodes are in the range [-10^9, 10^9].\")\n    (constraint \"All node values are unique.\")\n    (constraint \"p and q are distinct nodes.\")\n    (constraint \"p and q exist in the tree.\")\n  )\n  (goal\n    (description \"Find the lowest common ancestor (LCA) of two given nodes, p and q, in an n-ary tree.\")\n    (rule \"The LCA is the lowest node in the tree that has both p and q as descendants.\")\n    (rule \"A node is considered a descendant of itself.\")\n    (return \"Return the LCA node. If either p or q is null, return null.\")\n  )\n)",
+  "generated_code": "from typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\n# Define any helper classes here if needed\nclass Node:\n    def __init__(self, val=0, children: List['Node'] = []):\n        self.val = val\n        self.children = children\n\nclass Solution:\n    def lowestCommonAncestor(self, root: Node, p: Node, q: Node) -> Node:\n        \"\"\"\n        Finds the lowest common ancestor (LCA) of two given nodes, p and q, in an n-ary tree.\n\n        Args:\n            root: The root of the n-ary tree.\n            p: The first node.\n            q: The second node.\n\n        Returns:\n            The LCA node. If either p or q is null, return null.\n        \"\"\"\n        if not root or not p or not q:\n            return None\n\n        def has_node(node: Node, target: Node) -> bool:\n            if not node:\n                return False\n            if node == target:\n                return True\n            for child in node.children:\n                if has_node(child, target):\n                    return True\n            return False\n\n        if not has_node(root, p) or not has_node(root, q):\n            return None\n\n        def find_lca(node: Node, p: Node, q: Node) -> Optional[Node]:\n            if not node:\n                return None\n\n            if node == p or node == q:\n                return node\n\n            lca_found = False\n            for child in node.children:\n                lca_child = find_lca(child, p, q)\n                if lca_child:\n                    if lca_found:\n                        return node\n                    else:\n                        lca_found = True\n            \n            return None if not lca_found else node\n\n        return find_lca(root, p, q)",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/lowest_common_ancestor_nary/test_solution.py ..       [100%]\n\n============================== 2 passed in 0.02s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.40979999999999994,
+    "python": {
+      "cyclomatic_avg": 3.5,
+      "cyclomatic_max": 6,
+      "wmc": 7,
+      "maintainability_index": 74.90076037527857,
+      "max_nesting_depth": 6,
+      "halstead_volume": 0,
+      "lloc": 38,
+      "loc": 58
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 6,
+      "lisp_rules": 2,
+      "lisp_token_count": 124
+    }
+  }
+}

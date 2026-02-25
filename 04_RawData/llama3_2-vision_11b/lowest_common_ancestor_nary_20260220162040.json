@@ -1,0 +1,30 @@
+{
+  "task_name": "lowest_common_ancestor_nary",
+  "model": "llama3.2-vision:11b",
+  "timestamp": "2026-02-20T16:20:40.985467",
+  "nl_problem": "# Task: lowest_common_ancestor_nary\n# Interface:\nClass: Solution\nMethod: lowestCommonAncestor(self, arg1, arg2, arg3)\n\nGiven an n-ary tree, find the lowest common ancestor (LCA) of two given nodes.\nAccording to the definition of LCA on Wikipedia: \"The lowest common ancestor is defined between two nodes p and q as the lowest node in T that has both p and q as descendants (where we allow a node to be a descendant of itself).\"\nThe N-ary tree node is:\n```python\nclass Node:\n    def __init__(self, val=None, children=None):\n        self.val = val\n        self.children = children # List[Node]\n```\n\nConstraints:\n- The number of nodes in the tree is in the range [2, 10^4].\n- -10^9 <= Node.val <= 10^9\n- All Node.val are unique.\n- p != q\n- p and q will exist in the tree.",
+  "lisp_spec": "(task\n  (name \"lowestCommonAncestor_nary\")\n  (signature\n    ( (self Solution) (arg1 Node) (arg2 Node) (arg3 Node) ) Node)\n  (constraints\n    (constraint \"The number of nodes in the tree is in the range [2, 10^4].\")\n    (constraint \"-10^9 <= Node.val <= 10^9\")\n    (constraint \"All Node.val are unique.\")\n    (constraint \"p != q\")\n    (constraint \"p and q will exist in the tree.\")\n  )\n  (goal\n    (description \"Find the lowest common ancestor (LCA) of two given nodes in an n-ary tree.\")\n    (rule \"The LCA is the lowest node in the tree that has both p and q as descendants.\")\n    (return \"The LCA node.\")\n  ))",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\n\nclass Node:\n    def __init__(self, val: int, children: List['Node']):\n        self.val = val\n        self.children = children\n\nclass Solution:\n    def lowestCommonAncestor_nary(self, root: 'Node', p: 'Node', q: 'Node') -> 'Node':\n        if not root:\n            return None\n\n        if root == p or root == q:\n            return root\n\n        for child in root.children:\n            ancestor = self.lowestCommonAncestor_nary(child, p, q)\n            if ancestor:\n                return ancestor\n\n        return root",
+  "test_passed": false,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/lowest_common_ancestor_nary/test_solution.py FF       [100%]\n\n=================================== FAILURES ===================================\n_____________________________ test_lca_nary_basic ______________________________\n\n    def test_lca_nary_basic():\n        solution = Solution()\n        # 3 -> [5, 1, 6]; 5 -> [6, 2, 7]; 1 -> [0, 8]\n        root = Node(3, [\n            Node(5, [Node(6), Node(2), Node(7)]),\n            Node(1, [Node(0), Node(8)])\n        ])\n        p = root.children[0] # node 5\n        q = root.children[1] # node 1\n>       assert solution.lowestCommonAncestor(root, p, q).val == 3\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       AttributeError: 'Solution' object has no attribute 'lowestCommonAncestor'. Did you mean: 'lowestCommonAncestor_nary'?\n\n01_TestDefinitions/lowest_common_ancestor_nary/test_solution.py:18: AttributeError\n___________________________ test_lca_nary_descendant ___________________________\n\n    def test_lca_nary_descendant():\n        solution = Solution()\n        root = Node(3, [Node(5), Node(1)])\n        p = root # node 3\n        q = root.children[0] # node 5\n>       assert solution.lowestCommonAncestor(root, p, q).val == 3\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       AttributeError: 'Solution' object has no attribute 'lowestCommonAncestor'. Did you mean: 'lowestCommonAncestor_nary'?\n\n01_TestDefinitions/lowest_common_ancestor_nary/test_solution.py:25: AttributeError\n=========================== short test summary info ============================\nFAILED 01_TestDefinitions/lowest_common_ancestor_nary/test_solution.py::test_lca_nary_basic\nFAILED 01_TestDefinitions/lowest_common_ancestor_nary/test_solution.py::test_lca_nary_descendant\n============================== 2 failed in 0.03s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.3338,
+    "python": {
+      "cyclomatic_avg": 3.5,
+      "cyclomatic_max": 6,
+      "wmc": 7,
+      "maintainability_index": 76.50307189654144,
+      "max_nesting_depth": 4,
+      "halstead_volume": 0,
+      "lloc": 16,
+      "loc": 22
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 6,
+      "lisp_rules": 1,
+      "lisp_token_count": 94
+    }
+  }
+}

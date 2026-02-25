@@ -1,0 +1,30 @@
+{
+  "task_name": "merge_k_sorted_lists",
+  "model": "phi3:14b",
+  "timestamp": "2026-02-20T17:12:51.369849",
+  "nl_problem": "# Task: merge_k_sorted_lists\n# Interface:\nClass: Solution\nMethod: mergeKLists(self, arg1)\n\nYou are given an array of k linked-lists, each linked-list is sorted in ascending order. Merge all the linked-lists into one sorted linked-list and return it.\nThe linked list node is:\n```python\nclass ListNode:\n    def __init__(self, val=0, next=None):\n        self.val = val\n        self.next = next\n```\n\nConstraints:\n- k == lists.length\n- 0 <= k <= 10^4\n- 0 <= lists[i].length <= 500\n- -10^4 <= lists[i].val <= 10^4\n- lists[i] is sorted in ascending order.\n- The total sum of lists[i].length will not exceed 10^4.",
+  "lisp_spec": "(task\n  (name \"mergeKLists\")\n  (signature ( (lists (list ListNode)) ) ListNode)\n  (constraints\n    (constraint \"k == lists.length\")\n    (constraint \"0 <= k <= 10^4\")\n    (constraint \"0 <= lists[i].length <= 500\")\n    (constraint \"-10^4 <= lists[i].val <= 10^4\")\n    (constraint \"lists[i] is sorted in ascending order.\")\n    (constraint \"The total sum of lists[i].length will not exceed 10^4.\")\n  )\n  (goal\n    (description \"Merge all the linked-lists into one sorted linked-list and return it.\")\n    (rule \"Each list is already sorted in ascending order.\")\n    (return \"The merged linked-list, with nodes containing values from -10^4 to 10^4.\")\n  )\n)",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\nimport heapq\nimport collections\n\nclass ListNode:\n    def __init__(self, val=0, next=None):\n        self.val = val\n        self.next = next\n\nclass Solution:\n    def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:\n        # implementation\n        pass",
+  "test_passed": false,
+  "test_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /private/test/llm_complexity_benchmark\nplugins: anyio-4.12.1\ncollected 2 items\n\n01_TestDefinitions/merge_k_sorted_lists/test_solution.py F.              [100%]\n\n=================================== FAILURES ===================================\n______________________________ test_merge_k_basic ______________________________\n\n    def test_merge_k_basic():\n        solution = Solution()\n        lists = [\n            from_list([1, 4, 5]),\n            from_list([1, 3, 4]),\n            from_list([2, 6])\n        ]\n        result = solution.mergeKLists(lists)\n>       assert to_list(result) == [1, 1, 2, 3, 4, 4, 5, 6]\nE       assert [] == [1, 1, 2, 3, 4, 4, ...]\nE         \nE         Right contains 8 more items, first extra item: 1\nE         Use -v to get more diff\n\n01_TestDefinitions/merge_k_sorted_lists/test_solution.py:33: AssertionError\n=========================== short test summary info ============================\nFAILED 01_TestDefinitions/merge_k_sorted_lists/test_solution.py::test_merge_k_basic\n========================= 1 failed, 1 passed in 0.03s ==========================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.2399,
+    "python": {
+      "cyclomatic_avg": 1.0,
+      "cyclomatic_max": 1,
+      "wmc": 2,
+      "maintainability_index": 100.0,
+      "max_nesting_depth": 2,
+      "halstead_volume": 0,
+      "lloc": 10,
+      "loc": 14
+    },
+    "lisp": {
+      "lisp_max_depth": 5,
+      "lisp_constraints": 7,
+      "lisp_rules": 1,
+      "lisp_token_count": 87
+    }
+  }
+}

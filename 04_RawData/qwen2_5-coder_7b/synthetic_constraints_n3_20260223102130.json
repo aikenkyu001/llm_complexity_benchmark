@@ -1,0 +1,30 @@
+{
+  "task_name": "synthetic_constraints_n3",
+  "model": "qwen2.5-coder:7b",
+  "timestamp": "2026-02-23T10:21:30.028723",
+  "nl_problem": "# Task: Multi-Constraint Check (Density 3)\n# Interface:\nClass: Solution\nMethod: isValid(self, n: int) -> bool\n\n# Objective:\nReturn True if the integer `n` satisfies ALL of the following 3 independent constraints:\n1. n is greater than 2\n2. n is not equal to 104\n3. n is a multiple of 1",
+  "lisp_spec": "(task\n  (name \"isValid\")\n  (signature ( (n int) ) bool)\n  (constraints\n    (constraint \"n > 2\")\n    (constraint \"n != 104\")\n    (constraint \"n is a multiple of 1\")\n  )\n  (goal\n    (description \"Check if the integer n satisfies all three given constraints.\")\n    (rule \"The function should return True if all constraints are met, otherwise False.\")\n    (return \"True if n meets all constraints; False otherwise.\")\n  )\n)",
+  "generated_code": "# solution.py\nfrom typing import List, Optional, Dict, Set, Any\n\nclass Solution:\n    def isValid(self, n: int) -> bool:\n        \"\"\"\n        Check if the integer n satisfies all three given constraints.\n        \n        Args:\n        n (int): The integer to check.\n        \n        Returns:\n        bool: True if n meets all constraints; False otherwise.\n        \"\"\"\n        # Constraint 1: n > 2\n        if n <= 2:\n            return False\n        \n        # Constraint 2: n != 104\n        if n == 104:\n            return False\n        \n        # Constraint 3: n is a multiple of 1 (which is always true for any integer)\n        \n        # If all constraints are met, return True\n        return True",
+  "test_passed": true,
+  "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-8.3.5, pluggy-1.6.0\nrootdir: /media/developer/USB480G/Project/llm_complexity_benchmark\nplugins: cov-7.0.0, langsmith-0.4.41, anyio-4.11.0\ncollected 2 items\n\n01_TestDefinitions/synthetic_constraints_n3/test_solution.py ..          [100%]\n\n============================== 2 passed in 2.58s ===============================\n",
+  "test_errors": "",
+  "complexity_metrics": {
+    "total_complexity_score": 0.2249,
+    "python": {
+      "cyclomatic_avg": 3.0,
+      "cyclomatic_max": 3,
+      "wmc": 3,
+      "maintainability_index": 87.23807216310502,
+      "max_nesting_depth": 3,
+      "halstead_volume": 0,
+      "lloc": 9,
+      "loc": 26
+    },
+    "lisp": {
+      "lisp_max_depth": 4,
+      "lisp_constraints": 4,
+      "lisp_rules": 1,
+      "lisp_token_count": 62
+    }
+  }
+}
