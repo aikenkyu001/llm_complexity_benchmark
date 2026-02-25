@@ -119,6 +119,7 @@ We have demonstrated that the "bottleneck" of small language models in code gene
 
 All experimental resources, including datasets, benchmark tasks, and training/evaluation scripts, are publicly available at:
 \url{https://github.com/aikenkyu001/llm_complexity_benchmark}
+(DOI: \url{https://doi.org/10.5281/zenodo.18768361})
 
 ---
 

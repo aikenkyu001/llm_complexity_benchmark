@@ -137,6 +137,7 @@ Collapse Point の図は、複雑性の増加に伴う成功率の急落を視�
 
 本研究で使用した全てのデータセット、ベンチマークタスク、および学習・評価用スクリプトは、以下のリポジトリで公開されている：
 \url{https://github.com/aikenkyu001/llm_complexity_benchmark}
+(DOI: \url{https://doi.org/10.5281/zenodo.18768361})
 
 ---
 ## 参考文献
